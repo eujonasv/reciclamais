@@ -6,10 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
-// This is a placeholder API key - in a real application, you would use environment variables
-// and not hardcode this value
-const MAPBOX_TOKEN = 'YOUR_MAPBOX_TOKEN';
-
 // Sample data for collection points
 const collectionPoints = [
   {
@@ -95,20 +91,9 @@ interface CollectionPoint {
 }
 
 const MapSection = () => {
-  const [popupInfo, setPopupInfo] = useState<CollectionPoint | null>(null);
-  const [mapToken, setMapToken] = useState<string>(MAPBOX_TOKEN);
-  const [viewState, setViewState] = useState({
-    latitude: -23.5505,  // São Paulo coordinates
-    longitude: -46.6333,
-    zoom: 12
-  });
+  const [selectedPoint, setSelectedPoint] = useState<CollectionPoint | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState<string[]>([]);
-
-  // Update token from input if default is used
-  const handleTokenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMapToken(e.target.value);
-  };
 
   // Filter points by search term or material type
   const filteredPoints = collectionPoints.filter(point => {
@@ -196,96 +181,68 @@ const MapSection = () => {
           </div>
         </div>
 
-        {/* Mapbox token input (only shown if using placeholder) */}
-        {MAPBOX_TOKEN === 'YOUR_MAPBOX_TOKEN' && (
-          <div className="max-w-xl mx-auto mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/30 rounded-lg">
-            <p className="text-sm text-yellow-800 dark:text-yellow-200 mb-3">
-              Para visualizar o mapa, insira seu token público do Mapbox:
-            </p>
-            <Input
-              type="text"
-              placeholder="Insira seu token público do Mapbox"
-              value={mapToken}
-              onChange={handleTokenChange}
-              className="mb-2"
-            />
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Obtenha um token gratuito em{" "}
-              <a
-                href="https://mapbox.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                mapbox.com
-              </a>
-            </p>
-          </div>
-        )}
-
-        {/* Map container */}
-        <div className="h-[500px] rounded-xl overflow-hidden shadow-lg">
-          {mapToken !== 'YOUR_MAPBOX_TOKEN' ? (
-            <div className="h-full w-full bg-gray-200 dark:bg-gray-800 relative">
-              {filteredPoints.map(point => (
-                <div 
-                  key={point.id}
-                  className="absolute cursor-pointer"
-                  style={{
-                    left: `${(point.longitude + 46.66) * 500}px`,
-                    top: `${(23.58 - point.latitude) * 500}px`
-                  }}
-                  onClick={() => setPopupInfo(point)}
-                >
-                  <div className="animate-pulse">
-                    <MapPin size={32} className="text-recicla-primary dark:text-recicla-secondary" strokeWidth={2} fill="#ffffff" />
+        {/* List of collection points with cards instead of map */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredPoints.map((point) => (
+            <div 
+              key={point.id}
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100 dark:border-gray-700"
+            >
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center">
+                    <MapPin className="h-6 w-6 text-recicla-primary dark:text-recicla-secondary mr-2" />
+                    <h3 className="text-lg font-bold">{point.name}</h3>
                   </div>
-                </div>
-              ))}
-
-              {/* Simplified map visualization */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <MapIcon size={48} className="mx-auto mb-4 text-recicla-primary dark:text-recicla-secondary" />
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Mapa interativo mostrando {filteredPoints.length} pontos de coleta
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                    (Para um mapa totalmente funcional, é necessário configurar o MapBox)
-                  </p>
-                </div>
-              </div>
-
-              {/* Simplified popup */}
-              {popupInfo && (
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg min-w-[250px] max-w-[320px] z-10">
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="absolute right-1 top-1" 
-                    onClick={() => setPopupInfo(null)}
+                    onClick={() => setSelectedPoint(selectedPoint?.id === point.id ? null : point)}
+                    className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary"
                   >
-                    ×
+                    <Info size={18} />
                   </Button>
-                  <div className="p-2">
-                    <h3 className="text-lg font-bold mb-1">{popupInfo.name}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{popupInfo.description}</p>
-                    
-                    <div className="flex items-start mb-2">
-                      <MapPin size={16} className="mr-2 text-recicla-primary dark:text-recicla-secondary flex-shrink-0 mt-0.5" />
-                      <p className="text-sm">{popupInfo.address}</p>
-                    </div>
-                    
+                </div>
+                
+                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                  {point.description}
+                </p>
+                
+                <div className="flex items-start mb-3">
+                  <MapPin size={16} className="mr-2 text-gray-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {point.address}
+                  </p>
+                </div>
+                
+                <div className="flex flex-wrap gap-1 mt-3">
+                  {point.materials.slice(0, 3).map((material) => (
+                    <span 
+                      key={material} 
+                      className={`inline-block text-xs px-2 py-0.5 rounded-full ${materialColors[material]}`}
+                    >
+                      {material}
+                    </span>
+                  ))}
+                  {point.materials.length > 3 && (
+                    <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                      +{point.materials.length - 3}
+                    </span>
+                  )}
+                </div>
+                
+                {selectedPoint?.id === point.id && (
+                  <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
                     <div className="flex items-center mb-2">
-                      <Phone size={16} className="mr-2 text-recicla-primary dark:text-recicla-secondary flex-shrink-0" />
-                      <p className="text-sm">{popupInfo.phone}</p>
+                      <Phone size={16} className="mr-2 text-gray-500" />
+                      <p className="text-sm">{point.phone}</p>
                     </div>
                     
-                    {popupInfo.website && (
-                      <div className="flex items-center mb-4">
-                        <LinkIcon size={16} className="mr-2 text-recicla-primary dark:text-recicla-secondary flex-shrink-0" />
+                    {point.website && (
+                      <div className="flex items-center mb-2">
+                        <LinkIcon size={16} className="mr-2 text-gray-500" />
                         <a 
-                          href={popupInfo.website} 
+                          href={point.website} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
@@ -296,9 +253,9 @@ const MapSection = () => {
                     )}
                     
                     <div>
-                      <p className="text-sm font-medium mb-1">Materiais aceitos:</p>
+                      <p className="text-sm font-medium mb-1">Todos materiais aceitos:</p>
                       <div className="flex flex-wrap gap-1">
-                        {popupInfo.materials.map((material) => (
+                        {point.materials.map((material) => (
                           <span 
                             key={material} 
                             className={`inline-block text-xs px-2 py-0.5 rounded-full ${materialColors[material]}`}
@@ -309,24 +266,25 @@ const MapSection = () => {
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="h-full w-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-              <div className="text-center p-6">
-                <Info size={48} className="mx-auto mb-4 text-recicla-primary dark:text-recicla-secondary opacity-70" />
-                <h3 className="text-xl font-semibold mb-2">Mapa Indisponível</h3>
-                <p className="text-gray-600 dark:text-gray-400 max-w-md">
-                  Por favor, insira um token válido do Mapbox para visualizar o mapa interativo com os pontos de coleta.
-                </p>
+                )}
               </div>
             </div>
-          )}
+          ))}
         </div>
 
+        {/* Empty state when no results */}
+        {filteredPoints.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-12">
+            <MapIcon size={48} className="text-gray-400 mb-4" />
+            <h3 className="text-xl font-semibold mb-2">Nenhum ponto encontrado</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-center max-w-md">
+              Não encontramos pontos de coleta com os filtros selecionados. Tente outros critérios de busca.
+            </p>
+          </div>
+        )}
+
         {/* Display number of visible points */}
-        <div className="text-center mt-6 text-sm text-gray-600 dark:text-gray-400">
+        <div className="text-center mt-8 text-sm text-gray-600 dark:text-gray-400">
           Exibindo {filteredPoints.length} de {collectionPoints.length} pontos de coleta
         </div>
       </div>
