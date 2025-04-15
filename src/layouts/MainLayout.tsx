@@ -3,6 +3,7 @@ import { ReactNode, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, Facebook, Instagram, Twitter, Linkedin, ChevronUp } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -86,10 +87,9 @@ const MainLayout = ({ children }: MainLayoutProps) => {
               <Link 
                 to="/" 
                 onClick={() => scrollToSection('inicio')}
-                className="flex items-center space-x-2"
+                className="flex items-center"
               >
-                <div className="w-8 h-8 rounded-full hero-gradient flex items-center justify-center text-white font-bold">R+</div>
-                <span className="text-xl font-bold text-recicla-primary dark:text-recicla-secondary">RECICLA+</span>
+                <RecycleLogoWithText />
               </Link>
             </div>
             
@@ -155,9 +155,8 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* About */}
             <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 rounded-full hero-gradient flex items-center justify-center text-white font-bold">R+</div>
-                <span className="text-xl font-bold text-recicla-primary dark:text-recicla-secondary">RECICLA+</span>
+              <div className="flex items-center mb-4">
+                <RecycleLogoWithText />
               </div>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
                 Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável.
