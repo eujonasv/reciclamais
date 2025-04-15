@@ -1,13 +1,28 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React from "react";
+import { ThemeProvider } from "next-themes";
+import MainLayout from "@/layouts/MainLayout";
+import HeroSection from "@/components/HeroSection";
+import AboutSection from "@/components/AboutSection";
+import HowItWorksSection from "@/components/HowItWorksSection";
+import MapSection from "@/components/MapSection";
+import FaqSection from "@/components/FaqSection";
+
+// Import fonts
+import "@fontsource-variable/montserrat";
+import "@fontsource/roboto";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <ThemeProvider attribute="class">
+      <MainLayout>
+        <HeroSection />
+        <AboutSection />
+        <HowItWorksSection />
+        <MapSection />
+        <FaqSection />
+      </MainLayout>
+    </ThemeProvider>
   );
 };
 

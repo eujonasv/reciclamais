@@ -61,7 +61,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                recicla: {
+                    'primary': '#2ecc71',
+                    'secondary': '#4ecca3',
+                    'light': '#f8f9fa',
+                    'dark': '#333333',
+                    'accent': '#27ae60'
+                }
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +91,51 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'fade-in': {
+                    '0%': {
+                        opacity: '0',
+                        transform: 'translateY(10px)'
+                    },
+                    '100%': {
+                        opacity: '1',
+                        transform: 'translateY(0)'
+                    }
+                },
+                'scale-in': {
+                    '0%': {
+                        transform: 'scale(0.95)',
+                        opacity: '0'
+                    },
+                    '100%': {
+                        transform: 'scale(1)',
+                        opacity: '1'
+                    }
+                },
+                'float': {
+                    '0%, 100%': {
+                        transform: 'translateY(0)'
+                    },
+                    '50%': {
+                        transform: 'translateY(-5px)'
+                    }
+                },
+                'pulse-green': {
+                    '0%, 100%': {
+                        'box-shadow': '0 0 0 0 rgba(46, 204, 113, 0.4)'
+                    },
+                    '50%': {
+                        'box-shadow': '0 0 0 10px rgba(46, 204, 113, 0)'
+                    }
+                }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'fade-in': 'fade-in 0.5s ease-out forwards',
+                'scale-in': 'scale-in 0.3s ease-out forwards',
+                'float': 'float 3s ease-in-out infinite',
+                'pulse-green': 'pulse-green 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
 			}
 		}
 	},
