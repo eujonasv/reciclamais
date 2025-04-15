@@ -26,8 +26,8 @@ const HeroSection = () => {
                 <RecycleLogoWithText size="xxl" className="animate-float" />
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 dark:text-white">
-                Seu <span className="text-recicla-primary dark:text-recicla-secondary">lixo</span>, nossa{" "}
-                <span className="text-recicla-primary dark:text-recicla-secondary">solução</span>
+                Seu <span className="text-recicla-primary dark:text-recicla-secondary">lixo</span>{" "}
+                , nossa <span className="text-recicla-primary dark:text-recicla-secondary">solução</span>
               </h1>
               <p className="text-xl md:text-2xl mb-8 text-gray-700 dark:text-gray-300">
                 Conectamos pessoas e empresas a pontos de coleta de recicláveis para um futuro mais sustentável.
