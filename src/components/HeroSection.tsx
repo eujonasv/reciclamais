@@ -2,7 +2,7 @@
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import RecycleLogo from './RecycleLogo';
+import RecycleLogoWithText from './RecycleLogoWithText';
 
 const HeroSection = () => {
   const scrollToSection = (sectionId: string) => {
@@ -23,11 +23,11 @@ const HeroSection = () => {
           <div className="max-w-lg mx-auto md:ml-0 text-center md:text-left">
             <div className="animate-fade-in">
               <div className="flex justify-center md:justify-start mb-4">
-                <RecycleLogo size="lg" className="animate-float" />
+                <RecycleLogoWithText size="lg" className="animate-float" />
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 dark:text-white">
-                <span className="text-recicla-primary dark:text-recicla-secondary">Recicle</span> mais,{" "}
-                <span className="text-recicla-primary dark:text-recicla-secondary">conecte</span> sempre
+                Seu <span className="text-recicla-primary dark:text-recicla-secondary">lixo</span>, nossa{" "}
+                <span className="text-recicla-primary dark:text-recicla-secondary">solução</span>
               </h1>
               <p className="text-xl md:text-2xl mb-8 text-gray-700 dark:text-gray-300">
                 Conectamos pessoas e empresas a pontos de coleta de recicláveis para um futuro mais sustentável.
