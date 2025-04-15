@@ -20,7 +20,7 @@ const RecycleLogoWithText = ({
     md: "h-8",
     lg: "h-12",
     xl: "h-16",
-    xxl: "h-24"
+    xxl: "h-50"
   };
 
   // Only show logo after component mounts (to prevent hydration mismatch)
