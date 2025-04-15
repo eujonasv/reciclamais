@@ -4,11 +4,23 @@ import { useState, useEffect } from "react";
 
 interface RecycleLogoWithTextProps {
   className?: string;
+  size?: "sm" | "md" | "lg" | "xl";
 }
 
-const RecycleLogoWithText = ({ className = "" }: RecycleLogoWithTextProps) => {
+const RecycleLogoWithText = ({ 
+  className = "", 
+  size = "md" 
+}: RecycleLogoWithTextProps) => {
   const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+
+  // Logo size classes
+  const sizeClasses = {
+    sm: "h-6",
+    md: "h-8",
+    lg: "h-12",
+    xl: "h-16"
+  };
 
   // Only show logo after component mounts (to prevent hydration mismatch)
   useEffect(() => {
@@ -16,7 +28,7 @@ const RecycleLogoWithText = ({ className = "" }: RecycleLogoWithTextProps) => {
   }, []);
 
   if (!mounted) {
-    return <div className={`h-8 ${className}`} />;
+    return <div className={`${sizeClasses[size]} ${className}`} />;
   }
 
   const isDark = theme === "dark" || resolvedTheme === "dark";
@@ -29,7 +41,7 @@ const RecycleLogoWithText = ({ className = "" }: RecycleLogoWithTextProps) => {
       <img 
         src={logoSrc} 
         alt="RECICLA+" 
-        className="h-8 w-auto"
+        className={`w-auto ${sizeClasses[size]}`}
       />
     </div>
   );
