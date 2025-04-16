@@ -31,25 +31,5 @@ export const collectionPoints: CollectionPoint[] = [
     address: "R. Capivari, 65, Araucária - PR",
     phone: "(11) 3333-6666",
     materials: ["Baterias", "Lâmpadas"]
-  },
-  {
-    id: "4",
-    name: "Eco Recicláveis",
-    description: "Centro especializado em resíduos eletrônicos e baterias.",
-    latitude: -23.5805,
-    longitude: -46.6200,
-    address: "Av. Brigadeiro Faria Lima, 1500, São Paulo - SP",
-    phone: "(11) 3333-7777",
-    materials: ["Eletrônicos", "Baterias", "Lâmpadas"]
-  },
-  {
-    id: "5",
-    name: "ReciclaMais Zona Norte",
-    description: "Centro de coleta completo para moradores da Zona Norte.",
-    latitude: -23.5305,
-    longitude: -46.6400,
-    address: "Av. Eng. Caetano Álvares, 2500, São Paulo - SP",
-    phone: "(11) 3333-8888",
-    materials: ["Papel", "Plástico", "Metal", "Vidro", "Madeira"]
   }
 ];
