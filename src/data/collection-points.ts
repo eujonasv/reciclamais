@@ -33,7 +33,7 @@ export const collectionPoints: CollectionPoint[] = [
     address: "Rua Vergueiro, 2000, São Paulo - SP",
     phone: "(11) 3333-6666",
     website: "",
-    materials: ["Papel", "Plástico", "Metal", "Vidro", "Orgânicos"]
+    materials: ["Papel", "Plástico", "Metal", "Vidro"]
   },
   {
     id: "4",
@@ -55,6 +55,6 @@ export const collectionPoints: CollectionPoint[] = [
     address: "Av. Eng. Caetano Álvares, 2500, São Paulo - SP",
     phone: "(11) 3333-8888",
     website: "",
-    materials: ["Papel", "Plástico", "Metal", "Vidro", "Óleo"]
+    materials: ["Papel", "Plástico", "Metal", "Vidro", "Madeira"]
   }
 ];
