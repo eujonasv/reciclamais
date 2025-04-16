@@ -13,21 +13,21 @@ const HowItWorksSection = () => {
       icon: <Search className="h-10 w-10 text-white" />,
       title: "Encontre um ponto de coleta",
       description: "Utilize nosso mapa interativo para encontrar o ponto de coleta mais próximo de você. Filtre por tipo de material que deseja reciclar.",
-      image: "https://unsplash.com/pt-br/ilustra%C3%A7%C3%B5es/um-caminhao-de-lixo-verde-estacionado-em-frente-a-um-predio-Yd2YI-HcymQ"
+      image: "https://plus.unsplash.com/premium_vector-1719419318811-8c03fcdde6ef?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
       number: 2,
       icon: <MapPin className="h-10 w-10 text-white" />,
       title: "Coleta e Reciclagem",
       description: "Descarte seus materiais recicláveis em um dos nossos pontos de coleta parceiros. Após isso, os materiais são recolhidos e enviados para um centro especializado em reciclagem.",
-      image: "https://unsplash.com/pt-br/ilustra%C3%A7%C3%B5es/um-edificio-com-um-telhado-verde-e-arvores-ao-fundo-RCdxPoR2BLw"
+      image: "https://plus.unsplash.com/premium_vector-1719419318789-738cb9d164d4?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
       number: 3,
       icon: <CheckCircle className="h-10 w-10 text-white" />,
       title: "Ganhos",
       description: "Se você é um ponto de coleta, recebe uma porcentagem da venda dos materiais reciclados.",
-      image: "https://unsplash.com/pt-br/ilustra%C3%A7%C3%B5es/um-cofrinho-verde-com-pilhas-de-moedas-5P4nwnGk3x0"
+      image: "https://plus.unsplash.com/premium_vector-1719419318935-d8c67018c35c?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     }
   ];
 
