@@ -9,7 +9,7 @@ interface RecycleLogoWithTextProps {
 
 const RecycleLogoWithText = ({ 
   className = "", 
-  size = "xl" 
+  size = "16" 
 }: RecycleLogoWithTextProps) => {
   const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
