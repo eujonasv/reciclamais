@@ -6,7 +6,7 @@ interface RecycleLogoProps {
   className?: string;
 }
 
-const RecycleLogo = ({ size = "md", className = "" }: RecycleLogoProps) => {
+const RecycleLogo = ({ size = "lg", className = "" }: RecycleLogoProps) => {
   const sizeClasses = {
     sm: "w-8 h-8",
     md: "w-12 h-12",
