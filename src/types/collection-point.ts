@@ -7,7 +7,6 @@ export interface CollectionPoint {
   longitude: number;
   address: string;
   phone: string;
-  website: string;
   materials: string[];
 }
 

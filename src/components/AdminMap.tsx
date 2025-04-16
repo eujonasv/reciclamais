@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MapPin, Plus, Trash2, Edit2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -131,15 +130,21 @@ const AdminMap = () => {
 
   const handleAddPoint = async (values: z.infer<typeof formSchema>) => {
     try {
-      // Prepare point with selected materials
+      // Fix: Create a single object with the correct structure for Supabase insert
       const point = {
-        ...values,
+        name: values.name, // Ensure name is required and provided
+        description: values.description || "",
+        address: values.address || "",
+        latitude: values.latitude || 0,
+        longitude: values.longitude || 0,
+        phone: values.phone || "",
+        // Remove the website field since it doesn't exist in the database schema
         materials: selectedMaterials.join(',')
       };
 
       const { data, error } = await supabase
         .from('collection_points')
-        .insert([point])
+        .insert([point]) // Make sure we're passing an array with a single object
         .select();
 
       if (error) throw error;
@@ -172,8 +177,15 @@ const AdminMap = () => {
     if (!editingPoint) return;
 
     try {
+      // Fix: Create a single object with the correct structure for Supabase update
       const updatedPoint = {
-        ...values,
+        name: values.name, // Ensure name is required
+        description: values.description || "",
+        address: values.address || "",
+        latitude: values.latitude || 0,
+        longitude: values.longitude || 0,
+        phone: values.phone || "",
+        // Remove website field
         materials: selectedMaterials.join(',')
       };
 
