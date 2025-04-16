@@ -4,36 +4,33 @@ import { CollectionPoint } from '@/types/collection-point';
 export const collectionPoints: CollectionPoint[] = [
   {
     id: "1",
-    name: "EcoPonto Centro",
-    description: "Centro de coleta de materiais recicláveis e eletrônicos.",
-    latitude: -23.5505,
-    longitude: -46.6333,
-    address: "Av. Paulista, 1000, São Paulo - SP",
-    phone: "(11) 3333-4444",
-    website: "https://ecoponto.sp.gov.br",
-    materials: ["Papel", "Plástico", "Metal", "Vidro", "Eletrônicos"]
+    name: "Colégio Adventista de Araucária",
+    description: "colégio",
+    latitude: -25.58580,
+    longitude: -49.39766,
+    address: "R. São Vicente de Paulo, 465, Araucária - PR",
+    phone: "(41) 3028-5410",
+    materials: ["Papel", "Plástico", "Metal", "Vidro"]
   },
   {
     id: "2",
-    name: "Recicla Já",
-    description: "Coleta de papel, plástico e metal.",
-    latitude: -23.5705,
-    longitude: -46.6500,
-    address: "Rua Augusta, 500, São Paulo - SP",
-    phone: "(11) 3333-5555",
-    website: "",
-    materials: ["Papel", "Plástico", "Metal"]
+    name: "Prefeitura Municipal de Araucária",
+    description: "prefeitura",
+    latitude: -25.59005, 
+    longitude: -49.39948,
+    address: "R. Pedro Druszcz, 111, Araucária - PR",
+    phone: "(41) 3614-1400",
+    materials: ["Papel", "Plástico", "Metal", "Vidro", "Madeira"]
   },
   {
     id: "3",
-    name: "Verde Cooperativa",
-    description: "Cooperativa de catadores com coleta de todos os tipos de materiais.",
-    latitude: -23.5605,
-    longitude: -46.6100,
-    address: "Rua Vergueiro, 2000, São Paulo - SP",
+    name: "Supermercado Condor Araucária",
+    description: "supermercado",
+    latitude: -25.60029, 
+    longitude: -49.37911,
+    address: "R. Capivari, 65, Araucária - PR",
     phone: "(11) 3333-6666",
-    website: "https://verdecooperativa.org.br",
-    materials: ["Papel", "Plástico", "Metal", "Vidro"]
+    materials: ["Baterias", "Lâmpadas"]
   },
   {
     id: "4",
@@ -43,7 +40,6 @@ export const collectionPoints: CollectionPoint[] = [
     longitude: -46.6200,
     address: "Av. Brigadeiro Faria Lima, 1500, São Paulo - SP",
     phone: "(11) 3333-7777",
-    website: "https://ecoreciclaveis.com.br",
     materials: ["Eletrônicos", "Baterias", "Lâmpadas"]
   },
   {
@@ -54,7 +50,6 @@ export const collectionPoints: CollectionPoint[] = [
     longitude: -46.6400,
     address: "Av. Eng. Caetano Álvares, 2500, São Paulo - SP",
     phone: "(11) 3333-8888",
-    website: "",
     materials: ["Papel", "Plástico", "Metal", "Vidro", "Madeira"]
   }
 ];
