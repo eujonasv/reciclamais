@@ -24,24 +24,24 @@ const FaqSection = () => {
       answer: "Depende do ponto de coleta, mas geralmente aceitamos papel, plástico, metal, vidro, eletrônicos, óleo de cozinha usado, pilhas e baterias. Cada ponto de coleta especifica quais materiais aceita."
     },
     {
-      question: "Preciso lavar os materiais antes de reciclar?",
-      answer: "Sim, é recomendável lavar levemente os materiais como embalagens de alimentos, garrafas e latas para remover resíduos de comida. Isso evita mau cheiro e contaminação de outros materiais recicláveis."
+      question: "Como minha empresa pode se tornar um ponto de coleta?",
+      answer: "Para participar, basta se cadastrar em nossa plataforma e indicar o espaço disponível para receber materiais recicláveis. Após a aprovação, seu comércio estará visível no nosso mapa de pontos de coleta."
     },
     {
       question: "Como devo separar os materiais?",
       answer: "O ideal é separar por tipo: papel, plástico, metal e vidro. Se possível, separe também por cor (vidros) e tipo específico (PET, PP, PEAD para plásticos). Mantenha eletrônicos e pilhas em separado dos demais materiais."
     },
     {
-      question: "A RECICLA+ coleta em residências?",
-      answer: "Em algumas regiões, temos parceiros que fazem coleta domiciliar. Consulte o mapa ou entre em contato conosco para verificar a disponibilidade em sua área."
+      question: "Como funciona a coleta dos materiais?",
+      answer: " Periodicamente, nossa equipe agenda a retirada dos recicláveis em cada ponto de coleta cadastrado. Você será notificado previamente para organizar a entrega dos materiais."
     },
     {
-      question: "Como me tornar um parceiro da RECICLA+?",
-      answer: "Empresas, cooperativas e coletores individuais podem se tornar parceiros. Entre em contato através do email parcerias@reciclamais.com.br para mais informações."
+      question: "Como minha empresa recebe dinheiro pela reciclagem?",
+      answer: "Após a coleta e venda dos recicláveis para centros especializados, uma porcentagem do valor arrecadado é repassada para os pontos de coleta parceiros, garantindo uma renda extra sustentável."
     },
     {
-      question: "A RECICLA+ emite certificado de descarte correto?",
-      answer: "Sim, para empresas que precisam de documentação para conformidade ambiental, emitimos certificados de descarte correto. Solicite esta opção ao entregar seus materiais."
+      question: "Posso cancelar minha participação a qualquer momento?",
+      answer: "Sim! Caso não queira mais ser um ponto de coleta, basta solicitar o desligamento pelo painel do usuário ou entrar em contato com nosso suporte."
     }
   ];
 
