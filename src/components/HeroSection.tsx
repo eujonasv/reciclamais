@@ -22,7 +22,7 @@ const HeroSection = () => {
           <div className="max-w-lg mx-auto md:ml-0 text-center md:text-left">
             <div className="animate-fade-in">
               <div className="flex justify-center md:justify-start mb-4">
-                <RecycleLogoWithText size="xl" className="animate-float" />
+                <RecycleLogoWithText size="xxl" className="animate-float" />
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 dark:text-white leading-tight">
                 Seu <span className="text-recicla-primary dark:text-recicla-secondary">lixo</span>,
