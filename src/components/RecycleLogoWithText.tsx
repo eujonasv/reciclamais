@@ -35,7 +35,7 @@ const RecycleLogoWithText = ({
   const isDark = theme === "dark" || resolvedTheme === "dark";
   const logoSrc = isDark 
     ? "/lovable-uploads/76964539-1e43-452b-8975-29ee30389926.png" 
-    : "/lovable-uploads/f25cf283-4040-4ded-9084-c52ebab2fb2c.png";
+    : "/lovable-uploads/logo-light.png";
 
   return (
     <div className={`flex items-center ${className}`}>
