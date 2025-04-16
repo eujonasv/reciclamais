@@ -11,37 +11,37 @@ export type Database = {
     Tables: {
       collection_points: {
         Row: {
-          address: string | null
-          description: string | null
+          address: string
+          description: string
           id: string
-          latitude: number | null
-          longitude: number | null
-          materials: string | null
+          latitude: number
+          longitude: number
+          materials: string
           name: string
-          phone: string | null
-          user_id: string | null
+          phone: string
+          website: string | null
         }
         Insert: {
-          address?: string | null
-          description?: string | null
+          address: string
+          description: string
           id?: string
-          latitude?: number | null
-          longitude?: number | null
-          materials?: string | null
+          latitude: number
+          longitude: number
+          materials: string
           name: string
-          phone?: string | null
-          user_id?: string | null
+          phone: string
+          website?: string | null
         }
         Update: {
-          address?: string | null
-          description?: string | null
+          address?: string
+          description?: string
           id?: string
-          latitude?: number | null
-          longitude?: number | null
-          materials?: string | null
+          latitude?: number
+          longitude?: number
+          materials?: string
           name?: string
-          phone?: string | null
-          user_id?: string | null
+          phone?: string
+          website?: string | null
         }
         Relationships: []
       }

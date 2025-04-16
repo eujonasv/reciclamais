@@ -1,14 +1,17 @@
+
 import React, { ReactNode, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Menu, X, Facebook, Instagram, Twitter, Linkedin, ChevronUp } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, X, Facebook, Instagram, Twitter, Linkedin, ChevronUp, Lock } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import RecycleLogoWithText from "@/components/RecycleLogoWithText";
+import { Button } from "@/components/ui/button";
 
 interface MainLayoutProps {
   children: ReactNode;
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>("inicio");
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false);
@@ -28,6 +31,11 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       setActiveSection(sectionId);
       closeMenu();
     }
+  };
+
+  const navigateToPage = (path: string) => {
+    navigate(path);
+    closeMenu();
   };
 
   const handleScroll = () => {
@@ -176,6 +184,16 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                     </button>
                   </li>
                 ))}
+                
+                <li>
+                  <Link 
+                    to="/admin" 
+                    className="flex items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
+                  >
+                    <Lock size={16} />
+                    <span>Área Administrativa</span>
+                  </Link>
+                </li>
               </ul>
             </div>
             

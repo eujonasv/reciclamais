@@ -10,7 +10,7 @@ export const collectionPoints: CollectionPoint[] = [
     longitude: -46.6333,
     address: "Av. Paulista, 1000, São Paulo - SP",
     phone: "(11) 3333-4444",
-    website: "",
+    website: "https://ecoponto.sp.gov.br",
     materials: ["Papel", "Plástico", "Metal", "Vidro", "Eletrônicos"]
   },
   {
@@ -32,7 +32,7 @@ export const collectionPoints: CollectionPoint[] = [
     longitude: -46.6100,
     address: "Rua Vergueiro, 2000, São Paulo - SP",
     phone: "(11) 3333-6666",
-    website: "",
+    website: "https://verdecooperativa.org.br",
     materials: ["Papel", "Plástico", "Metal", "Vidro"]
   },
   {
@@ -43,7 +43,7 @@ export const collectionPoints: CollectionPoint[] = [
     longitude: -46.6200,
     address: "Av. Brigadeiro Faria Lima, 1500, São Paulo - SP",
     phone: "(11) 3333-7777",
-    website: "",
+    website: "https://ecoreciclaveis.com.br",
     materials: ["Eletrônicos", "Baterias", "Lâmpadas"]
   },
   {
