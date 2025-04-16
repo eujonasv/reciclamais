@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, MapPin, CheckCircle, ChevronLeft, ChevronRight, ArrowDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import RecycleLogo from './RecycleLogo';
 
 const HowItWorksSection = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  
+
   const steps = [
     {
       number: 1,
@@ -58,68 +57,63 @@ const HowItWorksSection = () => {
           </p>
         </div>
 
-        {/* Steps for Desktop (md and above) */}
-        <div className="hidden md:block">
-          <div className="grid grid-cols-3 gap-8">
-            {steps.map((step, index) => (
-              <div key={index} className="flex flex-col items-center">
-                {/* Step Number */}
-                <div className="step-number mb-4 text-2xl">
-                  {step.number}
-                </div>
-                
-                {/* Arrow between steps */}
-                {index < steps.length - 1 && (
-                  <div className="absolute transform translate-x-[6.5rem]">
-                    <ArrowDown className="rotate-90 text-recicla-primary dark:text-recicla-secondary h-6 w-6" />
-                  </div>
-                )}
-                
-                {/* Step Card */}
-                <div 
-                  className={`w-full h-full rounded-xl shadow-md overflow-hidden bg-white dark:bg-gray-900 transition-all duration-300 hover:-translate-y-2 cursor-pointer ${
-                    currentStep === index ? 'ring-2 ring-recicla-primary dark:ring-recicla-secondary' : ''
-                  }`}
-                  onClick={() => goToStep(index)}
-                >
-                  {/* Image */}
-                  <div className="relative h-48 overflow-hidden">
-                    <img 
-                      src={step.image} 
-                      alt={step.title} 
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
-                      <div className="p-4 w-full">
-                        <h3 className="text-xl font-bold text-white">{step.title}</h3>
-                      </div>
+        {/* Steps for Desktop */}
+        <div className="hidden md:flex justify-center gap-8 relative">
+          {steps.map((step, index) => (
+            <div key={index} className="flex flex-col items-center max-w-sm relative">
+              {/* Step Card */}
+              <div
+                className={`w-full rounded-xl shadow-md overflow-hidden bg-white dark:bg-gray-900 transition-all duration-300 hover:-translate-y-2 cursor-pointer ${
+                  currentStep === index ? 'ring-2 ring-recicla-primary dark:ring-recicla-secondary' : ''
+                }`}
+                onClick={() => goToStep(index)}
+              >
+                {/* Image */}
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={step.image}
+                    alt={step.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
+                    <div className="p-4 w-full">
+                      <h3 className="text-xl font-bold text-white">{step.title}</h3>
                     </div>
                   </div>
-                  
-                  {/* Content */}
-                  <div className="p-6">
-                    <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
-                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6">
+                  <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
                 </div>
               </div>
-            ))}
-          </div>
+
+              {/* Arrow */}
+              {index < steps.length - 1 && (
+                <div className="absolute right-[-1.5rem] top-1/2 transform -translate-y-1/2">
+                  <ArrowDown className="rotate-90 text-recicla-primary dark:text-recicla-secondary h-6 w-6" />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
 
-        {/* Steps for Mobile (smaller than md) */}
+        {/* Steps for Mobile */}
         <div className="md:hidden">
           <div className="relative rounded-xl shadow-md overflow-hidden bg-white dark:bg-gray-900">
             {/* Step Number */}
-            <div className="absolute top-4 left-4 z-10 step-number">
+            <div className="absolute top-4 left-4 z-10 text-white text-xl font-bold">
               {steps[currentStep].number}
             </div>
-            
+
             {/* Image */}
             <div className="relative h-64 overflow-hidden">
-              <img 
-                src={steps[currentStep].image} 
-                alt={steps[currentStep].title} 
+              <img
+                src={steps[currentStep].image}
+                alt={steps[currentStep].title}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
                 <div className="p-6 w-full">
@@ -127,7 +121,7 @@ const HowItWorksSection = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Content */}
             <div className="p-6">
               <p className="text-gray-600 dark:text-gray-400">{steps[currentStep].description}</p>
@@ -135,31 +129,30 @@ const HowItWorksSection = () => {
 
             {/* Navigation buttons */}
             <div className="flex justify-between items-center p-4 border-t border-gray-100 dark:border-gray-700">
-              <Button 
+              <Button
                 onClick={prevStep}
                 variant="ghost"
                 className="flex items-center text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent"
               >
                 <ChevronLeft className="mr-1" size={16} /> Anterior
               </Button>
-              
-              {/* Dots */}
+
               <div className="flex space-x-2">
                 {steps.map((_, index) => (
-                  <button 
+                  <button
                     key={index}
                     onClick={() => goToStep(index)}
                     className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                      currentStep === index 
-                        ? 'bg-recicla-primary dark:bg-recicla-secondary' 
+                      currentStep === index
+                        ? 'bg-recicla-primary dark:bg-recicla-secondary'
                         : 'bg-gray-300 dark:bg-gray-600'
                     }`}
                     aria-label={`Go to step ${index + 1}`}
-                  ></button>
+                  />
                 ))}
               </div>
-              
-              <Button 
+
+              <Button
                 onClick={nextStep}
                 variant="ghost"
                 className="flex items-center text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent"
@@ -169,10 +162,10 @@ const HowItWorksSection = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Call to action */}
         <div className="mt-16 text-center">
-          <Button 
+          <Button
             onClick={() => {
               const mapSection = document.getElementById('mapa');
               if (mapSection) mapSection.scrollIntoView({ behavior: 'smooth' });
