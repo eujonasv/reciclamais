@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MapPin, Plus, Trash2, Edit2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -13,18 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
-
-interface CollectionPoint {
-  id: number;
-  name: string;
-  description: string;
-  latitude: number;
-  longitude: number;
-  address: string;
-  phone: string;
-  website: string;
-  materials: string[];
-}
+import { CollectionPoint } from '@/types/collection-point';
 
 const AdminMap = () => {
   const [points, setPoints] = useState<CollectionPoint[]>([]);
@@ -42,7 +30,7 @@ const AdminMap = () => {
 
       if (error) throw error;
 
-      setPoints([...points, data]);
+      setPoints([...points, data as CollectionPoint]);
       toast({
         title: "Ponto adicionado",
         description: "O ponto de coleta foi adicionado com sucesso.",
@@ -60,7 +48,10 @@ const AdminMap = () => {
     try {
       const { error } = await supabase
         .from('collection_points')
-        .update(point)
+        .update({
+          ...point,
+          materials: point.materials.join(',')
+        })
         .eq('id', point.id);
 
       if (error) throw error;
@@ -79,7 +70,7 @@ const AdminMap = () => {
     }
   };
 
-  const handleDeletePoint = async (id: number) => {
+  const handleDeletePoint = async (id: string) => {
     try {
       const { error } = await supabase
         .from('collection_points')
