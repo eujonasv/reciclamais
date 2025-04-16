@@ -6,7 +6,7 @@ interface RecycleLogoProps {
   className?: string;
 }
 
-const RecycleLogo = ({ size = "lg", className = "" }: RecycleLogoProps) => {
+const RecycleLogo = ({ size = "md", className = "" }: RecycleLogoProps) => {
   const sizeClasses = {
     sm: "w-8 h-8",
     md: "w-12 h-12",
@@ -15,7 +15,7 @@ const RecycleLogo = ({ size = "lg", className = "" }: RecycleLogoProps) => {
 
   return (
     <div className={`rounded-full hero-gradient flex items-center justify-center ${sizeClasses[size]} ${className}`}>
-      <Recycle className="text-white" size={size === "sm" ? 16 : size === "md" ? 24 : 32} />
+      <Recycle className="text-white" size={size === "md" ? 16 : size === "lg" ? 24 : 32} />
     </div>
   );
 };
