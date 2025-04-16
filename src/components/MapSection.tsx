@@ -16,7 +16,6 @@ const collectionPoints = [
     longitude: -46.6333,
     address: "Av. Paulista, 1000, São Paulo - SP",
     phone: "(11) 3333-4444",
-    website: "https://ecoponto.org",
     materials: ["Papel", "Plástico", "Metal", "Vidro", "Eletrônicos"]
   },
   {
@@ -27,7 +26,6 @@ const collectionPoints = [
     longitude: -46.6500,
     address: "Rua Augusta, 500, São Paulo - SP",
     phone: "(11) 3333-5555",
-    website: "https://reciclaja.com",
     materials: ["Papel", "Plástico", "Metal"]
   },
   {
@@ -38,7 +36,6 @@ const collectionPoints = [
     longitude: -46.6100,
     address: "Rua Vergueiro, 2000, São Paulo - SP",
     phone: "(11) 3333-6666",
-    website: "https://verdecooperativa.org",
     materials: ["Papel", "Plástico", "Metal", "Vidro", "Orgânicos"]
   },
   {
@@ -49,7 +46,6 @@ const collectionPoints = [
     longitude: -46.6200,
     address: "Av. Brigadeiro Faria Lima, 1500, São Paulo - SP",
     phone: "(11) 3333-7777",
-    website: "https://ecoreciclaveis.com",
     materials: ["Eletrônicos", "Baterias", "Lâmpadas"]
   },
   {
@@ -60,7 +56,6 @@ const collectionPoints = [
     longitude: -46.6400,
     address: "Av. Eng. Caetano Álvares, 2500, São Paulo - SP",
     phone: "(11) 3333-8888",
-    website: "https://reciclamais.org",
     materials: ["Papel", "Plástico", "Metal", "Vidro", "Óleo"]
   }
 ];
