@@ -1,6 +1,4 @@
-
 import React from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
@@ -33,7 +31,7 @@ const FaqSection = () => {
     },
     {
       question: "Como funciona a coleta dos materiais?",
-      answer: " Periodicamente, nossa equipe agenda a retirada dos recicláveis em cada ponto de coleta cadastrado. Você será notificado previamente para organizar a entrega dos materiais."
+      answer: "Periodicamente, nossa equipe agenda a retirada dos recicláveis em cada ponto de coleta cadastrado. Você será notificado previamente para organizar a entrega dos materiais."
     },
     {
       question: "Como minha empresa recebe dinheiro pela reciclagem?",
@@ -52,7 +50,7 @@ const FaqSection = () => {
           <div className="flex justify-center mb-4">
             <RecycleLogo size="md" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
+          <h2 aria-level={2} className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
             Perguntas <span className="text-recicla-primary dark:text-recicla-secondary">Frequentes</span>
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
