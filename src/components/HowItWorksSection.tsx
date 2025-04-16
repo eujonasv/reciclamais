@@ -13,21 +13,21 @@ const HowItWorksSection = () => {
       icon: <Search className="h-10 w-10 text-white" />,
       title: "Encontre um ponto de coleta",
       description: "Utilize nosso mapa interativo para encontrar o ponto de coleta mais próximo de você. Filtre por tipo de material que deseja reciclar.",
-      image: "https://images.unsplash.com/photo-1587502536575-6dfba0a6e017?auto=format&fit=crop&w=800&q=80"
+      image: "https://unsplash.com/pt-br/ilustra%C3%A7%C3%B5es/um-caminhao-de-lixo-verde-estacionado-em-frente-a-um-predio-Yd2YI-HcymQ"
     },
     {
       number: 2,
       icon: <MapPin className="h-10 w-10 text-white" />,
-      title: "Entregue seus materiais recicláveis",
-      description: "Leve seus materiais separados até o ponto de coleta. Não se preocupe, nosso app fornece instruções detalhadas sobre como chegar.",
-      image: "https://images.unsplash.com/photo-1582408921715-18e7355dac4d?auto=format&fit=crop&w=800&q=80"
+      title: "Coleta e Reciclagem",
+      description: "Descarte seus materiais recicláveis em um dos nossos pontos de coleta parceiros. Após isso, os materiais são recolhidos e enviados para um centro especializado em reciclagem.",
+      image: "https://unsplash.com/pt-br/ilustra%C3%A7%C3%B5es/um-edificio-com-um-telhado-verde-e-arvores-ao-fundo-RCdxPoR2BLw"
     },
     {
       number: 3,
       icon: <CheckCircle className="h-10 w-10 text-white" />,
-      title: "Acompanhe seu impacto positivo",
-      description: "A cada entrega você acumula pontos e pode acompanhar o impacto ambiental positivo que está gerando. Participe de campanhas e desafios!",
-      image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80"
+      title: "Ganhos",
+      description: "Se você é um ponto de coleta, recebe uma porcentagem da venda dos materiais reciclados.",
+      image: "https://unsplash.com/pt-br/ilustra%C3%A7%C3%B5es/um-cofrinho-verde-com-pilhas-de-moedas-5P4nwnGk3x0"
     }
   ];
 
