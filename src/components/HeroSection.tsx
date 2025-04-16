@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -16,20 +15,20 @@ const HeroSection = () => {
     <section id="inicio" className="relative min-h-[90vh] flex items-center justify-center py-20 overflow-hidden">
       {/* Background gradient and pattern */}
       <div className="absolute inset-0 bg-gradient-to-br from-white to-green-50 dark:from-gray-900 dark:to-gray-800 z-0"></div>
-      <div className="absolute inset-0 opacity-20 dark:opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iLjAyIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIgMS44LTQgNC00czQgMS44IDQgNC0xLjggNC00IDQtNC0xLjgtNC00TTMwIDM0YzAtMi4yLTEuOC00LTQtNHMtNCAxLjgtNCA0IDEuOCA0IDQgNCANCjQtMS44IDQtNCIvPjwvZz48L2c+PC9zdmc+')]"></div>
+      <div className="absolute inset-0 opacity-20 dark:opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iLjAyIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIgMS44LTQgNC00czQgMS44IDQgNC0xLjggNC00IDQtNC0xLjgtNC00TTMwIDM0YzAtMi4yLTEuOC00LTQtNHMtNCAxLjgtNCA0IDEuOCA0IDQgNCAgNC0xLjggNC00Ii8+PC9nPjwvZz48L3N2Zz4=')]"></div>
       
       <div className="container mx-auto px-4 z-10">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="max-w-lg mx-auto md:ml-0 text-center md:text-left">
             <div className="animate-fade-in">
               <div className="flex justify-center md:justify-start mb-4">
-                <RecycleLogoWithText size="xxl" className="animate-float" />
+                <RecycleLogoWithText size="xl" className="animate-float" />
               </div>
-           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 dark:text-white leading-tight">
-             Seu <span className="text-recicla-primary dark:text-recicla-secondary">lixo</span>,
-             <br />
-             nossa <span className="text-recicla-primary dark:text-recicla-secondary">solução</span>
-           </h1>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 dark:text-white leading-tight">
+                Seu <span className="text-recicla-primary dark:text-recicla-secondary">lixo</span>,
+                <br />
+                nossa <span className="text-recicla-primary dark:text-recicla-secondary">solução</span>
+              </h1>
               <p className="text-xl md:text-2xl mb-8 text-gray-700 dark:text-gray-300">
                 Conectamos pessoas e empresas a pontos de coleta de recicláveis para um futuro mais sustentável.
               </p>

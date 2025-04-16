@@ -19,6 +19,7 @@ export type Database = {
           materials: string | null
           name: string
           phone: string | null
+          user_id: string | null
           website: string | null
         }
         Insert: {
@@ -30,6 +31,7 @@ export type Database = {
           materials?: string | null
           name: string
           phone?: string | null
+          user_id?: string | null
           website?: string | null
         }
         Update: {
@@ -41,6 +43,7 @@ export type Database = {
           materials?: string | null
           name?: string
           phone?: string | null
+          user_id?: string | null
           website?: string | null
         }
         Relationships: []
