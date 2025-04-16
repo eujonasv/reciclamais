@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 interface RecycleLogoWithTextProps {
   className?: string;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl"| "xxl";
 }
 
 const RecycleLogoWithText = ({ 
@@ -42,7 +42,7 @@ const RecycleLogoWithText = ({
       <img 
         src={logoSrc} 
         alt="RECICLA+" 
-        className={`w-auto ${sizeClasses[size]}`}
+        className={`w-auto h=16`}
       />
     </div>
   );
