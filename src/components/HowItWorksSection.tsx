@@ -92,7 +92,7 @@ const HowItWorksSection = () => {
               {/* Arrow */}
               {index < steps.length - 1 && (
                 <div className="absolute right-[-1.5rem] top-1/2 transform -translate-y-1/2">
-                  <ArrowDown className="rotate-90 text-recicla-primary dark:text-recicla-secondary h-6 w-6" />
+                  <ArrowDown className="-rotate-90 text-recicla-primary dark:text-recicla-secondary h-6 w-6" />
                 </div>
               )}
             </div>
