@@ -42,7 +42,7 @@ const RecycleLogoWithText = ({
       <img 
         src={logoSrc} 
         alt="RECICLA+" 
-        className={`h=13`}
+        className={`w-auto s=xl}`}
       />
     </div>
   );
