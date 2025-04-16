@@ -6,11 +6,22 @@ import SearchAndFilters from './map/SearchAndFilters';
 import CollectionPointCard from './map/CollectionPointCard';
 import { CollectionPoint } from '@/types/collection-point';
 import { collectionPoints } from '@/data/collection-points';
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from '@/components/ui/pagination';
+
+const POINTS_PER_PAGE = 5;
 
 const MapSection = () => {
   const [selectedPoint, setSelectedPoint] = useState<CollectionPoint | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Filter points by search term or material type
   const filteredPoints = collectionPoints.filter(point => {
@@ -24,6 +35,11 @@ const MapSection = () => {
     return matchesSearch && matchesFilter;
   });
 
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredPoints.length / POINTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * POINTS_PER_PAGE;
+  const paginatedPoints = filteredPoints.slice(startIndex, startIndex + POINTS_PER_PAGE);
+
   // Get all unique materials for filter buttons
   const allMaterials = Array.from(
     new Set(collectionPoints.flatMap(point => point.materials))
@@ -36,16 +52,62 @@ const MapSection = () => {
     } else {
       setActiveFilter([...activeFilter, material]);
     }
+    setCurrentPage(1); // Reset to first page when filter changes
   };
 
   // Clear all filters
   const clearFilters = () => {
     setActiveFilter([]);
     setSearchTerm("");
+    setCurrentPage(1);
   };
 
   const handleToggleSelect = (point: CollectionPoint) => {
     setSelectedPoint(selectedPoint?.id === point.id ? null : point);
+  };
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({
+      top: document.getElementById('mapa')?.offsetTop,
+      behavior: 'smooth'
+    });
+  };
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    let pages: (number | 'ellipsis')[] = [];
+    
+    if (totalPages <= 5) {
+      // Less than 5 pages, show all
+      pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+    } else {
+      // Always include first page
+      pages.push(1);
+      
+      if (currentPage > 3) {
+        pages.push('ellipsis');
+      }
+      
+      // Calculate start and end of current page group
+      let start = Math.max(2, currentPage - 1);
+      let end = Math.min(currentPage + 1, totalPages - 1);
+      
+      // Add current page group
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+      
+      if (currentPage < totalPages - 2) {
+        pages.push('ellipsis');
+      }
+      
+      // Always include last page
+      pages.push(totalPages);
+    }
+    
+    return pages;
   };
 
   return (
@@ -73,7 +135,7 @@ const MapSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPoints.map((point) => (
+          {paginatedPoints.map((point) => (
             <CollectionPointCard
               key={point.id}
               point={point}
@@ -93,8 +155,47 @@ const MapSection = () => {
           </div>
         )}
 
+        {filteredPoints.length > 0 && totalPages > 1 && (
+          <div className="mt-8">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                    className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                  />
+                </PaginationItem>
+                
+                {getPageNumbers().map((page, index) => (
+                  <PaginationItem key={index}>
+                    {page === 'ellipsis' ? (
+                      <span className="flex h-9 w-9 items-center justify-center">...</span>
+                    ) : (
+                      <PaginationLink 
+                        isActive={page === currentPage}
+                        onClick={() => handlePageChange(page)}
+                        className="cursor-pointer"
+                      >
+                        {page}
+                      </PaginationLink>
+                    )}
+                  </PaginationItem>
+                ))}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                    className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        )}
+
         <div className="text-center mt-8 text-sm text-gray-600 dark:text-gray-400">
-          Exibindo {filteredPoints.length} de {collectionPoints.length} pontos de coleta
+          Exibindo {paginatedPoints.length} de {filteredPoints.length} pontos de coleta
+          {totalPages > 1 && ` • Página ${currentPage} de ${totalPages}`}
         </div>
       </div>
     </section>
