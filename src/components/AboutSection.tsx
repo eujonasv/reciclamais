@@ -130,7 +130,7 @@ const AboutSection = () => {
               <div className="relative">
                 <div className="absolute -inset-1 rounded-xl bg-recicla-primary/20 filter blur-md"></div>
                 <img 
-                  src="https://plus.unsplash.com/premium_vector-1682302213428-92ec054b597e?q=80&w=2814&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                  src="https://plus.unsplash.com/premium_vector-1682306481700-d924b6112bcf?q=80&w=2224&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
                   alt="Reciclagem" 
                   className="rounded-xl shadow-xl max-w-full object-cover mx-auto relative z-10"
                 />
