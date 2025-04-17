@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MapIcon } from 'lucide-react';
 import RecycleLogo from './RecycleLogo';
@@ -139,8 +138,6 @@ const MapSection = () => {
             <CollectionPointCard
               key={point.id}
               point={point}
-              selectedPoint={selectedPoint}
-              onToggleSelect={handleToggleSelect}
             />
           ))}
         </div>
