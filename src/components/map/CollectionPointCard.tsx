@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
-import { CollectionPoint, materialColors } from '@/types/collection-point';
+import { materialColors } from '@/types/collection-point';
+import GoogleMapsLogo from '/lovable-uploads/a1df8b37-7951-4f7c-ac22-ae1e6b74cae7.png';
+import WazeLogo from '/lovable-uploads/a68261e0-b526-48e8-9c3b-902d722edaf4.png';
 
 interface CollectionPointCardProps {
   point: CollectionPoint;
@@ -68,7 +68,11 @@ const CollectionPointCard = ({ point }: CollectionPointCardProps) => {
           rel="noopener noreferrer"
           className="inline-flex items-center text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full hover:bg-blue-200 transition-colors"
         >
-          Google Maps
+          <img 
+            src={GoogleMapsLogo} 
+            alt="Google Maps" 
+            className="w-6 h-6" 
+          />
         </a>
         <a 
           href={`https://waze.com/ul?ll=${point.latitude},${point.longitude}&navigate=yes`}
@@ -76,7 +80,11 @@ const CollectionPointCard = ({ point }: CollectionPointCardProps) => {
           rel="noopener noreferrer" 
           className="inline-flex items-center text-xs bg-teal-100 text-teal-800 px-3 py-1 rounded-full hover:bg-teal-200 transition-colors"
         >
-          Waze
+          <img 
+            src={WazeLogo} 
+            alt="Waze" 
+            className="w-6 h-6" 
+          />
         </a>
       </div>
     </div>
