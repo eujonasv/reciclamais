@@ -2,8 +2,8 @@ import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
 import { materialColors } from '@/types/collection-point';
-import GoogleMapsLogo from '/lovable-uploads/a1df8b37-7951-4f7c-ac22-ae1e6b74cae7.png';
-import WazeLogo from '/lovable-uploads/a68261e0-b526-48e8-9c3b-902d722edaf4.png';
+import GoogleMapsLogo from '/lovable-uploads/googlemapslogo.png';
+import WazeLogo from '/lovable-uploads/wazelogo.png';
 
 interface CollectionPointCardProps {
   point: CollectionPoint;
