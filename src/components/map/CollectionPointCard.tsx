@@ -71,7 +71,7 @@ const CollectionPointCard = ({ point }: CollectionPointCardProps) => {
           <img 
             src={GoogleMapsLogo} 
             alt="Google Maps" 
-            className="w-16 h-6" 
+            className="w-6 h-6"
           />
         </a>
         <a 
@@ -83,7 +83,7 @@ const CollectionPointCard = ({ point }: CollectionPointCardProps) => {
           <img 
             src={WazeLogo} 
             alt="Waze" 
-            className="w-16 h-6" 
+            className="w-6 h-6" 
           />
         </a>
       </div>
