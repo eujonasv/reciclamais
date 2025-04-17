@@ -2,6 +2,8 @@ import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
 import { materialColors } from '@/types/collection-point';
+import type { CollectionPoint } from '@/types/collection-point';
+
 import GoogleMapsLogo from '/lovable-uploads/googlemapslogo.png';
 import WazeLogo from '/lovable-uploads/wazelogo.png';
 
