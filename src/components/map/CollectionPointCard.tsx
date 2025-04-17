@@ -1,101 +1,83 @@
 
 import React from 'react';
-import { MapPin, Phone, Info, Link as LinkIcon } from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
 import { CollectionPoint, materialColors } from '@/types/collection-point';
 
 interface CollectionPointCardProps {
   point: CollectionPoint;
-  selectedPoint: CollectionPoint | null;
-  onToggleSelect: (point: CollectionPoint) => void;
 }
 
-const CollectionPointCard = ({ 
-  point, 
-  selectedPoint, 
-  onToggleSelect 
-}: CollectionPointCardProps) => {
+const CollectionPointCard = ({ point }: CollectionPointCardProps) => {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center">
-            <MapPin className="h-6 w-6 text-recicla-primary dark:text-recicla-secondary mr-2" />
-            <h3 className="text-lg font-bold">{point.name}</h3>
-          </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={() => onToggleSelect(point)}
-            className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary"
-          >
-            <Info size={18} />
-          </Button>
-        </div>
-        
-        <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
-          {point.description}
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 mb-4">
+      <div className="mb-2">
+        <h3 className="text-lg font-bold text-recicla-primary dark:text-recicla-secondary">
+          {point.name}
+        </h3>
+        <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{point.description}</p>
+      </div>
+
+      <div className="space-y-2 text-sm">
+        <p className="flex items-start">
+          <span className="font-semibold mr-2">Endereço:</span>
+          <span className="text-gray-600 dark:text-gray-300">{point.address}</span>
         </p>
         
-        <div className="flex items-start mb-3">
-          <MapPin size={16} className="mr-2 text-gray-500 flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {point.address}
+        <p className="flex items-center">
+          <span className="font-semibold mr-2">Telefone:</span>
+          <span className="text-gray-600 dark:text-gray-300">{point.phone}</span>
+        </p>
+
+        {point.website && (
+          <p className="flex items-center">
+            <span className="font-semibold mr-2">Website:</span>
+            <a 
+              href={point.website.startsWith('http') ? point.website : `https://${point.website}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-blue-700 flex items-center"
+            >
+              {point.website}
+              <ExternalLink size={12} className="ml-1" />
+            </a>
           </p>
-        </div>
-        
-        <div className="flex flex-wrap gap-1 mt-3">
-          {point.materials.slice(0, 3).map((material) => (
-            <span 
+        )}
+      </div>
+
+      <div className="mt-3">
+        <p className="font-semibold mb-1">Materiais Aceitos:</p>
+        <div className="flex flex-wrap gap-1">
+          {point.materials.map((material) => (
+            <Badge 
               key={material} 
-              className={`inline-block text-xs px-2 py-0.5 rounded-full ${materialColors[material]}`}
+              variant="outline" 
+              className={materialColors[material]}
             >
               {material}
-            </span>
+            </Badge>
           ))}
-          {point.materials.length > 3 && (
-            <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
-              +{point.materials.length - 3}
-            </span>
-          )}
         </div>
-        
-        {selectedPoint?.id === point.id && (
-          <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-            <div className="flex items-center mb-2">
-              <Phone size={16} className="mr-2 text-gray-500" />
-              <p className="text-sm">{point.phone}</p>
-            </div>
-            
-            {point.website && (
-              <div className="flex items-center mb-2">
-                <LinkIcon size={16} className="mr-2 text-gray-500" />
-                <a 
-                  href={point.website} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  Website
-                </a>
-              </div>
-            )}
-            
-            <div>
-              <p className="text-sm font-medium mb-1">Todos materiais aceitos:</p>
-              <div className="flex flex-wrap gap-1">
-                {point.materials.map((material) => (
-                  <span 
-                    key={material} 
-                    className={`inline-block text-xs px-2 py-0.5 rounded-full ${materialColors[material]}`}
-                  >
-                    {material}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+      </div>
+
+      <div className="flex flex-wrap gap-2 mt-4">
+        <a 
+          href={`https://www.google.com/maps/search/?api=1&query=${point.latitude},${point.longitude}`} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex items-center text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full hover:bg-blue-200 transition-colors"
+        >
+          Google Maps
+        </a>
+        <a 
+          href={`https://waze.com/ul?ll=${point.latitude},${point.longitude}&navigate=yes`}
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="inline-flex items-center text-xs bg-teal-100 text-teal-800 px-3 py-1 rounded-full hover:bg-teal-200 transition-colors"
+        >
+          Waze
+        </a>
       </div>
     </div>
   );

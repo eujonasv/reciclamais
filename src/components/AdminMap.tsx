@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { MapPin, Plus, Trash2, Edit2 } from 'lucide-react';
+import { MapPin, Plus, Trash2, Edit2, Search } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +29,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const formSchema = z.object({
   name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres"),
@@ -46,6 +54,11 @@ const AdminMap = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editingPoint, setEditingPoint] = useState<CollectionPoint | null>(null);
   const [open, setOpen] = useState(false);
+  const [searchAddress, setSearchAddress] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showAddressSearch, setShowAddressSearch] = useState(false);
+  
   const [availableMaterials, setAvailableMaterials] = useState<string[]>(
     Object.keys(materialColors)
   );
@@ -139,13 +152,51 @@ const AdminMap = () => {
     setOpen(true);
   };
 
+  // Search for address using geocoding
+  const searchForAddress = async () => {
+    if (!searchAddress.trim()) return;
+    
+    setIsSearching(true);
+    try {
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchAddress)}`);
+      const data = await response.json();
+      setSearchResults(data);
+    } catch (error) {
+      console.error("Error searching for address:", error);
+      toast({
+        title: "Erro ao buscar endereço",
+        description: "Não foi possível buscar o endereço. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Select address from search results
+  const selectAddress = (result: any) => {
+    const { display_name, lat, lon } = result;
+    form.setValue("address", display_name);
+    form.setValue("latitude", parseFloat(lat));
+    form.setValue("longitude", parseFloat(lon));
+    setShowAddressSearch(false);
+    setSearchAddress("");
+    setSearchResults([]);
+  };
+
   // Handle form submission
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      // Prepare the payload
+      // Prepare the complete payload with all required fields
       const payload = {
-        ...values,
-        materials: values.materials.join(',')
+        name: values.name,
+        description: values.description,
+        address: values.address,
+        latitude: values.latitude,
+        longitude: values.longitude,
+        phone: values.phone,
+        materials: values.materials.join(','),
+        website: values.website || null,
       };
 
       let result;
@@ -241,6 +292,81 @@ const AdminMap = () => {
                   )}
                 />
                 
+                <Sheet open={showAddressSearch} onOpenChange={setShowAddressSearch}>
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Endereço</FormLabel>
+                        <div className="flex space-x-2">
+                          <FormControl>
+                            <Input placeholder="Endereço completo" {...field} />
+                          </FormControl>
+                          <SheetTrigger asChild>
+                            <Button variant="outline" type="button" onClick={() => setShowAddressSearch(true)}>
+                              <Search className="h-4 w-4" />
+                            </Button>
+                          </SheetTrigger>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <SheetContent side="right" className="w-full sm:max-w-lg">
+                    <SheetHeader>
+                      <SheetTitle>Buscar Endereço</SheetTitle>
+                      <SheetDescription>
+                        Digite um endereço para obter automaticamente suas coordenadas
+                      </SheetDescription>
+                    </SheetHeader>
+                    <div className="py-6 space-y-4">
+                      <div className="flex space-x-2">
+                        <Input 
+                          placeholder="Digite um endereço ou local..." 
+                          value={searchAddress} 
+                          onChange={(e) => setSearchAddress(e.target.value)} 
+                        />
+                        <Button onClick={searchForAddress} disabled={isSearching}>
+                          {isSearching ? "Buscando..." : "Buscar"}
+                        </Button>
+                      </div>
+                      
+                      <div className="max-h-96 overflow-y-auto space-y-2">
+                        {searchResults.map((result, index) => (
+                          <div 
+                            key={index}
+                            className="p-3 border rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+                            onClick={() => selectAddress(result)}
+                          >
+                            <p className="text-sm">{result.display_name}</p>
+                            <div className="flex space-x-2 mt-1">
+                              <Badge variant="outline" className="text-xs">
+                                Lat: {parseFloat(result.lat).toFixed(6)}
+                              </Badge>
+                              <Badge variant="outline" className="text-xs">
+                                Lon: {parseFloat(result.lon).toFixed(6)}
+                              </Badge>
+                            </div>
+                          </div>
+                        ))}
+                        
+                        {searchResults.length === 0 && !isSearching && searchAddress && (
+                          <p className="text-center text-gray-500 py-4">
+                            Nenhum resultado encontrado. Tente um endereço diferente.
+                          </p>
+                        )}
+                        
+                        {isSearching && (
+                          <div className="text-center py-4">
+                            <p>Buscando endereços...</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+                
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
@@ -254,7 +380,7 @@ const AdminMap = () => {
                             step="0.000001" 
                             placeholder="Latitude" 
                             {...field} 
-                            onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                            onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
                           />
                         </FormControl>
                         <FormMessage />
@@ -274,7 +400,7 @@ const AdminMap = () => {
                             step="0.000001" 
                             placeholder="Longitude" 
                             {...field}
-                            onChange={(e) => field.onChange(parseFloat(e.target.value))} 
+                            onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
                           />
                         </FormControl>
                         <FormMessage />
@@ -282,20 +408,6 @@ const AdminMap = () => {
                     )}
                   />
                 </div>
-                
-                <FormField
-                  control={form.control}
-                  name="address"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Endereço</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Endereço completo" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
                 
                 <FormField
                   control={form.control}
@@ -421,7 +533,7 @@ const AdminMap = () => {
                 {point.address}
               </div>
               
-              <div className="flex flex-wrap gap-1 mt-2">
+              <div className="flex flex-wrap gap-1 mt-2 mb-3">
                 {point.materials.map((material) => (
                   <Badge 
                     key={material} 
@@ -431,6 +543,25 @@ const AdminMap = () => {
                     {material}
                   </Badge>
                 ))}
+              </div>
+
+              <div className="flex flex-wrap gap-2 mt-2">
+                <a 
+                  href={`https://www.google.com/maps/search/?api=1&query=${point.latitude},${point.longitude}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full hover:bg-blue-200 transition-colors"
+                >
+                  Google Maps
+                </a>
+                <a 
+                  href={`https://waze.com/ul?ll=${point.latitude},${point.longitude}&navigate=yes`}
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-xs bg-teal-100 text-teal-800 px-2 py-1 rounded-full hover:bg-teal-200 transition-colors"
+                >
+                  Waze
+                </a>
               </div>
             </div>
           ))

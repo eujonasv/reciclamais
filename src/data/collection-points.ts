@@ -10,6 +10,7 @@ export const collectionPoints: CollectionPoint[] = [
     longitude: -49.39766,
     address: "R. São Vicente de Paulo, 465, Araucária - PR",
     phone: "(41) 3028-5410",
+    website: "https://www.educacaoadventista.org.br/",
     materials: ["Papel", "Plástico", "Metal", "Vidro"]
   },
   {
@@ -20,6 +21,7 @@ export const collectionPoints: CollectionPoint[] = [
     longitude: -49.39948,
     address: "R. Pedro Druszcz, 111, Araucária - PR",
     phone: "(41) 3614-1400",
+    website: "https://araucaria.atende.net/",
     materials: ["Papel", "Plástico", "Metal", "Vidro", "Madeira"]
   },
   {
@@ -30,6 +32,7 @@ export const collectionPoints: CollectionPoint[] = [
     longitude: -49.37911,
     address: "R. Capivari, 65, Araucária - PR",
     phone: "(11) 3333-6666",
+    website: "https://www.condor.com.br/",
     materials: ["Baterias", "Lâmpadas"]
   }
 ];
