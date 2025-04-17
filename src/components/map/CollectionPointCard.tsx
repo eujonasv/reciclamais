@@ -1,22 +1,15 @@
 
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import { CollectionPoint, materialColors } from '@/types/collection-point';
-import GoogleMapsLogo from '/lovable-uploads/a1df8b37-7951-4f7c-ac22-ae1e6b74cae7.png';
-import WazeLogo from '/lovable-uploads/a68261e0-b526-48e8-9c3b-902d722edaf4.png';
 
 interface CollectionPointCardProps {
   point: CollectionPoint;
-  selectedPoint?: CollectionPoint;
-  onToggleSelect?: (point: CollectionPoint) => void;
 }
 
-const CollectionPointCard = ({ 
-  point, 
-  selectedPoint, 
-  onToggleSelect 
-}: CollectionPointCardProps) => {
+const CollectionPointCard = ({ point }: CollectionPointCardProps) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 mb-4">
       <div className="mb-2">
@@ -75,11 +68,6 @@ const CollectionPointCard = ({
           rel="noopener noreferrer"
           className="inline-flex items-center text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full hover:bg-blue-200 transition-colors"
         >
-          <img 
-            src={GoogleMapsLogo} 
-            alt="Google Maps" 
-            className="w-6 h-6 mr-2" 
-          />
           Google Maps
         </a>
         <a 
@@ -88,11 +76,6 @@ const CollectionPointCard = ({
           rel="noopener noreferrer" 
           className="inline-flex items-center text-xs bg-teal-100 text-teal-800 px-3 py-1 rounded-full hover:bg-teal-200 transition-colors"
         >
-          <img 
-            src={WazeLogo} 
-            alt="Waze" 
-            className="w-6 h-6 mr-2" 
-          />
           Waze
         </a>
       </div>
