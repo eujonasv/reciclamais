@@ -1,11 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapIcon } from 'lucide-react';
 import RecycleLogo from './RecycleLogo';
 import SearchAndFilters from './map/SearchAndFilters';
 import CollectionPointCard from './map/CollectionPointCard';
 import { CollectionPoint } from '@/types/collection-point';
-import { collectionPoints } from '@/data/collection-points';
+import { supabase } from '@/integrations/supabase/client';
 import { 
   Pagination, 
   PaginationContent, 
@@ -14,20 +14,75 @@ import {
   PaginationNext, 
   PaginationPrevious 
 } from '@/components/ui/pagination';
+import { useToast } from '@/components/ui/use-toast';
 
 const POINTS_PER_PAGE = 5;
 
 const MapSection = () => {
+  const [collectionPoints, setCollectionPoints] = useState<CollectionPoint[]>([]);
   const [selectedPoint, setSelectedPoint] = useState<CollectionPoint | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  // Fetch collection points from Supabase
+  useEffect(() => {
+    const fetchPoints = async () => {
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase.from("collection_points").select("*");
+        if (error) {
+          console.error("Error fetching collection points:", error);
+          toast({
+            title: "Erro ao carregar pontos de coleta",
+            description: error.message,
+            variant: "destructive",
+          });
+          return;
+        }
+
+        // Transform the data to match the CollectionPoint type
+        const transformedData: CollectionPoint[] = data.map((point) => ({
+          ...point,
+          materials: point.materials?.split(',').map((m: string) => m.trim()) || [],
+          id: point.id.toString()
+        }));
+
+        setCollectionPoints(transformedData);
+      } catch (error) {
+        console.error("Exception fetching collection points:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPoints();
+
+    // Set up realtime subscription
+    const channel = supabase
+      .channel('public:collection_points')
+      .on('postgres_changes', { 
+        event: '*', 
+        schema: 'public', 
+        table: 'collection_points' 
+      }, () => {
+        // Refresh the data when changes occur
+        fetchPoints();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [toast]);
 
   // Filter points by search term or material type
   const filteredPoints = collectionPoints.filter(point => {
     const matchesSearch = point.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       point.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      point.description.toLowerCase().includes(searchTerm.toLowerCase());
+      point.description?.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesFilter = activeFilter.length === 0 || 
       point.materials.some(material => activeFilter.includes(material));
@@ -134,69 +189,76 @@ const MapSection = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {paginatedPoints.map((point) => (
-            <CollectionPointCard
-              key={point.id}
-              point={point}
-              selectedPoint={selectedPoint}
-              onToggleSelect={handleToggleSelect}
-            />
-          ))}
-        </div>
-
-        {filteredPoints.length === 0 && (
+        {isLoading ? (
           <div className="flex flex-col items-center justify-center py-12">
-            <MapIcon size={48} className="text-gray-400 mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Nenhum ponto encontrado</h3>
-            <p className="text-gray-600 dark:text-gray-400 text-center max-w-md">
-              Não encontramos pontos de coleta com os filtros selecionados. Tente outros critérios de busca.
-            </p>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-recicla-primary mb-4"></div>
+            <p className="text-gray-600 dark:text-gray-400">Carregando pontos de coleta...</p>
           </div>
-        )}
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {paginatedPoints.map((point) => (
+                <CollectionPointCard
+                  key={point.id}
+                  point={point}
+                />
+              ))}
+            </div>
 
-        {filteredPoints.length > 0 && totalPages > 1 && (
-          <div className="mt-8">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious 
-                    onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                    className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                  />
-                </PaginationItem>
-                
-                {getPageNumbers().map((page, index) => (
-                  <PaginationItem key={index}>
-                    {page === 'ellipsis' ? (
-                      <span className="flex h-9 w-9 items-center justify-center">...</span>
-                    ) : (
-                      <PaginationLink 
-                        isActive={page === currentPage}
-                        onClick={() => handlePageChange(page)}
-                        className="cursor-pointer"
-                      >
-                        {page}
-                      </PaginationLink>
-                    )}
-                  </PaginationItem>
-                ))}
-                
-                <PaginationItem>
-                  <PaginationNext 
-                    onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-                    className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
-        )}
+            {filteredPoints.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-12">
+                <MapIcon size={48} className="text-gray-400 mb-4" />
+                <h3 className="text-xl font-semibold mb-2">Nenhum ponto encontrado</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-center max-w-md">
+                  Não encontramos pontos de coleta com os filtros selecionados. Tente outros critérios de busca.
+                </p>
+              </div>
+            )}
 
-        <div className="text-center mt-8 text-sm text-gray-600 dark:text-gray-400">
-          Exibindo {paginatedPoints.length} de {filteredPoints.length} pontos de coleta
-          {totalPages > 1 && ` • Página ${currentPage} de ${totalPages}`}
-        </div>
+            {filteredPoints.length > 0 && totalPages > 1 && (
+              <div className="mt-8">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                        className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                      />
+                    </PaginationItem>
+                    
+                    {getPageNumbers().map((page, index) => (
+                      <PaginationItem key={index}>
+                        {page === 'ellipsis' ? (
+                          <span className="flex h-9 w-9 items-center justify-center">...</span>
+                        ) : (
+                          <PaginationLink 
+                            isActive={page === currentPage}
+                            onClick={() => handlePageChange(page)}
+                            className="cursor-pointer"
+                          >
+                            {page}
+                          </PaginationLink>
+                        )}
+                      </PaginationItem>
+                    ))}
+                    
+                    <PaginationItem>
+                      <PaginationNext 
+                        onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                        className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
+
+            <div className="text-center mt-8 text-sm text-gray-600 dark:text-gray-400">
+              Exibindo {paginatedPoints.length} de {filteredPoints.length} pontos de coleta
+              {totalPages > 1 && ` • Página ${currentPage} de ${totalPages}`}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
@@ -13,8 +14,6 @@ interface CollectionPointCardProps {
 const CollectionPointCard = ({
   point
 }: CollectionPointCardProps) => {
-  console.log(point.address);  // Verifique se o endereço está correto
-
   return <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 mb-4">
     <div className="mb-2">
       <h3 className="text-lg font-bold text-recicla-primary dark:text-recicla-secondary">
@@ -53,10 +52,10 @@ const CollectionPointCard = ({
     </div>
 
     <div className="flex flex-wrap gap-2 mt-4">
-      <a href={`https://www.google.com/maps/search/?api=1&query=${point.latitude},${point.longitude}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs bg-blue-100 text-blue-800 rounded-full hover:bg-white -200 transition-colors mx-0 py-[5px] px-[2px]">
+      <a href={`https://www.google.com/maps/search/?api=1&query=${point.latitude},${point.longitude}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition-colors mx-0 py-[5px] px-[2px]">
         <img src={GoogleMapsLogo} alt="Google Maps" className="w-8 h-6" />
       </a>
-      <a href={`https://waze.com/ul?ll=${point.latitude},${point.longitude}&navigate=yes`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs bg-teal-100 text-teal-800 rounded-full hover:bg-white -200 transition-colors py-[5px] px-[6px]">
+      <a href={`https://waze.com/ul?ll=${point.latitude},${point.longitude}&navigate=yes`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs bg-teal-100 text-teal-800 rounded-full hover:bg-teal-200 transition-colors py-[5px] px-[6px]">
         <img src={WazeLogo} alt="Waze" className="w-6 h-6" />
       </a>
     </div>

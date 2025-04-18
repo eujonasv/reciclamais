@@ -12,35 +12,41 @@ export type Database = {
       collection_points: {
         Row: {
           address: string
-          description: string
+          created_at: string | null
+          description: string | null
           id: string
-          latitude: number
-          longitude: number
-          materials: string
+          latitude: number | null
+          longitude: number | null
+          materials: string | null
           name: string
-          phone: string
+          phone: string | null
+          usuario_id: string | null
           website: string | null
         }
         Insert: {
           address: string
-          description: string
+          created_at?: string | null
+          description?: string | null
           id?: string
-          latitude: number
-          longitude: number
-          materials: string
+          latitude?: number | null
+          longitude?: number | null
+          materials?: string | null
           name: string
-          phone: string
+          phone?: string | null
+          usuario_id?: string | null
           website?: string | null
         }
         Update: {
           address?: string
-          description?: string
+          created_at?: string | null
+          description?: string | null
           id?: string
-          latitude?: number
-          longitude?: number
-          materials?: string
+          latitude?: number | null
+          longitude?: number | null
+          materials?: string | null
           name?: string
-          phone?: string
+          phone?: string | null
+          usuario_id?: string | null
           website?: string | null
         }
         Relationships: []
