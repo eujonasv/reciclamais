@@ -49,7 +49,11 @@ const formSchema = z.object({
   materials: z.array(z.string()).default([])
 });
 
-const AdminMap = () => {
+interface AdminMapProps {
+  isMobile?: boolean;
+}
+
+const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
   const [points, setPoints] = useState<CollectionPoint[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingPoint, setEditingPoint] = useState<CollectionPoint | null>(null);
@@ -246,9 +250,9 @@ const AdminMap = () => {
         <h1 className="text-2xl font-bold">Gerenciar Pontos de Coleta</h1>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button onClick={handleAddPoint}>
-              <Plus size={16} className="mr-2" />
-              Adicionar Ponto de Coleta
+            <Button onClick={handleAddPoint} className={isMobile ? "px-2 py-1 h-auto" : ""}>
+              <Plus size={isMobile ? 14 : 16} className={isMobile ? "mr-1" : "mr-2"} />
+              {isMobile ? "Add Ponto" : "Adicionar Ponto de Coleta"}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">

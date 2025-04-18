@@ -4,9 +4,11 @@ import MainLayout from "@/layouts/MainLayout";
 import AdminMap from '@/components/AdminMap';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const AdminPage = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   React.useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -19,7 +21,7 @@ const AdminPage = () => {
   return (
     <MainLayout>
       <div className="container mx-auto py-8">
-        <AdminMap />
+        <AdminMap isMobile={isMobile} />
       </div>
     </MainLayout>
   );

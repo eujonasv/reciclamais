@@ -9,7 +9,38 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export function ThemeToggle() {
-  const { setTheme } = useTheme()
+  const { setTheme, theme } = useTheme()
+
+  React.useEffect(() => {
+    // Check if we're in the admin panel by looking at the URL
+    const isAdminPage = window.location.pathname.includes('/admin')
+    
+    // Apply the theme based on localStorage or system preference if not set
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme) {
+      setTheme(savedTheme)
+    }
+    
+    // Set up a MutationObserver to watch for changes to the body's class
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          const bodyClasses = document.body.className
+          if (bodyClasses.includes('dark')) {
+            localStorage.setItem('theme', 'dark')
+          } else if (!bodyClasses.includes('dark')) {
+            localStorage.setItem('theme', 'light')
+          }
+        }
+      })
+    })
+    
+    // Start observing
+    observer.observe(document.body, { attributes: true })
+    
+    // Clean up
+    return () => observer.disconnect()
+  }, [setTheme])
 
   return (
     <DropdownMenu>
