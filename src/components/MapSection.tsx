@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/pagination';
 import { useToast } from '@/components/ui/use-toast';
 
-const POINTS_PER_PAGE = 5;
+const POINTS_PER_PAGE = 3;
 
 const MapSection = () => {
   const [collectionPoints, setCollectionPoints] = useState<CollectionPoint[]>([]);
