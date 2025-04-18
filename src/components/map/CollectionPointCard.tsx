@@ -49,7 +49,7 @@ const CollectionPointCard = ({
     </div>
 
     <div className="flex flex-wrap gap-2 mt-4">
-      <a href={`https://www.google.com/maps/search/?api=1&query=${point.latitude},${point.longitude}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs bg-gray-100 text-gray-800 rounded-full hover:bg-white-200 transition-colors mx-0 py-[5px] px-[2px]">
+      <a href={`https://www.google.com/maps/search/?api=1&query=${point.latitude},${point.longitude}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs bg-white-100 text-gray-800 rounded-full hover:bg-gray-200 transition-colors mx-0 py-[5px] px-[2px]">
         <img src={GoogleMapsLogo} alt="Google Maps" className="w-8 h-6" />
       </a>
       <a href={`https://waze.com/ul?ll=${point.latitude},${point.longitude}&navigate=yes`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs bg-teal-100 text-teal-800 rounded-full hover:bg-teal-200 transition-colors py-[5px] px-[6px]">
