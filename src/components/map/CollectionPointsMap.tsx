@@ -30,11 +30,17 @@ const CollectionPointsMap: React.FC<CollectionPointsMapProps> = ({
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v12",
+      style: "mapbox://styles/mapbox/streets-v12", // Estilo de mapa com ruas e nomes de lugares
       center: points.length ? [points[0].longitude, points[0].latitude] : [-47.9292, -15.7801],
       zoom: 11,
       attributionControl: false
     });
+
+    // Adicionar controles de navegação
+    map.current.addControl(
+      new mapboxgl.NavigationControl(),
+      'bottom-right'
+    );
 
     // Disable scroll zoom for small map experience
     map.current.scrollZoom.disable();
@@ -55,20 +61,24 @@ const CollectionPointsMap: React.FC<CollectionPointsMapProps> = ({
     points.forEach((point) => {
       if (point.latitude == null || point.longitude == null) return;
       const el = document.createElement("div");
+      el.className = "marker";
       el.style.width = "22px";
       el.style.height = "22px";
       el.style.background =
         selectedPoint?.id === point.id
-          ? "rgb(46, 204, 113)"
-          : "rgb(73,74,82)";
+          ? "#2ecc71" // Verde mais vibrante para o ponto selecionado
+          : "#49494E";
       el.style.borderRadius = "50%";
-      el.style.opacity = "0.85";
-      el.style.border =
-        selectedPoint?.id === point.id
-          ? "2px solid #333"
-          : "2px solid #fff";
+      el.style.boxShadow = selectedPoint?.id === point.id
+        ? "0 0 0 4px rgba(46, 204, 113, 0.4), 0 0 0 8px rgba(46, 204, 113, 0.2)"
+        : "0 0 0 2px #fff";
       el.style.cursor = "pointer";
       el.title = point.name;
+
+      // Adicionar efeito pulsante ao marcador selecionado
+      if (selectedPoint?.id === point.id) {
+        el.style.animation = "pulse-green 2s infinite";
+      }
 
       el.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -80,6 +90,14 @@ const CollectionPointsMap: React.FC<CollectionPointsMapProps> = ({
         .addTo(map.current!);
 
       markers.current.push(marker);
+
+      // Se for o ponto selecionado, adicionar um popup
+      if (selectedPoint?.id === point.id) {
+        new mapboxgl.Popup({ closeButton: false, offset: 25, className: 'custom-popup' })
+          .setLngLat([point.longitude, point.latitude])
+          .setHTML(`<h3>${point.name}</h3><p>${point.address}</p>`)
+          .addTo(map.current);
+      }
     });
 
     // Ajusta o centro se houver ponto selecionado

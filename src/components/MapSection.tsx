@@ -185,10 +185,9 @@ const MapSection = () => {
                 <div
                   key={point.id}
                   onClick={() => handleToggleSelect(point)}
-                  className={
-                    "cursor-pointer transition duration-150" +
-                    (selectedPoint?.id === point.id ? " ring-2 ring-recicla-primary" : "")
-                  }
+                  className={`cursor-pointer transition-all duration-300 rounded-lg ${
+                    selectedPoint?.id === point.id ? "transform -translate-y-1 shadow-lg ring-2 ring-recicla-primary" : "hover:shadow-md"
+                  }`}
                 >
                   <CollectionPointCard
                     point={point}
