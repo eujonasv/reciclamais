@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { CollectionPoint } from "@/types/collection-point";
@@ -10,7 +10,8 @@ interface CollectionPointsMapProps {
   onSelectPoint: (point: CollectionPoint) => void;
 }
 
-const MAPBOX_TOKEN = "pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJja3BxYXlka24wcXZqMm9wcXBzejNreGcwIn0.KVjLpkJ_wQwBp7p2w1v7Qg"; // Utilize seu token do Mapbox aqui
+// Use a more modern and clean mapbox style
+const MAPBOX_TOKEN = "pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJja3BxYXlka24wcXZqMm9wcXBzejNreGcwIn0.KVjLpkJ_wQwBp7p2w1v7Qg";
 
 const CollectionPointsMap: React.FC<CollectionPointsMapProps> = ({
   points,
@@ -20,8 +21,10 @@ const CollectionPointsMap: React.FC<CollectionPointsMapProps> = ({
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
+  const popupRef = useRef<mapboxgl.Popup | null>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
-  // Inicializando o mapa
+  // Initialize the map
   useEffect(() => {
     if (!mapContainer.current) return;
     if (map.current) return;
@@ -30,55 +33,64 @@ const CollectionPointsMap: React.FC<CollectionPointsMapProps> = ({
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v12", // Estilo de mapa com ruas e nomes de lugares
+      // Using a style similar to Google Maps/Apple Maps
+      style: "mapbox://styles/mapbox/navigation-day-v1",
       center: points.length ? [points[0].longitude, points[0].latitude] : [-47.9292, -15.7801],
-      zoom: 11,
-      attributionControl: false
+      zoom: 12,
+      attributionControl: false,
+      pitch: 0, // Flat 2D view
+      bearing: 0
     });
 
-    // Adicionar controles de navegação
+    // Add navigation controls
     map.current.addControl(
-      new mapboxgl.NavigationControl(),
+      new mapboxgl.NavigationControl({ showCompass: false }),
       'bottom-right'
     );
 
-    // Disable scroll zoom for small map experience
-    map.current.scrollZoom.disable();
+    map.current.on('load', () => {
+      setMapLoaded(true);
+    });
+
+    // Enable scroll zoom for better map experience
+    map.current.scrollZoom.enable();
+    
     return () => {
       map.current?.remove();
+      map.current = null;
     };
   }, []);
 
-  // Atualizando marcadores
+  // Handle markers and popups
   useEffect(() => {
-    if (!map.current) return;
+    if (!map.current || !mapLoaded) return;
+
+    // Remove any existing popup
+    if (popupRef.current) {
+      popupRef.current.remove();
+      popupRef.current = null;
+    }
 
     // Remove old markers
     markers.current.forEach(marker => marker.remove());
     markers.current = [];
 
-    // Adiciona novos marcadores
+    // Add new markers
     points.forEach((point) => {
       if (point.latitude == null || point.longitude == null) return;
+      
       const el = document.createElement("div");
       el.className = "marker";
-      el.style.width = "22px";
-      el.style.height = "22px";
-      el.style.background =
-        selectedPoint?.id === point.id
-          ? "#2ecc71" // Verde mais vibrante para o ponto selecionado
-          : "#49494E";
+      el.style.width = "24px";
+      el.style.height = "24px";
+      el.style.background = selectedPoint?.id === point.id ? "#2ecc71" : "#49494E";
       el.style.borderRadius = "50%";
       el.style.boxShadow = selectedPoint?.id === point.id
-        ? "0 0 0 4px rgba(46, 204, 113, 0.4), 0 0 0 8px rgba(46, 204, 113, 0.2)"
+        ? "0 0 0 4px rgba(46, 204, 113, 0.4)"
         : "0 0 0 2px #fff";
       el.style.cursor = "pointer";
+      el.style.transition = "all 0.2s ease-in-out";
       el.title = point.name;
-
-      // Adicionar efeito pulsante ao marcador selecionado
-      if (selectedPoint?.id === point.id) {
-        el.style.animation = "pulse-green 2s infinite";
-      }
 
       el.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -91,28 +103,50 @@ const CollectionPointsMap: React.FC<CollectionPointsMapProps> = ({
 
       markers.current.push(marker);
 
-      // Se for o ponto selecionado, adicionar um popup
+      // Add popup only to the selected marker
       if (selectedPoint?.id === point.id) {
-        new mapboxgl.Popup({ closeButton: false, offset: 25, className: 'custom-popup' })
+        popupRef.current = new mapboxgl.Popup({ 
+          closeButton: false, 
+          offset: 25,
+          closeOnClick: false
+        })
           .setLngLat([point.longitude, point.latitude])
           .setHTML(`<h3>${point.name}</h3><p>${point.address}</p>`)
           .addTo(map.current);
       }
     });
 
-    // Ajusta o centro se houver ponto selecionado
+    // Fly to selected point with smoother animation
     if (selectedPoint && selectedPoint.latitude !== null && selectedPoint.longitude !== null) {
-      map.current.flyTo({ center: [selectedPoint.longitude, selectedPoint.latitude], zoom: 14 });
+      map.current.flyTo({ 
+        center: [selectedPoint.longitude, selectedPoint.latitude], 
+        zoom: 14,
+        duration: 800,
+        essential: true
+      });
     } else if (points.length > 0) {
-      map.current.flyTo({ center: [points[0].longitude, points[0].latitude], zoom: 11 });
+      // Fit to all points if no point is selected
+      const bounds = new mapboxgl.LngLatBounds();
+      points.forEach(point => {
+        if (point.latitude !== null && point.longitude !== null) {
+          bounds.extend([point.longitude, point.latitude]);
+        }
+      });
+      
+      if (!bounds.isEmpty()) {
+        map.current.fitBounds(bounds, {
+          padding: 50,
+          maxZoom: 14,
+          duration: 800
+        });
+      }
     }
-  }, [points, selectedPoint, onSelectPoint]);
+  }, [points, selectedPoint, onSelectPoint, mapLoaded]);
 
   return (
-    <div
-      ref={mapContainer}
-      className="w-full h-64 rounded-lg border shadow mt-6"
-    />
+    <div className="relative w-full h-64 md:h-80 lg:h-96 rounded-lg border shadow-md mt-6 overflow-hidden">
+      <div ref={mapContainer} className="absolute inset-0" />
+    </div>
   );
 };
 
