@@ -27,7 +27,7 @@ const CollectionPointsMap: React.FC<CollectionPointsMapProps> = ({
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "style: "mapbox://styles/mapbox/streets-v11",
+      style: "mapbox://styles/mapbox/streets-v11",
       center: points.length ? [points[0].longitude, points[0].latitude] : [-47.9292, -15.7801],
       zoom: 11,
       attributionControl: false,
