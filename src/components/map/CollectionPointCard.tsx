@@ -6,17 +6,13 @@ import { materialColors } from '@/types/collection-point';
 import type { CollectionPoint } from '@/types/collection-point';
 import GoogleMapsLogo from '/lovable-uploads/googlemapslogo.png';
 import WazeLogo from '/lovable-uploads/wazelogo.png';
-
 interface CollectionPointCardProps {
   point: CollectionPoint;
-  className?: string;
 }
-
 const CollectionPointCard = ({
-  point,
-  className
+  point
 }: CollectionPointCardProps) => {
-  return <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 mb-4 ${className || ''}`}>
+  return <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 mb-4">
       <div className="mb-2">
         <h3 className="text-lg font-bold text-recicla-primary dark:text-recicla-secondary">
           {point.name}
@@ -67,5 +63,4 @@ const CollectionPointCard = ({
       </div>
     </div>;
 };
-
 export default CollectionPointCard;

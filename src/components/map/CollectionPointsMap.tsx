@@ -34,7 +34,7 @@ const CollectionPointsMap: React.FC<CollectionPointsMapProps> = ({
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       // Using a style similar to Google Maps/Apple Maps
-      style: "mapbox://styles/mapbox/streets-v12", // More detailed streets view
+      style: "mapbox://styles/mapbox/navigation-day-v1",
       center: points.length ? [points[0].longitude, points[0].latitude] : [-47.9292, -15.7801],
       zoom: 12,
       attributionControl: false,
@@ -111,10 +111,7 @@ const CollectionPointsMap: React.FC<CollectionPointsMapProps> = ({
           closeOnClick: false
         })
           .setLngLat([point.longitude, point.latitude])
-          .setHTML(`<div class="p-2 bg-white dark:bg-gray-800 shadow-md rounded-md">
-            <h3 class="font-bold text-gray-900 dark:text-white text-sm">${point.name}</h3>
-            <p class="text-gray-700 dark:text-gray-300 text-xs">${point.address}</p>
-          </div>`)
+          .setHTML(`<h3>${point.name}</h3><p>${point.address}</p>`)
           .addTo(map.current);
       }
     });
