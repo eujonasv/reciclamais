@@ -197,7 +197,7 @@ const MapSection = () => {
             </div>
 
             <CollectionPointsMap
-              points={paginatedPoints}
+              points={filteredPoints}
               selectedPoint={selectedPoint}
               onSelectPoint={handleToggleSelect}
             />
