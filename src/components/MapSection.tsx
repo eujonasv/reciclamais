@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MapIcon } from 'lucide-react';
 import RecycleLogo from './RecycleLogo';
@@ -186,18 +185,12 @@ const MapSection = () => {
                 <div
                   key={point.id}
                   onClick={() => handleToggleSelect(point)}
-                  className={`cursor-pointer transition-all duration-300 ${
-                    selectedPoint?.id === point.id 
-                      ? "transform -translate-y-1 scale-102" 
-                      : "hover:shadow-md"
+                  className={`cursor-pointer transition-all duration-300 rounded-lg ${
+                    selectedPoint?.id === point.id ? "transform -translate-y-1 shadow-lg ring-2 ring-recicla-primary" : "hover:shadow-md"
                   }`}
                 >
                   <CollectionPointCard
                     point={point}
-                    className={selectedPoint?.id === point.id 
-                      ? "border-2 border-recicla-primary dark:border-recicla-secondary shadow-lg rounded-lg" 
-                      : "border border-gray-200 dark:border-gray-700 shadow-sm rounded-lg"
-                    }
                   />
                 </div>
               ))}
