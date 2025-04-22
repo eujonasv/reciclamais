@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
@@ -33,13 +32,8 @@ const CollectionPointCard = ({
 
         {point.website && <p className="flex items-center">
             <span className="font-semibold mr-2">Website:</span>
-            <a 
-              href={point.website.startsWith('http') ? point.website : `https://${point.website}`} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-blue-500 hover:text-blue-700 flex items-center"
-            >
-              Website <ExternalLink size={12} className="ml-1" />
+            <a href={point.website.startsWith('http') ? point.website : `https://${point.website}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-700 flex items-center truncate">
+              Website <ExternalLink size={12} className="ml-1 flex-shrink-0" />
             </a>
           </p>}
       </div>

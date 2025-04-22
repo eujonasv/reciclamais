@@ -1,9 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { MapIcon } from 'lucide-react';
 import RecycleLogo from './RecycleLogo';
 import SearchAndFilters from './map/SearchAndFilters';
 import CollectionPointCard from './map/CollectionPointCard';
-import CollectionPointsMap from "./map/CollectionPointsMap";
 import { CollectionPoint } from '@/types/collection-point';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -27,6 +27,7 @@ const MapSection = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
+  // Fetch collection points from Supabase
   useEffect(() => {
     const fetchPoints = async () => {
       setIsLoading(true);
@@ -42,6 +43,7 @@ const MapSection = () => {
           return;
         }
 
+        // Transform the data to match the CollectionPoint type
         const transformedData: CollectionPoint[] = data.map((point) => ({
           ...point,
           materials: point.materials?.split(',').map((m: string) => m.trim()) || [],
@@ -58,6 +60,7 @@ const MapSection = () => {
 
     fetchPoints();
 
+    // Set up realtime subscription
     const channel = supabase
       .channel('public:collection_points')
       .on('postgres_changes', { 
@@ -65,6 +68,7 @@ const MapSection = () => {
         schema: 'public', 
         table: 'collection_points' 
       }, () => {
+        // Refresh the data when changes occur
         fetchPoints();
       })
       .subscribe();
@@ -74,6 +78,7 @@ const MapSection = () => {
     };
   }, [toast]);
 
+  // Filter points by search term or material type
   const filteredPoints = collectionPoints.filter(point => {
     const matchesSearch = point.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       point.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -85,23 +90,27 @@ const MapSection = () => {
     return matchesSearch && matchesFilter;
   });
 
+  // Calculate pagination
   const totalPages = Math.ceil(filteredPoints.length / POINTS_PER_PAGE);
   const startIndex = (currentPage - 1) * POINTS_PER_PAGE;
   const paginatedPoints = filteredPoints.slice(startIndex, startIndex + POINTS_PER_PAGE);
 
+  // Get all unique materials for filter buttons
   const allMaterials = Array.from(
     new Set(collectionPoints.flatMap(point => point.materials))
   ).sort();
 
+  // Toggle material filter
   const toggleFilter = (material: string) => {
     if (activeFilter.includes(material)) {
       setActiveFilter(activeFilter.filter(m => m !== material));
     } else {
       setActiveFilter([...activeFilter, material]);
     }
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset to first page when filter changes
   };
 
+  // Clear all filters
   const clearFilters = () => {
     setActiveFilter([]);
     setSearchTerm("");
@@ -112,6 +121,7 @@ const MapSection = () => {
     setSelectedPoint(selectedPoint?.id === point.id ? null : point);
   };
 
+  // Handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     window.scrollTo({
@@ -120,21 +130,26 @@ const MapSection = () => {
     });
   };
 
+  // Generate page numbers to display
   const getPageNumbers = () => {
     let pages: (number | 'ellipsis')[] = [];
     
     if (totalPages <= 5) {
+      // Less than 5 pages, show all
       pages = Array.from({ length: totalPages }, (_, i) => i + 1);
     } else {
+      // Always include first page
       pages.push(1);
       
       if (currentPage > 3) {
         pages.push('ellipsis');
       }
       
+      // Calculate start and end of current page group
       let start = Math.max(2, currentPage - 1);
       let end = Math.min(currentPage + 1, totalPages - 1);
       
+      // Add current page group
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
@@ -143,6 +158,7 @@ const MapSection = () => {
         pages.push('ellipsis');
       }
       
+      // Always include last page
       pages.push(totalPages);
     }
     
@@ -182,25 +198,12 @@ const MapSection = () => {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {paginatedPoints.map((point) => (
-                <div
+                <CollectionPointCard
                   key={point.id}
-                  onClick={() => handleToggleSelect(point)}
-                  className={`cursor-pointer transition-all duration-300 rounded-lg ${
-                    selectedPoint?.id === point.id ? "transform -translate-y-1 shadow-lg ring-2 ring-recicla-primary" : "hover:shadow-md"
-                  }`}
-                >
-                  <CollectionPointCard
-                    point={point}
-                  />
-                </div>
+                  point={point}
+                />
               ))}
             </div>
-
-            <CollectionPointsMap
-              points={filteredPoints}
-              selectedPoint={selectedPoint}
-              onSelectPoint={handleToggleSelect}
-            />
 
             {filteredPoints.length === 0 && (
               <div className="flex flex-col items-center justify-center py-12">
