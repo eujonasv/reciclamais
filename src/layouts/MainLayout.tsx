@@ -48,7 +48,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     const scrollY = window.scrollY;
     setShowScrollToTop(scrollY > 500);
 
-    const sections = ["inicio", "sobre", "como-funciona", "faq", "mapa"];
+    const sections = ["inicio", "sobre", "como-funciona", "mapa", "faq"];
     for (const section of sections) {
       const element = document.getElementById(section);
       if (element) {
@@ -90,8 +90,8 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     { id: "inicio", text: "Início" },
     { id: "sobre", text: "Sobre" },
     { id: "como-funciona", text: "Como Funciona" },
-    { id: "faq", text: "FAQ" },
     { id: "mapa", text: "Mapa" },
+    { id: "faq", text: "FAQ" },
     { id: "valores", text: "Visão e Valores", isPage: true, path: "/valores" },
   ];
 
