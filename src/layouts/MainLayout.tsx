@@ -77,6 +77,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     { id: "como-funciona", text: "Como Funciona" },
     { id: "faq", text: "FAQ" },
     { id: "mapa", text: "Mapa" },
+    { id: "valores", text: "Visão e Valores", isPage: true, path: "/valores" },
   ];
 
   return (
@@ -90,15 +91,15 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                 onClick={() => scrollToSection('inicio')}
                 className="flex items-center"
               >
-                <RecycleLogoWithText size="md" />
+                <RecycleLogoWithText size="lg" />
               </Link>
             </div>
             
             <nav className="hidden md:flex items-center space-x-6">
-              {navLinks.map(({ id, text }) => (
+              {navLinks.map(({ id, text, isPage, path }) => (
                 <button
                   key={id}
-                  onClick={() => scrollToSection(id)}
+                  onClick={() => isPage ? navigateToPage(path!) : scrollToSection(id)}
                   className={`nav-link ${activeSection === id ? 'active-nav-link' : ''}`}
                 >
                   {text}
@@ -123,10 +124,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} bg-white dark:bg-gray-900 shadow-md`}>
           <nav className="container mx-auto px-4 py-3">
             <div className="flex flex-col space-y-3">
-              {navLinks.map(({ id, text }) => (
+              {navLinks.map(({ id, text, isPage, path }) => (
                 <button
                   key={id}
-                  onClick={() => scrollToSection(id)}
+                  onClick={() => isPage ? navigateToPage(path!) : scrollToSection(id)}
                   className={`py-2 px-3 rounded-md text-left ${
                     activeSection === id
                       ? 'bg-recicla-primary/10 text-recicla-primary dark:bg-recicla-primary/20 dark:text-recicla-secondary'
