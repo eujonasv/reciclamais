@@ -138,3 +138,8 @@ h1, h2, h3, h4, h5, h6 {
     @apply border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm overflow-hidden mb-4;
   }
 }
+
+/* Remove o badge da Lovable */
+a[href*="lovable.app"] {
+  display: none !important;
+}
