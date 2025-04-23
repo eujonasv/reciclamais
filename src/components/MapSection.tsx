@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { MapIcon } from 'lucide-react';
 import RecycleLogo from './RecycleLogo';
 import SearchAndFilters from './map/SearchAndFilters';
@@ -15,6 +16,7 @@ import {
   PaginationPrevious 
 } from '@/components/ui/pagination';
 import { useToast } from '@/components/ui/use-toast';
+import { ArrowDown, ArrowUp } from 'lucide-react';
 
 const POINTS_PER_PAGE = 3;
 
@@ -26,6 +28,12 @@ const MapSection = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+
+  // Novo - estado para expandir/colapsar o mapa no mobile (padrão fechado)
+  const [showMapMobile, setShowMapMobile] = useState(false);
+
+  // Ref para chamar invalidateSize via Leaflet imperativamente
+  const mapRef = useRef<any>(null);
 
   useEffect(() => {
     const fetchPoints = async () => {
@@ -149,6 +157,17 @@ const MapSection = () => {
     return pages;
   };
 
+  // Função para notificar o mapa que ele ficou visível e atualizar tamanho
+  useEffect(() => {
+    if (showMapMobile && mapRef.current && mapRef.current.leafletElement) {
+      setTimeout(() => {
+        try {
+          mapRef.current.leafletElement.invalidateSize();
+        } catch (e) {}
+      }, 310);
+    }
+  }, [showMapMobile]);
+
   return (
     <section id="mapa" className="section-padding bg-white dark:bg-gray-900">
       <div className="container mx-auto">
@@ -191,13 +210,54 @@ const MapSection = () => {
               ))}
             </div>
 
+            {/* BOTÃO E MAPA - MOBILE */}
             {filteredPoints.length > 0 && (
-              <CollectionMap 
-                collectionPoints={filteredPoints}
-                selectedPoint={selectedPoint}
-                onMarkerClick={handlePointSelect}
-              />
+              <>
+                {/* Botão exibe/esconde mapa - somente mobile */}
+                <button
+                  type="button"
+                  onClick={() => setShowMapMobile(s => !s)}
+                  className={`block md:hidden mt-6 mx-auto rounded-full px-6 py-2 font-semibold text-recicla-primary dark:text-recicla-secondary bg-white/80 dark:bg-gray-800/80 shadow transition-all duration-300 hover:bg-recicla-primary/10 focus:outline-none flex items-center gap-2 border border-recicla-primary/30 dark:border-recicla-secondary/30 backdrop-blur-sm`}
+                  aria-expanded={showMapMobile}
+                  aria-controls="mobile-collection-map"
+                >
+                  {showMapMobile ? (
+                    <>
+                      <ArrowUp className="transition-transform duration-200" />
+                      Esconder Mapa
+                    </>
+                  ) : (
+                    <>
+                      <ArrowDown className="transition-transform duration-200" />
+                      Ver Mapa
+                    </>
+                  )}
+                </button>
+                {/* Contêiner do mapa: mobile - animado colapsável; desktop permanece aberto */}
+                <div
+                  id="mobile-collection-map"
+                  className={`overflow-hidden rounded-xl shadow-lg mt-3 mb-2 transition-all duration-300 ease-in-out glass-morphism border border-gray-200 dark:border-gray-700 backdrop-blur
+                    ${showMapMobile ? "h-[22rem] opacity-100 scale-100 pointer-events-auto visible" : "h-0 opacity-0 scale-95 pointer-events-none invisible"}
+                    md:h-auto md:opacity-100 md:scale-100 md:pointer-events-auto md:visible md:mt-8 md:block
+                  `}
+                  style={{
+                    minHeight: showMapMobile ? undefined : 0,
+                    // Em md+ ignora mobile collapse
+                  }}
+                >
+                  {/* Fornece o mapRef para invalidateSize no mobile */}
+                  <CollectionMap
+                    collectionPoints={filteredPoints}
+                    selectedPoint={selectedPoint}
+                    onMarkerClick={handlePointSelect}
+                    ref={mapRef}
+                  />
+                </div>
+              </>
             )}
+
+            {/* MAPA - DESKTOP MESMO SEM BOTÃO */}
+            {/* O mapa acima já cobre md+: sempre aberto, sem botão */}
 
             {filteredPoints.length === 0 && (
               <div className="flex flex-col items-center justify-center py-12">
@@ -259,3 +319,4 @@ const MapSection = () => {
 };
 
 export default MapSection;
+
