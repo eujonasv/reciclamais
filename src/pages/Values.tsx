@@ -25,8 +25,7 @@ const ValuesPage = () => {
                 Missão
               </h3>
               <p className="text-gray-700 dark:text-gray-300">
-                Facilitar e promover a reciclagem através de tecnologia inovadora e 
-                educação ambiental, tornando o descarte consciente acessível a todos.
+                Facilitar e incentivar a reciclagem nas cidades por meio de uma plataforma que conecta pessoas e empresas a pontos de coleta parceiros, promovendo sustentabilidade, conciência ambiental e geração de renda de forma acessível e colaborativa.
               </p>
             </div>
 
@@ -34,9 +33,9 @@ const ValuesPage = () => {
               <h3 className="text-xl font-semibold mb-4 text-recicla-primary dark:text-recicla-secondary">
                 Visão
               </h3>
-              <ul className="text-gray-700 dark:text-gray-300 space-y-2">
-                <li>Em até 3 anos, expandir e consolidar a presença da RECICLA+ em todas as regiões de Araucária, garantindo acesso fácil à reciclagem, fortalecendo parcerias locais e promovendo impacto social e ambiental positivo por meio da tecnologia.
-              </ul>
+              <p className="text-gray-700 dark:text-gray-300">
+                Em até 3 anos, expandir e consolidar a presença da RECICLA+ em todas as regiões de Araucária, garantindo acesso fácil à reciclagem, fortalecendo parcerias locais e promovendo impacto social e ambiental positivo por meio da tecnologia.
+              </p>
             </div>
 
             <div className="card-hover p-6 rounded-xl bg-gray-50 dark:bg-gray-800 shadow-lg">
