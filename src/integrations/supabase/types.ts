@@ -51,6 +51,30 @@ export type Database = {
         }
         Relationships: []
       }
+      social_links: {
+        Row: {
+          created_at: string | null
+          icon: string
+          id: string
+          name: string
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          icon: string
+          id?: string
+          name: string
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          icon?: string
+          id?: string
+          name?: string
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

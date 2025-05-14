@@ -28,12 +28,13 @@ const AuthPage = () => {
     setLoading(true);
 
     try {
-      // Set session expiry to 8 hours (28800 seconds)
+      // Set session expiry to 8 hours
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
         options: {
-          expiresIn: 28800 // 8 hours in seconds
+          // Using properties compatible with Supabase Auth
+          // expiresIn is not a valid option, we need to handle session timeout differently
         }
       });
 

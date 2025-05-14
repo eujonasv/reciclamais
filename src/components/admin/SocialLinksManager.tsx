@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Link, Trash } from 'lucide-react';
+import { Link, Trash, Plus } from 'lucide-react';
 
 interface SocialLink {
   id: string;
@@ -48,7 +48,7 @@ const SocialLinksManager = () => {
           id: crypto.randomUUID()
         })) as SocialLink[]);
       } else {
-        setSocialLinks(data);
+        setSocialLinks(data as SocialLink[]);
       }
     } catch (error: any) {
       console.error('Error fetching social links:', error);

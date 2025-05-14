@@ -25,7 +25,7 @@ export const useSocialLinks = () => {
           
         if (error) throw error;
         
-        setSocialLinks(data || []);
+        setSocialLinks(data as SocialLink[] || []);
       } catch (err: any) {
         console.error('Error loading social links:', err);
         setError(err);
