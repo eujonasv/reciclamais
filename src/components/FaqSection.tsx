@@ -81,10 +81,10 @@ const FaqSection = () => {
               Ainda tem dúvidas? Entre em contato conosco.
             </p>
             <a 
-              href="mailto:contato@reciclamais.com.br" 
+              href="mailto:reciclamais25@gmail.com" 
               className="inline-block mt-4 text-recicla-primary dark:text-recicla-secondary hover:underline font-medium"
             >
-              contato@reciclamais.com.br
+              reciclamais25@gmail.com
             </a>
           </div>
         </div>
