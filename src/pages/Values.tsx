@@ -12,11 +12,10 @@ const ValuesPage = () => {
               <RecycleLogo size="lg" />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-              Nossa <span className="text-recicla-primary dark:text-recicla-secondary">Visão</span>
+              Nossa <span className="text-recicla-primary dark:text-recicla-secondary">Diretrizes Estratégicas</span>
             </h2>
             <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
-              Ser referência nacional em soluções sustentáveis para coleta seletiva, 
-              conectando pessoas e empresas em prol de um futuro mais verde e consciente.
+              As diretrizes estratégicas da RECICLA+ definem o caminho que seguimos e o impacto que queremos causar. Elas são compostas por missão, visão e valores, e ajudam a orientar nossas decisões, ações e parcerias.
             </p>
           </div>
 
@@ -36,10 +35,10 @@ const ValuesPage = () => {
                 Valores
               </h3>
               <ul className="text-gray-700 dark:text-gray-300 space-y-2">
-                <li>• Sustentabilidade em primeiro lugar</li>
-                <li>• Inovação e tecnologia verde</li>
-                <li>• Compromisso com a comunidade</li>
-                <li>• Transparência e responsabilidade</li>
+                <li>1. Reciclagem: estamos comprometidos com o meio ambiente.</li>
+                <li>2. Acessibilidade: a reciclagem deve estar ao alcance de todos</li>
+                <li>3. Inovação: buscamos soluções criativas para problemas ambientais urbanos.</li>
+                <li>4. Responsabilidade Social: valorizamos a geração de renda justa e o impacto positivo na vida das pessoas</li>
               </ul>
             </div>
 
@@ -48,10 +47,7 @@ const ValuesPage = () => {
                 Metas
               </h3>
               <ul className="text-gray-700 dark:text-gray-300 space-y-2">
-                <li>• Expandir pontos de coleta em 200% até 2024</li>
-                <li>• Educar 10.000 pessoas sobre reciclagem</li>
-                <li>• Reduzir o impacto ambiental em comunidades locais</li>
-                <li>• Desenvolver parcerias estratégicas sustentáveis</li>
+                <li>Em até 3 anos, expandir e consolidar a presença da RECICLA+ em todas as regiões de Araucária, garantindo acesso fácil à reciclagem, fortalecendo parcerias locais e promovendo impacto social e ambiental positivo por meio da tecnologia.</li>
               </ul>
             </div>
           </div>
