@@ -4,9 +4,47 @@ import { Menu, X, Facebook, Instagram, Twitter, Linkedin, ChevronUp, Lock } from
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 import { Button } from "@/components/ui/button";
+
+// Define social media links structure
+type SocialMediaLink = {
+  id: string;
+  icon: React.ComponentType<any>;
+  href: string;
+  label: string;
+};
+
+// Default social media links (you can easily update these links later)
+const socialMediaLinks: SocialMediaLink[] = [
+  { 
+    id: "facebook", 
+    icon: Facebook, 
+    href: "https://facebook.com/reciclaplataforma", 
+    label: "Facebook"
+  },
+  { 
+    id: "instagram", 
+    icon: Instagram, 
+    href: "https://instagram.com/reciclaplataforma", 
+    label: "Instagram" 
+  },
+  { 
+    id: "twitter", 
+    icon: Twitter, 
+    href: "https://twitter.com/reciclaplataforma", 
+    label: "Twitter" 
+  },
+  { 
+    id: "linkedin", 
+    icon: Linkedin, 
+    href: "https://linkedin.com/company/reciclaplataforma", 
+    label: "LinkedIn" 
+  },
+];
+
 interface MainLayoutProps {
   children: ReactNode;
 }
+
 const MainLayout = ({
   children
 }: MainLayoutProps) => {
@@ -79,6 +117,7 @@ const MainLayout = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHome]);
+
   const navLinks = [{
     id: "inicio",
     text: "Início"
@@ -96,7 +135,7 @@ const MainLayout = ({
     text: "FAQ"
   }, {
     id: "valores",
-    text: "Visão e Valores",
+    text: "Diretrizes Estratégicas",
     isPage: true,
     path: "/valores"
   }];
@@ -181,18 +220,18 @@ const MainLayout = ({
                 Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-                  <Facebook size={20} />
-                </a>
-                <a href="#" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-                  <Instagram size={20} />
-                </a>
-                <a href="#" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-                  <Twitter size={20} />
-                </a>
-                <a href="#" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-                  <Linkedin size={20} />
-                </a>
+                {socialMediaLinks.map((social) => (
+                  <a 
+                    key={social.id} 
+                    href={social.href} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
+                    aria-label={social.label}
+                  >
+                    <social.icon size={20} />
+                  </a>
+                ))}
               </div>
             </div>
 
@@ -201,10 +240,14 @@ const MainLayout = ({
               <ul className="space-y-2">
                 {navLinks.map(({
                 id,
-                text
+                text,
+                isPage,
+                path
               }) => <li key={id}>
                     <button onClick={() => {
-                  if (isHome) {
+                  if (isPage) {
+                    navigateToPage(path!);
+                  } else if (isHome) {
                     scrollToSection(id);
                   } else {
                     navigate(`/#${id}`);
@@ -242,4 +285,5 @@ const MainLayout = ({
       </button>
     </div>;
 };
+
 export default MainLayout;

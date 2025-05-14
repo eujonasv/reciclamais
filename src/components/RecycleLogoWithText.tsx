@@ -28,11 +28,15 @@ const RecycleLogoWithText = ({
     setMounted(true);
   }, []);
 
+  // Use a placeholder before mounting to maintain layout
   if (!mounted) {
     return <div className={`${sizeClasses[size]} ${className}`} />;
   }
 
+  // Determine theme dynamically on client side
   const isDark = theme === "dark" || resolvedTheme === "dark";
+  
+  // Use the appropriate logo based on theme
   const logoSrc = isDark 
     ? "/lovable-uploads/76964539-1e43-452b-8975-29ee30389926.png" 
     : "/lovable-uploads/logo-light.png";

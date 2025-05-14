@@ -10,11 +10,14 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+
+  // Ensure component is mounted before rendering to avoid hydration mismatch
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
 
   React.useEffect(() => {
-    // Check if we're in the admin panel by looking at the URL
-    const isAdminPage = window.location.pathname.includes('/admin')
-    
     // Apply the theme based on localStorage or system preference if not set
     const savedTheme = localStorage.getItem('theme')
     if (savedTheme) {
@@ -41,6 +44,11 @@ export function ThemeToggle() {
     // Clean up
     return () => observer.disconnect()
   }, [setTheme])
+
+  // Don't render anything until mounted to avoid hydration mismatch
+  if (!mounted) {
+    return <Button variant="outline" size="icon" className="rounded-full w-9 h-9"></Button>
+  }
 
   return (
     <DropdownMenu>

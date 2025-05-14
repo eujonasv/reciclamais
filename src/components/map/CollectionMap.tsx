@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -45,11 +45,11 @@ interface CollectionMapProps {
   onMarkerClick: (point: CollectionPoint) => void;
 }
 
-const CollectionMap: React.FC<CollectionMapProps> = ({
+const CollectionMap = forwardRef<any, CollectionMapProps>(({
   collectionPoints,
   selectedPoint,
   onMarkerClick
-}) => {
+}, ref) => {
   // Responsividade do mapa
   const [mapCenter, setMapCenter] = useState<[number, number]>([-25.59, -49.39]);
 
@@ -103,6 +103,7 @@ const CollectionMap: React.FC<CollectionMapProps> = ({
         // Responsividade via Tailwind também:
         // Mobile: h-64 (256px), md: h-80 (320px), lg: h-96 (384px)
         // style acima para fallback e suavidade de animação
+        ref={ref}
       >
         <TileLayer
           attribution={tileSet.attribution}
@@ -161,6 +162,8 @@ const CollectionMap: React.FC<CollectionMapProps> = ({
       `}</style>
     </div>
   );
-};
+});
+
+CollectionMap.displayName = 'CollectionMap';
 
 export default CollectionMap;
