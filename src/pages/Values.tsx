@@ -12,7 +12,7 @@ const ValuesPage = () => {
               <RecycleLogo size="lg" />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-              Nossa <span className="text-recicla-primary dark:text-recicla-secondary">Diretrizes Estratégicas</span>
+              Nossas <span className="text-recicla-primary dark:text-recicla-secondary">Diretrizes Estratégicas</span>
             </h2>
             <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
               As diretrizes estratégicas da RECICLA+ definem o caminho que seguimos e o impacto que queremos causar. Elas são compostas por missão, visão e valores, e ajudam a orientar nossas decisões, ações e parcerias.
