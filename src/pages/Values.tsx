@@ -32,7 +32,7 @@ const ValuesPage = () => {
 
             <div className="card-hover p-6 rounded-xl bg-gray-50 dark:bg-gray-800 shadow-lg">
               <h3 className="text-xl font-semibold mb-4 text-recicla-primary dark:text-recicla-secondary">
-                Valores
+                Visão
               </h3>
               <ul className="text-gray-700 dark:text-gray-300 space-y-2">
                 <li>Em até 3 anos, expandir e consolidar a presença da RECICLA+ em todas as regiões de Araucária, garantindo acesso fácil à reciclagem, fortalecendo parcerias locais e promovendo impacto social e ambiental positivo por meio da tecnologia.
@@ -41,7 +41,7 @@ const ValuesPage = () => {
 
             <div className="card-hover p-6 rounded-xl bg-gray-50 dark:bg-gray-800 shadow-lg">
               <h3 className="text-xl font-semibold mb-4 text-recicla-primary dark:text-recicla-secondary">
-                Metas
+                Valores
               </h3>
               <ul className="text-gray-700 dark:text-gray-300 space-y-2">
                 <li>1. Reciclagem: estamos comprometidos com o meio ambiente.</li>
