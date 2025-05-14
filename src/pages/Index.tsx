@@ -1,6 +1,5 @@
 
 import React from "react";
-import { ThemeProvider } from "next-themes";
 import MainLayout from "@/layouts/MainLayout";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
@@ -14,15 +13,13 @@ import "@fontsource/roboto";
 
 const Index = () => {
   return (
-    <ThemeProvider attribute="class">
-      <MainLayout>
-        <HeroSection />
-        <AboutSection />
-        <HowItWorksSection />
-        <MapSection />
-        <FaqSection />
-      </MainLayout>
-    </ThemeProvider>
+    <MainLayout>
+      <HeroSection />
+      <AboutSection />
+      <HowItWorksSection />
+      <MapSection />
+      <FaqSection />
+    </MainLayout>
   );
 };
 

@@ -41,6 +41,9 @@ const RecycleLogoWithText = ({
     ? "/lovable-uploads/76964539-1e43-452b-8975-29ee30389926.png" 
     : "/lovable-uploads/logo-light.png";
 
+  // Log theme state to help debug
+  console.log("Theme state:", { theme, resolvedTheme, isDark });
+
   return (
     <div className={`flex items-center ${className}`}>
       <img 

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export function ThemeToggle() {
-  const { setTheme, theme } = useTheme()
+  const { setTheme, theme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
 
   // Ensure component is mounted before rendering to avoid hydration mismatch
@@ -44,6 +44,13 @@ export function ThemeToggle() {
     // Clean up
     return () => observer.disconnect()
   }, [setTheme])
+
+  // Log theme state to help debug
+  React.useEffect(() => {
+    if (mounted) {
+      console.log("ThemeToggle state:", { theme, resolvedTheme });
+    }
+  }, [theme, resolvedTheme, mounted]);
 
   // Don't render anything until mounted to avoid hydration mismatch
   if (!mounted) {
