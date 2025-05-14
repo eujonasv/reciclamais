@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import AdminPage from "./pages/admin";
 import AuthPage from "./pages/auth";
 import ValuesPage from "./pages/Values";
+import { AuthProvider } from "./hooks/use-auth";
 
 const queryClient = new QueryClient();
 
@@ -20,13 +21,15 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/valores" element={<ValuesPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/valores" element={<ValuesPage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/auth" element={<AuthPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
