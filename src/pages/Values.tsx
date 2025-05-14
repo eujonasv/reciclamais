@@ -35,10 +35,7 @@ const ValuesPage = () => {
                 Valores
               </h3>
               <ul className="text-gray-700 dark:text-gray-300 space-y-2">
-                <li>1. Reciclagem: estamos comprometidos com o meio ambiente.</li>
-                <li>2. Acessibilidade: a reciclagem deve estar ao alcance de todos</li>
-                <li>3. Inovação: buscamos soluções criativas para problemas ambientais urbanos.</li>
-                <li>4. Responsabilidade Social: valorizamos a geração de renda justa e o impacto positivo na vida das pessoas</li>
+                <li>Em até 3 anos, expandir e consolidar a presença da RECICLA+ em todas as regiões de Araucária, garantindo acesso fácil à reciclagem, fortalecendo parcerias locais e promovendo impacto social e ambiental positivo por meio da tecnologia.
               </ul>
             </div>
 
@@ -47,7 +44,10 @@ const ValuesPage = () => {
                 Metas
               </h3>
               <ul className="text-gray-700 dark:text-gray-300 space-y-2">
-                <li>Em até 3 anos, expandir e consolidar a presença da RECICLA+ em todas as regiões de Araucária, garantindo acesso fácil à reciclagem, fortalecendo parcerias locais e promovendo impacto social e ambiental positivo por meio da tecnologia.</li>
+                <li>1. Reciclagem: estamos comprometidos com o meio ambiente.</li>
+                <li>2. Acessibilidade: a reciclagem deve estar ao alcance de todos</li>
+                <li>3. Inovação: buscamos soluções criativas para problemas ambientais urbanos.</li>
+                <li>4. Responsabilidade Social: valorizamos a geração de renda justa e o impacto positivo na vida das pessoas</li>
               </ul>
             </div>
           </div>
