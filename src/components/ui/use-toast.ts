@@ -1,3 +1,3 @@
 
-// We should be exporting directly from the original source, not re-exporting
+// Export directly from the source
 export { useToast, toast } from "@/hooks/use-toast";

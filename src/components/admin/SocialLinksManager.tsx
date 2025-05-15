@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Link, Trash, Plus } from 'lucide-react';
+import { SocialLinkForm } from '@/components/admin/SocialLinkForm';
+import { useSocialLinks } from '@/hooks/use-social-links';
 
 interface SocialLink {
   id: string;
@@ -26,6 +28,7 @@ const SocialLinksManager = () => {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const { refresh: refreshSiteLinks } = useSocialLinks();
 
   useEffect(() => {
     fetchSocialLinks();
@@ -66,29 +69,32 @@ const SocialLinksManager = () => {
     try {
       setSaving(true);
       
-      // Esta é a parte que está causando o erro - não podemos usar .gte('id', '0')
-      // Vamos simplesmente excluir sem filtro, já que a tabela social_links 
-      // serve apenas para esta funcionalidade
+      // First, delete all existing records from the table
+      // Use a simpler method that won't cause UUID validation errors
       const { error: deleteError } = await supabase
         .from('social_links')
         .delete()
-        .neq('id', ''); // Este é um truque para excluir todos os registros
+        .is('id', 'not.null'); // This will delete all records without UUID validation issues
       
       if (deleteError) throw deleteError;
       
-      // Então inserimos todos os links atuais
+      // Then insert all current links with their names and URLs
       if (socialLinks.length > 0) {
-        const { error: insertError } = await supabase
-          .from('social_links')
-          .insert(
-            socialLinks.map(link => ({
-              name: link.name,
-              url: link.url,
-              icon: link.icon || link.name.toLowerCase()
-            }))
-          );
-
-        if (insertError) throw insertError;
+        const linksToInsert = socialLinks
+          .filter(link => link.name && link.url) // Only insert links with both name and URL
+          .map(link => ({
+            name: link.name,
+            url: link.url,
+            icon: link.icon || link.name.toLowerCase()
+          }));
+          
+        if (linksToInsert.length > 0) {
+          const { error: insertError } = await supabase
+            .from('social_links')
+            .insert(linksToInsert);
+  
+          if (insertError) throw insertError;
+        }
       }
 
       toast({
@@ -96,8 +102,9 @@ const SocialLinksManager = () => {
         description: "Os links foram atualizados com sucesso",
       });
       
-      // Recarrega os links para obter os IDs atualizados do banco de dados
-      fetchSocialLinks();
+      // Refresh links to get updated IDs and refresh site links 
+      await fetchSocialLinks();
+      await refreshSiteLinks();
       
     } catch (error: any) {
       console.error('Error saving social links:', error);
@@ -155,41 +162,12 @@ const SocialLinksManager = () => {
         ) : (
           <div className="space-y-4">
             {socialLinks.map((link) => (
-              <div key={link.id} className="flex items-center space-x-2">
-                <div className="flex-1">
-                  <Label htmlFor={`name-${link.id}`} className="sr-only">Nome</Label>
-                  <Input
-                    id={`name-${link.id}`}
-                    placeholder="Nome (ex: Instagram)"
-                    value={link.name}
-                    onChange={(e) => updateLink(link.id, 'name', e.target.value)}
-                  />
-                </div>
-                <div className="flex-[2]">
-                  <Label htmlFor={`url-${link.id}`} className="sr-only">URL</Label>
-                  <div className="flex rounded-md">
-                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-input bg-muted text-muted-foreground">
-                      <Link size={16} />
-                    </span>
-                    <Input
-                      id={`url-${link.id}`}
-                      className="rounded-l-none"
-                      placeholder="https://..."
-                      value={link.url}
-                      onChange={(e) => updateLink(link.id, 'url', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => removeLink(link.id)}
-                  className="flex-shrink-0"
-                >
-                  <Trash size={18} />
-                  <span className="sr-only">Remover</span>
-                </Button>
-              </div>
+              <SocialLinkForm 
+                key={link.id} 
+                link={link} 
+                updateLink={updateLink} 
+                removeLink={removeLink}
+              />
             ))}
 
             <Button 
