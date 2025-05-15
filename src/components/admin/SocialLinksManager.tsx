@@ -70,11 +70,11 @@ const SocialLinksManager = () => {
       setSaving(true);
       
       // First, delete all existing records from the table
-      // Use a simpler method that won't cause UUID validation errors
+      // Using a simple delete without filter to avoid parsing errors
       const { error: deleteError } = await supabase
         .from('social_links')
         .delete()
-        .is('id', 'not.null'); // This will delete all records without UUID validation issues
+        .neq('id', ''); // Using a simple condition that will match all rows
       
       if (deleteError) throw deleteError;
       
