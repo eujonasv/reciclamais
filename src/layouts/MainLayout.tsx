@@ -1,12 +1,10 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, Facebook, Instagram, Twitter, Linkedin, ChevronUp, Lock } from "lucide-react";
+import { Menu, X as MenuX, Facebook, Instagram, Twitter, X, Linkedin, ChevronUp, Lock } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 import { Button } from "@/components/ui/button";
 import { useSocialLinks } from "@/hooks/use-social-links";
-import { Icon } from 'lucide-react';
-import * as icons from 'lucide-react';
 
 // Define social media links structure
 type SocialMediaLink = {
@@ -150,7 +148,8 @@ const MainLayout = ({
     const iconMap: Record<string, any> = {
       'facebook': Facebook,
       'instagram': Instagram,
-      'twitter': Twitter,
+      'twitter': X,
+      'x': X,
       'linkedin': Linkedin
     };
     
@@ -191,7 +190,7 @@ const MainLayout = ({
             <div className="flex items-center">
               <ThemeToggle />
               <button className="ml-4 md:hidden rounded-md p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none" onClick={toggleMenu} aria-label="Menu">
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                {isMenuOpen ? <MenuX size={24} /> : <Menu size={24} />}
               </button>
             </div>
           </div>

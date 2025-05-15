@@ -23,6 +23,16 @@ export const SocialLinkForm: React.FC<SocialLinkFormProps> = ({
   updateLink,
   removeLink
 }) => {
+  // Sugestão de placeholder baseada no nome da rede social
+  const getPlaceholder = (name: string) => {
+    const nameLower = name.toLowerCase();
+    if (nameLower.includes('instagram')) return 'https://instagram.com/sua-conta';
+    if (nameLower.includes('facebook')) return 'https://facebook.com/sua-pagina';
+    if (nameLower.includes('x') || nameLower.includes('twitter')) return 'https://x.com/sua-conta';
+    if (nameLower.includes('linkedin')) return 'https://linkedin.com/company/sua-empresa';
+    return 'https://...';
+  };
+
   return (
     <div className="flex items-center space-x-2">
       <div className="flex-1">
@@ -31,7 +41,14 @@ export const SocialLinkForm: React.FC<SocialLinkFormProps> = ({
           id={`name-${link.id}`}
           placeholder="Nome (ex: Instagram)"
           value={link.name}
-          onChange={(e) => updateLink(link.id, 'name', e.target.value)}
+          onChange={(e) => {
+            updateLink(link.id, 'name', e.target.value);
+            // Atualizar o ícone automaticamente se estiver vazio
+            if (!link.icon) {
+              const iconName = e.target.value.toLowerCase();
+              updateLink(link.id, 'icon', iconName);
+            }
+          }}
         />
       </div>
       <div className="flex-[2]">
@@ -43,7 +60,7 @@ export const SocialLinkForm: React.FC<SocialLinkFormProps> = ({
           <Input
             id={`url-${link.id}`}
             className="rounded-l-none"
-            placeholder="https://..."
+            placeholder={getPlaceholder(link.name)}
             value={link.url}
             onChange={(e) => updateLink(link.id, 'url', e.target.value)}
           />

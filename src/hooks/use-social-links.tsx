@@ -54,10 +54,10 @@ export const useSocialLinks = () => {
           label: "Instagram" 
         },
         { 
-          id: "twitter", 
-          icon: "twitter", 
-          href: "https://twitter.com/reciclaplataforma", 
-          label: "Twitter" 
+          id: "x", 
+          icon: "x", 
+          href: "https://x.com/reciclaplataforma", 
+          label: "X" 
         },
         { 
           id: "linkedin", 

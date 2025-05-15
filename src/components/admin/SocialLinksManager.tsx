@@ -1,12 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Link, Trash, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { SocialLinkForm } from '@/components/admin/SocialLinkForm';
 import { useSocialLinks } from '@/hooks/use-social-links';
 
@@ -20,7 +18,7 @@ interface SocialLink {
 const defaultSocialLinks: Partial<SocialLink>[] = [
   { name: 'Instagram', url: '', icon: 'instagram' },
   { name: 'Facebook', url: '', icon: 'facebook' },
-  { name: 'Twitter', url: '', icon: 'twitter' },
+  { name: 'X', url: '', icon: 'x' },
   { name: 'LinkedIn', url: '', icon: 'linkedin' }
 ];
 
@@ -69,19 +67,27 @@ const SocialLinksManager = () => {
     try {
       setSaving(true);
       
-      // First, delete all existing records from the table
-      // Using a simple delete without filter to avoid parsing errors
-      const { error: deleteError } = await supabase
+      // Método alternativo: em vez de tentar deletar tudo de uma vez, vamos fazer um método mais seguro
+      // Obter todos os IDs existentes
+      const { data: existingLinks } = await supabase
         .from('social_links')
-        .delete()
-        .neq('id', ''); // Using a simple condition that will match all rows
+        .select('id');
       
-      if (deleteError) throw deleteError;
+      // Limpar a tabela completamente usando o delete all
+      if (existingLinks && existingLinks.length > 0) {
+        // Deletar um por um para evitar erros de sintaxe
+        for (const link of existingLinks) {
+          await supabase
+            .from('social_links')
+            .delete()
+            .eq('id', link.id);
+        }
+      }
       
-      // Then insert all current links with their names and URLs
+      // Então inserir todos os links atuais com seus nomes e URLs
       if (socialLinks.length > 0) {
         const linksToInsert = socialLinks
-          .filter(link => link.name && link.url) // Only insert links with both name and URL
+          .filter(link => link.name && link.url) // Só inserir links com nome e URL
           .map(link => ({
             name: link.name,
             url: link.url,
@@ -102,7 +108,7 @@ const SocialLinksManager = () => {
         description: "Os links foram atualizados com sucesso",
       });
       
-      // Refresh links to get updated IDs and refresh site links 
+      // Atualizar links para obter IDs atualizados e atualizar links do site 
       await fetchSocialLinks();
       await refreshSiteLinks();
       
