@@ -67,18 +67,27 @@ const SocialLinksManager = () => {
       setSaving(true);
       
       // Delete all existing links first
-      await supabase.from('social_links').delete().neq('id', 'placeholder');
+      const { error: deleteError } = await supabase
+        .from('social_links')
+        .delete()
+        .gte('id', '0'); // Delete all records
+      
+      if (deleteError) throw deleteError;
       
       // Then insert all current links
-      const { error } = await supabase.from('social_links').upsert(
-        socialLinks.map(link => ({
-          name: link.name,
-          url: link.url,
-          icon: link.icon || link.name.toLowerCase()
-        }))
-      );
+      if (socialLinks.length > 0) {
+        const { error: insertError } = await supabase
+          .from('social_links')
+          .insert(
+            socialLinks.map(link => ({
+              name: link.name,
+              url: link.url,
+              icon: link.icon || link.name.toLowerCase()
+            }))
+          );
 
-      if (error) throw error;
+        if (insertError) throw insertError;
+      }
 
       toast({
         title: "Links sociais salvos",

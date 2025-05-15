@@ -4,6 +4,9 @@ import { Menu, X, Facebook, Instagram, Twitter, Linkedin, ChevronUp, Lock } from
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 import { Button } from "@/components/ui/button";
+import { useSocialLinks } from "@/hooks/use-social-links";
+import { Icon } from 'lucide-react';
+import * as icons from 'lucide-react';
 
 // Define social media links structure
 type SocialMediaLink = {
@@ -54,6 +57,8 @@ const MainLayout = ({
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>("inicio");
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false);
+  const { socialLinks } = useSocialLinks();
+  
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => isMenuOpen && setIsMenuOpen(false);
   const scrollToSection = (sectionId: string) => {
@@ -139,6 +144,19 @@ const MainLayout = ({
     isPage: true,
     path: "/valores"
   }];
+  
+  // Helper function to get the correct icon component
+  const getSocialIcon = (iconName: string) => {
+    const iconMap: Record<string, any> = {
+      'facebook': Facebook,
+      'instagram': Instagram,
+      'twitter': Twitter,
+      'linkedin': Linkedin
+    };
+    
+    return iconMap[iconName.toLowerCase()] || Facebook;
+  };
+  
   return <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 shadow-sm dark:shadow-gray-800">
         <div className="container mx-auto px-4">
@@ -220,18 +238,21 @@ const MainLayout = ({
                 Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável.
               </p>
               <div className="flex space-x-4">
-                {socialMediaLinks.map((social) => (
-                  <a 
-                    key={social.id} 
-                    href={social.href} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
-                    aria-label={social.label}
-                  >
-                    <social.icon size={20} />
-                  </a>
-                ))}
+                {socialLinks.map((social) => {
+                  const SocialIcon = getSocialIcon(social.icon);
+                  return (
+                    <a 
+                      key={social.id} 
+                      href={social.href} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
+                      aria-label={social.label}
+                    >
+                      <SocialIcon size={20} />
+                    </a>
+                  );
+                })}
               </div>
             </div>
 
