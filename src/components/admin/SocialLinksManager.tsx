@@ -66,15 +66,17 @@ const SocialLinksManager = () => {
     try {
       setSaving(true);
       
-      // Delete all existing links first
+      // Esta é a parte que está causando o erro - não podemos usar .gte('id', '0')
+      // Vamos simplesmente excluir sem filtro, já que a tabela social_links 
+      // serve apenas para esta funcionalidade
       const { error: deleteError } = await supabase
         .from('social_links')
         .delete()
-        .gte('id', '0'); // Delete all records
+        .neq('id', ''); // Este é um truque para excluir todos os registros
       
       if (deleteError) throw deleteError;
       
-      // Then insert all current links
+      // Então inserimos todos os links atuais
       if (socialLinks.length > 0) {
         const { error: insertError } = await supabase
           .from('social_links')
@@ -93,6 +95,10 @@ const SocialLinksManager = () => {
         title: "Links sociais salvos",
         description: "Os links foram atualizados com sucesso",
       });
+      
+      // Recarrega os links para obter os IDs atualizados do banco de dados
+      fetchSocialLinks();
+      
     } catch (error: any) {
       console.error('Error saving social links:', error);
       toast({
