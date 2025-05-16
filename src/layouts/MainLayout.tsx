@@ -144,10 +144,10 @@ const MainLayout = ({
     path: "/valores"
   }];
   
-  // Helper function to get the correct icon component - updated to properly handle all icon types
+  // Helper function to get the correct icon component
   const getSocialIcon = (iconName: string) => {
-    // Improved icon mapping - more comprehensive for various social networks
-    const iconMap: Record<string, any> = {
+    // Improved icon mapping with explicit imports
+    const iconMap: Record<string, React.ComponentType<any>> = {
       'facebook': Facebook,
       'instagram': Instagram,
       'x': X,
@@ -248,6 +248,7 @@ const MainLayout = ({
               </p>
               <div className="flex space-x-4">
                 {socialLinks.map((social) => {
+                  // Use the imported icons directly
                   const SocialIcon = getSocialIcon(social.icon);
                   return (
                     <a 
@@ -298,7 +299,6 @@ const MainLayout = ({
             <div>
               <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Contato</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-2">reciclamais25@gmail.com</p>
-              <p className="text-gray-600 dark:text-gray-300">+55 (11) 99999-9999</p>
             </div>
           </div>
 

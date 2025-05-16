@@ -28,9 +28,10 @@ export const useSocialLinks = () => {
       if (error) throw error;
 
       // Map database social links to the format expected by the layout
+      // Ensure icon names are normalized and lowercase for consistency
       const formattedLinks = (data || []).map(link => ({
         id: link.id,
-        icon: link.icon.toLowerCase(),
+        icon: link.icon ? link.icon.toLowerCase() : link.name.toLowerCase(),
         href: link.url, // Use url from database as href
         label: link.name
       }));
