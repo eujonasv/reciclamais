@@ -32,7 +32,7 @@ export const SocialLinkForm: React.FC<SocialLinkFormProps> = ({
     
     if (input.includes('instagram')) return 'instagram';
     if (input.includes('facebook')) return 'facebook';
-    if (input.includes('x.com') || input.includes('twitter')) return 'x';
+    if (input.includes('x.com') || input.includes('twitter') || input.includes('x')) return 'x';
     if (input.includes('linkedin')) return 'linkedin';
     if (input.includes('youtube')) return 'youtube';
     if (input.includes('tiktok')) return 'tiktok';

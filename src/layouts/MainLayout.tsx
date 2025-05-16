@@ -29,10 +29,10 @@ const socialMediaLinks: SocialMediaLink[] = [
     label: "Instagram" 
   },
   { 
-    id: "twitter", 
-    icon: Twitter, 
-    href: "https://twitter.com/reciclaplataforma", 
-    label: "Twitter" 
+    id: "x", 
+    icon: X, 
+    href: "https://x.com/reciclaplataforma", 
+    label: "X" 
   },
   { 
     id: "linkedin", 
@@ -149,7 +149,7 @@ const MainLayout = ({
       'facebook': Facebook,
       'instagram': Instagram,
       'x': X,
-      'twitter': X,
+      'twitter': X, // Support both 'twitter' and 'x' to maintain backward compatibility
       'linkedin': Linkedin
     };
     
