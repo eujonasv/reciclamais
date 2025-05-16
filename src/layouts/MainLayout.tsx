@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X as MenuX, Facebook, Instagram, Linkedin, ChevronUp, Lock, X } from "lucide-react";
+import { Menu, X as MenuX, Facebook, Instagram, Linkedin, ChevronUp, Lock, X, Youtube, Tiktok, MessageCircle } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 import { Button } from "@/components/ui/button";
@@ -143,17 +143,25 @@ const MainLayout = ({
     path: "/valores"
   }];
   
-  // Helper function to get the correct icon component - fixed to properly map icons
+  // Helper function to get the correct icon component - updated to properly handle all icon types
   const getSocialIcon = (iconName: string) => {
+    // Improved icon mapping - more comprehensive for various social networks
     const iconMap: Record<string, any> = {
       'facebook': Facebook,
       'instagram': Instagram,
       'x': X,
-      'twitter': X, // Support both 'twitter' and 'x' to maintain backward compatibility
-      'linkedin': Linkedin
+      'twitter': X,
+      'linkedin': Linkedin,
+      'youtube': Youtube,
+      'tiktok': Tiktok,
+      'whatsapp': MessageCircle,
+      'telegram': MessageCircle,
+      // Adicione outros ícones conforme necessário
     };
     
-    // Make case-insensitive comparison
+    // Make case-insensitive comparison and handle undefined
+    if (!iconName) return Facebook; // Default fallback
+    
     const normalizedIconName = iconName.toLowerCase();
     return iconMap[normalizedIconName] || Facebook;
   };
@@ -244,7 +252,7 @@ const MainLayout = ({
                   return (
                     <a 
                       key={social.id} 
-                      href={social.href} 
+                      href={social.url || social.href} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"

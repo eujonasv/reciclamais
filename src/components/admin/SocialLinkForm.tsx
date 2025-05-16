@@ -32,7 +32,7 @@ export const SocialLinkForm: React.FC<SocialLinkFormProps> = ({
     
     if (input.includes('instagram')) return 'instagram';
     if (input.includes('facebook')) return 'facebook';
-    if (input.includes('x.com') || input.includes('twitter') || input.includes('x')) return 'x';
+    if (input.includes('x.com') || input.includes('twitter') || input.includes(' x ') || input.includes(' x') || input.includes('x ')) return 'x';
     if (input.includes('linkedin')) return 'linkedin';
     if (input.includes('youtube')) return 'youtube';
     if (input.includes('tiktok')) return 'tiktok';
@@ -51,6 +51,8 @@ export const SocialLinkForm: React.FC<SocialLinkFormProps> = ({
     if (nameLower.includes('linkedin')) return 'https://linkedin.com/company/sua-empresa';
     if (nameLower.includes('youtube')) return 'https://youtube.com/c/seu-canal';
     if (nameLower.includes('tiktok')) return 'https://tiktok.com/@sua-conta';
+    if (nameLower.includes('whatsapp')) return 'https://wa.me/5500000000000';
+    if (nameLower.includes('telegram')) return 'https://t.me/seu-contato';
     return 'https://...';
   };
 
