@@ -28,7 +28,12 @@ const MainLayout = ({
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>("inicio");
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false);
-  const { socialLinks } = useSocialLinks();
+  const { socialLinks, refresh: refreshSocialLinks } = useSocialLinks();
+  
+  // Refresh social links when component mounts to ensure they're up to date
+  useEffect(() => {
+    refreshSocialLinks();
+  }, [refreshSocialLinks]);
   
   const toggleMenu = useCallback(() => setIsMenuOpen(!isMenuOpen), [isMenuOpen]);
   const closeMenu = useCallback(() => isMenuOpen && setIsMenuOpen(false), [isMenuOpen]);
@@ -147,6 +152,10 @@ const MainLayout = ({
   
   // Memoize the footer social links to prevent unnecessary rerenders
   const footerSocialLinks = useMemo(() => {
+    if (!socialLinks || socialLinks.length === 0) {
+      console.log("No social links found or using default links");
+    }
+    
     return socialLinks.map((social) => {
       // Use the imported icons directly
       const SocialIcon = getSocialIcon(social.icon);

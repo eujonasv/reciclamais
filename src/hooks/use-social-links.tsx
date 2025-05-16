@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 
@@ -42,6 +41,7 @@ export const useSocialLinks = () => {
   const [socialLinks, setSocialLinks] = useState<SocialMediaLink[]>(defaultSocialLinks);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [lastFetch, setLastFetch] = useState(0); // Track the last fetch time
 
   const fetchSocialLinks = async () => {
     try {
@@ -69,6 +69,8 @@ export const useSocialLinks = () => {
         setSocialLinks(formattedLinks);
       }
       // If no data, we already have default links set in useState
+      
+      setLastFetch(Date.now()); // Update the fetch timestamp
     } catch (err: any) {
       console.error('Error fetching social links:', err);
       setError(err.message);
@@ -80,6 +82,15 @@ export const useSocialLinks = () => {
 
   useEffect(() => {
     fetchSocialLinks();
+    
+    // Set up a polling mechanism to keep links in sync
+    const interval = setInterval(() => {
+      fetchSocialLinks();
+    }, 30000); // Check every 30 seconds
+    
+    return () => {
+      clearInterval(interval); // Clean up on unmount
+    };
   }, []);
 
   return { socialLinks, loading, error, refresh: fetchSocialLinks };

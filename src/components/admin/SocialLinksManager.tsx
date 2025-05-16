@@ -108,9 +108,11 @@ const SocialLinksManager = () => {
         description: "Os links foram atualizados com sucesso",
       });
       
-      // Atualizar links para obter IDs atualizados e atualizar links do site 
-      await fetchSocialLinks();
+      // Importante: atualizar imediatamente os links no rodapé
       await refreshSiteLinks();
+      
+      // Atualizar links para obter IDs atualizados
+      await fetchSocialLinks();
       
     } catch (error: any) {
       console.error('Error saving social links:', error);
