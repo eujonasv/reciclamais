@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X as MenuX, Facebook, Instagram, Twitter, X, Linkedin, ChevronUp, Lock } from "lucide-react";
+import { Menu, X as MenuX, Facebook, Instagram, Linkedin, ChevronUp, Lock, X } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 import { Button } from "@/components/ui/button";
@@ -143,17 +143,19 @@ const MainLayout = ({
     path: "/valores"
   }];
   
-  // Helper function to get the correct icon component
+  // Helper function to get the correct icon component - fixed to properly map icons
   const getSocialIcon = (iconName: string) => {
     const iconMap: Record<string, any> = {
       'facebook': Facebook,
       'instagram': Instagram,
-      'twitter': X,
       'x': X,
+      'twitter': X,
       'linkedin': Linkedin
     };
     
-    return iconMap[iconName.toLowerCase()] || Facebook;
+    // Make case-insensitive comparison
+    const normalizedIconName = iconName.toLowerCase();
+    return iconMap[normalizedIconName] || Facebook;
   };
   
   return <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
