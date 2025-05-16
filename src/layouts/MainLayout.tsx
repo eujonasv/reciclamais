@@ -1,6 +1,7 @@
+
 import React, { ReactNode, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X as MenuX, Facebook, Instagram, Linkedin, ChevronUp, Lock, X, Youtube, Tiktok, MessageCircle } from "lucide-react";
+import { Menu, X as MenuX, Facebook, Instagram, Linkedin, ChevronUp, Lock, X, Youtube, MessageCircle } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 import { Button } from "@/components/ui/button";
@@ -153,10 +154,9 @@ const MainLayout = ({
       'twitter': X,
       'linkedin': Linkedin,
       'youtube': Youtube,
-      'tiktok': Tiktok,
+      'tiktok': X,  // Using X icon as fallback since TikTok isn't available in lucide-react
       'whatsapp': MessageCircle,
       'telegram': MessageCircle,
-      // Adicione outros ícones conforme necessário
     };
     
     // Make case-insensitive comparison and handle undefined
@@ -252,7 +252,7 @@ const MainLayout = ({
                   return (
                     <a 
                       key={social.id} 
-                      href={social.url || social.href} 
+                      href={social.href} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"

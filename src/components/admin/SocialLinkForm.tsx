@@ -35,7 +35,7 @@ export const SocialLinkForm: React.FC<SocialLinkFormProps> = ({
     if (input.includes('x.com') || input.includes('twitter') || input.includes(' x ') || input.includes(' x') || input.includes('x ')) return 'x';
     if (input.includes('linkedin')) return 'linkedin';
     if (input.includes('youtube')) return 'youtube';
-    if (input.includes('tiktok')) return 'tiktok';
+    if (input.includes('tiktok')) return 'x'; // Changed to 'x' since TikTok isn't available in lucide-react
     if (input.includes('whatsapp')) return 'whatsapp';
     if (input.includes('telegram')) return 'telegram';
     

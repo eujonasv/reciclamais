@@ -31,7 +31,7 @@ export const useSocialLinks = () => {
       const formattedLinks = (data || []).map(link => ({
         id: link.id,
         icon: link.icon.toLowerCase(),
-        href: link.url,
+        href: link.url, // Use url from database as href
         label: link.name
       }));
 
