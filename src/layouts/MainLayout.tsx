@@ -1,5 +1,5 @@
 
-import React, { ReactNode, useState, useEffect } from "react";
+import React, { ReactNode, useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X as MenuX, Facebook, Instagram, Linkedin, ChevronUp, Lock, X, Youtube, MessageCircle } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -14,34 +14,6 @@ type SocialMediaLink = {
   href: string;
   label: string;
 };
-
-// Default social media links (you can easily update these links later)
-const socialMediaLinks: SocialMediaLink[] = [
-  { 
-    id: "facebook", 
-    icon: Facebook, 
-    href: "https://facebook.com/reciclaplataforma", 
-    label: "Facebook"
-  },
-  { 
-    id: "instagram", 
-    icon: Instagram, 
-    href: "https://instagram.com/reciclaplataforma", 
-    label: "Instagram" 
-  },
-  { 
-    id: "x", 
-    icon: X, 
-    href: "https://x.com/reciclaplataforma", 
-    label: "X" 
-  },
-  { 
-    id: "linkedin", 
-    icon: Linkedin, 
-    href: "https://linkedin.com/company/reciclaplataforma", 
-    label: "LinkedIn" 
-  },
-];
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -58,9 +30,10 @@ const MainLayout = ({
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false);
   const { socialLinks } = useSocialLinks();
   
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const closeMenu = () => isMenuOpen && setIsMenuOpen(false);
-  const scrollToSection = (sectionId: string) => {
+  const toggleMenu = useCallback(() => setIsMenuOpen(!isMenuOpen), [isMenuOpen]);
+  const closeMenu = useCallback(() => isMenuOpen && setIsMenuOpen(false), [isMenuOpen]);
+  
+  const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({
@@ -69,14 +42,19 @@ const MainLayout = ({
       setActiveSection(sectionId);
       closeMenu();
     }
-  };
-  const navigateToPage = (path: string) => {
+  }, [closeMenu]);
+  
+  const navigateToPage = useCallback((path: string) => {
     navigate(path);
     closeMenu();
-  };
-  const handleScroll = () => {
+  }, [navigate, closeMenu]);
+  
+  const handleScroll = useCallback(() => {
     const scrollY = window.scrollY;
     setShowScrollToTop(scrollY > 500);
+    
+    if (!isHome) return;
+    
     const sections = ["inicio", "sobre", "como-funciona", "mapa", "faq"];
     for (const section of sections) {
       const element = document.getElementById(section);
@@ -91,13 +69,14 @@ const MainLayout = ({
         }
       }
     }
-  };
-  const scrollToTop = () => {
+  }, [isHome]);
+  
+  const scrollToTop = useCallback(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth"
     });
-  };
+  }, []);
 
   // Scroll dinâmico baseado no hash da URL ao entrar na Home
   useEffect(() => {
@@ -120,9 +99,9 @@ const MainLayout = ({
     if (!isHome) return;
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isHome]);
+  }, [isHome, handleScroll]);
 
-  const navLinks = [{
+  const navLinks = useMemo(() => [{
     id: "inicio",
     text: "Início"
   }, {
@@ -142,10 +121,10 @@ const MainLayout = ({
     text: "Diretrizes Estratégicas",
     isPage: true,
     path: "/valores"
-  }];
+  }], []);
   
   // Helper function to get the correct icon component
-  const getSocialIcon = (iconName: string) => {
+  const getSocialIcon = useCallback((iconName: string) => {
     // Improved icon mapping with explicit imports
     const iconMap: Record<string, React.ComponentType<any>> = {
       'facebook': Facebook,
@@ -164,7 +143,27 @@ const MainLayout = ({
     
     const normalizedIconName = iconName.toLowerCase();
     return iconMap[normalizedIconName] || Facebook;
-  };
+  }, []);
+  
+  // Memoize the footer social links to prevent unnecessary rerenders
+  const footerSocialLinks = useMemo(() => {
+    return socialLinks.map((social) => {
+      // Use the imported icons directly
+      const SocialIcon = getSocialIcon(social.icon);
+      return (
+        <a 
+          key={social.id} 
+          href={social.href} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
+          aria-label={social.label}
+        >
+          <SocialIcon size={20} />
+        </a>
+      );
+    });
+  }, [socialLinks, getSocialIcon]);
   
   return <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 shadow-sm dark:shadow-gray-800">
@@ -247,22 +246,7 @@ const MainLayout = ({
                 Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável.
               </p>
               <div className="flex space-x-4">
-                {socialLinks.map((social) => {
-                  // Use the imported icons directly
-                  const SocialIcon = getSocialIcon(social.icon);
-                  return (
-                    <a 
-                      key={social.id} 
-                      href={social.href} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
-                      aria-label={social.label}
-                    >
-                      <SocialIcon size={20} />
-                    </a>
-                  );
-                })}
+                {footerSocialLinks}
               </div>
             </div>
 
