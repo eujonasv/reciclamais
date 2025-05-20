@@ -103,16 +103,22 @@ const SocialLinksManager = () => {
         }
       }
 
+      // Importante: atualizar imediatamente os links no rodapé
+      // E então esperar para ter certeza que os dados estão atualizados
+      await refreshSiteLinks();
+      
       toast({
         title: "Links sociais salvos",
         description: "Os links foram atualizados com sucesso",
       });
       
-      // Importante: atualizar imediatamente os links no rodapé
-      await refreshSiteLinks();
-      
       // Atualizar links para obter IDs atualizados
       await fetchSocialLinks();
+      
+      // Chamar novamente o refresh após um curto intervalo para garantir que o frontend esteja atualizado
+      setTimeout(() => {
+        refreshSiteLinks();
+      }, 1000);
       
     } catch (error: any) {
       console.error('Error saving social links:', error);

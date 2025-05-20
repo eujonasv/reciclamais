@@ -1,4 +1,3 @@
-
 import React, { ReactNode, useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X as MenuX, Facebook, Instagram, Linkedin, ChevronUp, Lock, X, Youtube, MessageCircle } from "lucide-react";
@@ -28,11 +27,23 @@ const MainLayout = ({
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>("inicio");
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false);
-  const { socialLinks, refresh: refreshSocialLinks } = useSocialLinks();
   
-  // Refresh social links when component mounts to ensure they're up to date
+  // Get social links with refresh function
+  const { socialLinks, refresh: refreshSocialLinks, loading: socialLinksLoading } = useSocialLinks();
+  
+  // Ensure social links are refreshed when component mounts and periodically
   useEffect(() => {
+    // Initial fetch
     refreshSocialLinks();
+    
+    // Set a regular refresh interval to keep footer links in sync
+    const refreshInterval = setInterval(() => {
+      refreshSocialLinks();
+    }, 30000); // Every 30 seconds
+    
+    return () => {
+      clearInterval(refreshInterval);
+    };
   }, [refreshSocialLinks]);
   
   const toggleMenu = useCallback(() => setIsMenuOpen(!isMenuOpen), [isMenuOpen]);
@@ -152,8 +163,12 @@ const MainLayout = ({
   
   // Memoize the footer social links to prevent unnecessary rerenders
   const footerSocialLinks = useMemo(() => {
+    // Log the current social links state for debugging
+    console.log("Current social links in MainLayout:", socialLinks);
+    
     if (!socialLinks || socialLinks.length === 0) {
       console.log("No social links found or using default links");
+      return [];
     }
     
     return socialLinks.map((social) => {
@@ -255,7 +270,24 @@ const MainLayout = ({
                 Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável.
               </p>
               <div className="flex space-x-4">
-                {footerSocialLinks}
+                {footerSocialLinks.length > 0 ? (
+                  footerSocialLinks
+                ) : (
+                  <>
+                    <a href="https://facebook.com/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
+                      <Facebook size={20} />
+                    </a>
+                    <a href="https://instagram.com/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
+                      <Instagram size={20} />
+                    </a>
+                    <a href="https://x.com/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
+                      <X size={20} />
+                    </a>
+                    <a href="https://linkedin.com/company/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
+                      <Linkedin size={20} />
+                    </a>
+                  </>
+                )}
               </div>
             </div>
 

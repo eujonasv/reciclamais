@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 
 // Define social media link structure
@@ -41,9 +42,10 @@ export const useSocialLinks = () => {
   const [socialLinks, setSocialLinks] = useState<SocialMediaLink[]>(defaultSocialLinks);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [lastFetch, setLastFetch] = useState(0); // Track the last fetch time
+  const [lastFetch, setLastFetch] = useState(0);
 
-  const fetchSocialLinks = async () => {
+  // Use useCallback to ensure the function reference remains stable
+  const fetchSocialLinks = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -67,8 +69,12 @@ export const useSocialLinks = () => {
         }));
 
         setSocialLinks(formattedLinks);
+        console.log("Social links updated from database:", formattedLinks);
+      } else {
+        // If no data, set to default links
+        setSocialLinks(defaultSocialLinks);
+        console.log("No social links found in database, using defaults");
       }
-      // If no data, we already have default links set in useState
       
       setLastFetch(Date.now()); // Update the fetch timestamp
     } catch (err: any) {
@@ -78,20 +84,35 @@ export const useSocialLinks = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
+  // Listen for database changes with Supabase realtime
   useEffect(() => {
     fetchSocialLinks();
     
-    // Set up a polling mechanism to keep links in sync
+    // Set up a shorter polling interval to ensure fresh data
     const interval = setInterval(() => {
       fetchSocialLinks();
-    }, 30000); // Check every 30 seconds
+    }, 15000); // Check every 15 seconds
+    
+    // Also set up a realtime subscription for immediate updates
+    const channel = supabase
+      .channel('public:social_links')
+      .on('postgres_changes', { 
+        event: '*', 
+        schema: 'public', 
+        table: 'social_links' 
+      }, () => {
+        console.log("Social links table changed, refreshing data");
+        fetchSocialLinks();
+      })
+      .subscribe();
     
     return () => {
-      clearInterval(interval); // Clean up on unmount
+      clearInterval(interval);
+      supabase.removeChannel(channel);
     };
-  }, []);
+  }, [fetchSocialLinks]);
 
   return { socialLinks, loading, error, refresh: fetchSocialLinks };
 };
