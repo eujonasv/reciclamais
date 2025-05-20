@@ -28,10 +28,12 @@ const SocialLinksManager = () => {
   const [saving, setSaving] = useState(false);
   const { refresh: refreshSiteLinks } = useSocialLinks();
 
+  // Load social links when component mounts
   useEffect(() => {
     fetchSocialLinks();
   }, []);
 
+  // Fetch social links from database
   const fetchSocialLinks = async () => {
     try {
       setLoading(true);
@@ -58,53 +60,47 @@ const SocialLinksManager = () => {
         description: error.message,
         variant: "destructive",
       });
+      // Fallback to default links on error
+      setSocialLinks(defaultSocialLinks.map(link => ({
+        ...link,
+        id: crypto.randomUUID()
+      })) as SocialLink[]);
     } finally {
       setLoading(false);
     }
   };
 
+  // Save social links to database
   const handleSave = async () => {
     try {
       setSaving(true);
       
-      // Método alternativo: em vez de tentar deletar tudo de uma vez, vamos fazer um método mais seguro
-      // Obter todos os IDs existentes
-      const { data: existingLinks } = await supabase
+      // First delete all existing links
+      const { error: deleteError } = await supabase
         .from('social_links')
-        .select('id');
+        .delete()
+        .neq('id', 'no-matching-id'); // This will delete all records
       
-      // Limpar a tabela completamente usando o delete all
-      if (existingLinks && existingLinks.length > 0) {
-        // Deletar um por um para evitar erros de sintaxe
-        for (const link of existingLinks) {
-          await supabase
-            .from('social_links')
-            .delete()
-            .eq('id', link.id);
-        }
-      }
+      if (deleteError) throw deleteError;
       
-      // Então inserir todos os links atuais com seus nomes e URLs
-      if (socialLinks.length > 0) {
-        const linksToInsert = socialLinks
-          .filter(link => link.name && link.url) // Só inserir links com nome e URL
-          .map(link => ({
-            name: link.name,
-            url: link.url,
-            icon: link.icon || link.name.toLowerCase()
-          }));
-          
-        if (linksToInsert.length > 0) {
-          const { error: insertError } = await supabase
-            .from('social_links')
-            .insert(linksToInsert);
-  
-          if (insertError) throw insertError;
-        }
+      // Then insert all current links
+      const linksToInsert = socialLinks
+        .filter(link => link.name && link.url) // Only insert links with name and URL
+        .map(link => ({
+          name: link.name,
+          url: link.url,
+          icon: link.icon || link.name.toLowerCase()
+        }));
+        
+      if (linksToInsert.length > 0) {
+        const { error: insertError } = await supabase
+          .from('social_links')
+          .insert(linksToInsert);
+
+        if (insertError) throw insertError;
       }
 
-      // Importante: atualizar imediatamente os links no rodapé
-      // E então esperar para ter certeza que os dados estão atualizados
+      // Refresh the site links to update the footer
       await refreshSiteLinks();
       
       toast({
@@ -112,13 +108,8 @@ const SocialLinksManager = () => {
         description: "Os links foram atualizados com sucesso",
       });
       
-      // Atualizar links para obter IDs atualizados
-      await fetchSocialLinks();
-      
-      // Chamar novamente o refresh após um curto intervalo para garantir que o frontend esteja atualizado
-      setTimeout(() => {
-        refreshSiteLinks();
-      }, 1000);
+      // Fetch updated links to get fresh IDs
+      fetchSocialLinks();
       
     } catch (error: any) {
       console.error('Error saving social links:', error);
@@ -132,6 +123,7 @@ const SocialLinksManager = () => {
     }
   };
 
+  // Update a social link
   const updateLink = (id: string, key: keyof SocialLink, value: string) => {
     setSocialLinks(links => 
       links.map(link => 
@@ -140,6 +132,7 @@ const SocialLinksManager = () => {
     );
   };
 
+  // Add a new social link
   const addNewLink = () => {
     const newLink: SocialLink = {
       id: crypto.randomUUID(),
@@ -150,10 +143,12 @@ const SocialLinksManager = () => {
     setSocialLinks([...socialLinks, newLink]);
   };
 
+  // Remove a social link
   const removeLink = (id: string) => {
     setSocialLinks(links => links.filter(link => link.id !== id));
   };
 
+  // Validate links before saving
   const validateLinks = () => {
     return socialLinks.every(link => link.name && link.url);
   };

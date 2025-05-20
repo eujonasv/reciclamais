@@ -1,26 +1,17 @@
+
 import React, { ReactNode, useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X as MenuX, Facebook, Instagram, Linkedin, ChevronUp, Lock, X, Youtube, MessageCircle } from "lucide-react";
+import { Menu, X, Facebook, Instagram, Linkedin, ChevronUp, Lock, MessageCircle, Youtube } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 import { Button } from "@/components/ui/button";
 import { useSocialLinks } from "@/hooks/use-social-links";
 
-// Define social media links structure
-type SocialMediaLink = {
-  id: string;
-  icon: React.ComponentType<any>;
-  href: string;
-  label: string;
-};
-
 interface MainLayoutProps {
   children: ReactNode;
 }
 
-const MainLayout = ({
-  children
-}: MainLayoutProps) => {
+const MainLayout = ({ children }: MainLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isHome = location.pathname === "/";
@@ -29,21 +20,11 @@ const MainLayout = ({
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false);
   
   // Get social links with refresh function
-  const { socialLinks, refresh: refreshSocialLinks, loading: socialLinksLoading } = useSocialLinks();
+  const { socialLinks, refresh: refreshSocialLinks } = useSocialLinks();
   
-  // Ensure social links are refreshed when component mounts and periodically
   useEffect(() => {
-    // Initial fetch
+    // Initial fetch to ensure links are loaded
     refreshSocialLinks();
-    
-    // Set a regular refresh interval to keep footer links in sync
-    const refreshInterval = setInterval(() => {
-      refreshSocialLinks();
-    }, 30000); // Every 30 seconds
-    
-    return () => {
-      clearInterval(refreshInterval);
-    };
   }, [refreshSocialLinks]);
   
   const toggleMenu = useCallback(() => setIsMenuOpen(!isMenuOpen), [isMenuOpen]);
@@ -94,7 +75,7 @@ const MainLayout = ({
     });
   }, []);
 
-  // Scroll dinâmico baseado no hash da URL ao entrar na Home
+  // Scroll based on URL hash when entering Home
   useEffect(() => {
     const hash = window.location.hash;
     if (isHome && hash) {
@@ -110,7 +91,7 @@ const MainLayout = ({
     }
   }, [isHome]);
 
-  // Ativar scroll listener só na home
+  // Enable scroll listener only on home
   useEffect(() => {
     if (!isHome) return;
     window.addEventListener("scroll", handleScroll);
@@ -141,7 +122,7 @@ const MainLayout = ({
   
   // Helper function to get the correct icon component
   const getSocialIcon = useCallback((iconName: string) => {
-    // Improved icon mapping with explicit imports
+    // Icon mapping with explicit imports
     const iconMap: Record<string, React.ComponentType<any>> = {
       'facebook': Facebook,
       'instagram': Instagram,
@@ -149,7 +130,7 @@ const MainLayout = ({
       'twitter': X,
       'linkedin': Linkedin,
       'youtube': Youtube,
-      'tiktok': X,  // Using X icon as fallback since TikTok isn't available in lucide-react
+      'tiktok': X,
       'whatsapp': MessageCircle,
       'telegram': MessageCircle,
     };
@@ -161,18 +142,29 @@ const MainLayout = ({
     return iconMap[normalizedIconName] || Facebook;
   }, []);
   
-  // Memoize the footer social links to prevent unnecessary rerenders
-  const footerSocialLinks = useMemo(() => {
-    // Log the current social links state for debugging
-    console.log("Current social links in MainLayout:", socialLinks);
-    
+  // Render social media links for the footer
+  const renderSocialLinks = useMemo(() => {
     if (!socialLinks || socialLinks.length === 0) {
-      console.log("No social links found or using default links");
-      return [];
+      // Default fallback links if no social links are available
+      return (
+        <>
+          <a href="https://facebook.com/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
+            <Facebook size={20} />
+          </a>
+          <a href="https://instagram.com/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
+            <Instagram size={20} />
+          </a>
+          <a href="https://x.com/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
+            <X size={20} />
+          </a>
+          <a href="https://linkedin.com/company/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
+            <Linkedin size={20} />
+          </a>
+        </>
+      );
     }
     
     return socialLinks.map((social) => {
-      // Use the imported icons directly
       const SocialIcon = getSocialIcon(social.icon);
       return (
         <a 
@@ -189,7 +181,8 @@ const MainLayout = ({
     });
   }, [socialLinks, getSocialIcon]);
   
-  return <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
+  return (
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 shadow-sm dark:shadow-gray-800">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center h-16">
@@ -200,30 +193,35 @@ const MainLayout = ({
             </div>
 
             <nav className="hidden md:flex items-center space-x-6">
-              {navLinks.map(({
-              id,
-              text,
-              isPage,
-              path
-            }) => <button key={id} onClick={() => {
-              if (isPage) {
-                navigateToPage(path!);
-              } else {
-                if (isHome) {
-                  scrollToSection(id);
-                } else {
-                  navigate(`/#${id}`);
-                }
-              }
-            }} className={`nav-link ${activeSection === id ? "active-nav-link" : ""}`}>
+              {navLinks.map(({id, text, isPage, path}) => (
+                <button 
+                  key={id} 
+                  onClick={() => {
+                    if (isPage) {
+                      navigateToPage(path!);
+                    } else {
+                      if (isHome) {
+                        scrollToSection(id);
+                      } else {
+                        navigate(`/#${id}`);
+                      }
+                    }
+                  }} 
+                  className={`nav-link ${activeSection === id ? "active-nav-link" : ""}`}
+                >
                   {text}
-                </button>)}
+                </button>
+              ))}
             </nav>
 
             <div className="flex items-center">
               <ThemeToggle />
-              <button className="ml-4 md:hidden rounded-md p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none" onClick={toggleMenu} aria-label="Menu">
-                {isMenuOpen ? <MenuX size={24} /> : <Menu size={24} />}
+              <button 
+                className="ml-4 md:hidden rounded-md p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none" 
+                onClick={toggleMenu} 
+                aria-label="Menu"
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
             </div>
           </div>
@@ -232,24 +230,29 @@ const MainLayout = ({
         <div className={`md:hidden ${isMenuOpen ? "block" : "hidden"} bg-white dark:bg-gray-900 shadow-md`}>
           <nav className="container mx-auto px-4 py-3">
             <div className="flex flex-col space-y-3">
-              {navLinks.map(({
-              id,
-              text,
-              isPage,
-              path
-            }) => <button key={id} onClick={() => {
-              if (isPage) {
-                navigateToPage(path!);
-              } else {
-                if (isHome) {
-                  scrollToSection(id);
-                } else {
-                  navigate(`/#${id}`);
-                }
-              }
-            }} className={`py-2 px-3 rounded-md text-left ${activeSection === id ? "bg-recicla-primary/10 text-recicla-primary dark:bg-recicla-primary/20 dark:text-recicla-secondary" : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"}`}>
+              {navLinks.map(({id, text, isPage, path}) => (
+                <button 
+                  key={id} 
+                  onClick={() => {
+                    if (isPage) {
+                      navigateToPage(path!);
+                    } else {
+                      if (isHome) {
+                        scrollToSection(id);
+                      } else {
+                        navigate(`/#${id}`);
+                      }
+                    }
+                  }} 
+                  className={`py-2 px-3 rounded-md text-left ${
+                    activeSection === id 
+                      ? "bg-recicla-primary/10 text-recicla-primary dark:bg-recicla-primary/20 dark:text-recicla-secondary" 
+                      : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
+                >
                   {text}
-                </button>)}
+                </button>
+              ))}
             </div>
           </nav>
         </div>
@@ -270,48 +273,31 @@ const MainLayout = ({
                 Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável.
               </p>
               <div className="flex space-x-4">
-                {footerSocialLinks.length > 0 ? (
-                  footerSocialLinks
-                ) : (
-                  <>
-                    <a href="https://facebook.com/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-                      <Facebook size={20} />
-                    </a>
-                    <a href="https://instagram.com/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-                      <Instagram size={20} />
-                    </a>
-                    <a href="https://x.com/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-                      <X size={20} />
-                    </a>
-                    <a href="https://linkedin.com/company/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-                      <Linkedin size={20} />
-                    </a>
-                  </>
-                )}
+                {renderSocialLinks}
               </div>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Links Rápidos</h3>
               <ul className="space-y-2">
-                {navLinks.map(({
-                id,
-                text,
-                isPage,
-                path
-              }) => <li key={id}>
-                    <button onClick={() => {
-                  if (isPage) {
-                    navigateToPage(path!);
-                  } else if (isHome) {
-                    scrollToSection(id);
-                  } else {
-                    navigate(`/#${id}`);
-                  }
-                }} className="text-gray-600 dark:text-gray-300 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
+                {navLinks.map(({id, text, isPage, path}) => (
+                  <li key={id}>
+                    <button 
+                      onClick={() => {
+                        if (isPage) {
+                          navigateToPage(path!);
+                        } else if (isHome) {
+                          scrollToSection(id);
+                        } else {
+                          navigate(`/#${id}`);
+                        }
+                      }} 
+                      className="text-gray-600 dark:text-gray-300 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
+                    >
                       {text}
                     </button>
-                  </li>)}
+                  </li>
+                ))}
                 <li>
                   <Link to="/admin" className="flex items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
                     <Lock size={16} />
@@ -335,10 +321,17 @@ const MainLayout = ({
         </div>
       </footer>
 
-      <button onClick={scrollToTop} className={`fixed right-6 bottom-6 bg-recicla-primary hover:bg-recicla-accent dark:bg-recicla-secondary dark:hover:bg-recicla-primary text-white rounded-full p-2 shadow-lg transition-all duration-300 ${showScrollToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"}`} aria-label="Voltar ao topo">
+      <button 
+        onClick={scrollToTop} 
+        className={`fixed right-6 bottom-6 bg-recicla-primary hover:bg-recicla-accent dark:bg-recicla-secondary dark:hover:bg-recicla-primary text-white rounded-full p-2 shadow-lg transition-all duration-300 ${
+          showScrollToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+        }`} 
+        aria-label="Voltar ao topo"
+      >
         <ChevronUp size={24} />
       </button>
-    </div>;
+    </div>
+  );
 };
 
 export default MainLayout;

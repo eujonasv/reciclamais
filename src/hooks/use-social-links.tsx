@@ -40,11 +40,10 @@ const defaultSocialLinks: SocialMediaLink[] = [
 
 export const useSocialLinks = () => {
   const [socialLinks, setSocialLinks] = useState<SocialMediaLink[]>(defaultSocialLinks);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [lastFetch, setLastFetch] = useState(0);
 
-  // Use useCallback to ensure the function reference remains stable
+  // Fetch social links from the database
   const fetchSocialLinks = useCallback(async () => {
     try {
       setLoading(true);
@@ -60,44 +59,35 @@ export const useSocialLinks = () => {
       // If we have data from the database, use it
       if (data && data.length > 0) {
         // Map database social links to the format expected by the layout
-        // Ensure icon names are normalized and lowercase for consistency
         const formattedLinks = data.map(link => ({
           id: link.id,
-          icon: link.icon ? link.icon.toLowerCase() : link.name.toLowerCase(),
-          href: link.url, // Use url from database as href
+          icon: link.icon?.toLowerCase() || link.name.toLowerCase(),
+          href: link.url,
           label: link.name
         }));
 
         setSocialLinks(formattedLinks);
-        console.log("Social links updated from database:", formattedLinks);
       } else {
         // If no data, set to default links
         setSocialLinks(defaultSocialLinks);
-        console.log("No social links found in database, using defaults");
       }
-      
-      setLastFetch(Date.now()); // Update the fetch timestamp
     } catch (err: any) {
       console.error('Error fetching social links:', err);
       setError(err.message);
-      // Default links are already set in useState, so we don't need to set them again
+      // Fallback to default links on error
+      setSocialLinks(defaultSocialLinks);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // Listen for database changes with Supabase realtime
+  // Set up initial fetch and realtime subscription
   useEffect(() => {
     fetchSocialLinks();
     
-    // Set up a shorter polling interval to ensure fresh data
-    const interval = setInterval(() => {
-      fetchSocialLinks();
-    }, 15000); // Check every 15 seconds
-    
-    // Also set up a realtime subscription for immediate updates
+    // Set up a realtime subscription for immediate updates
     const channel = supabase
-      .channel('public:social_links')
+      .channel('social-links-changes')
       .on('postgres_changes', { 
         event: '*', 
         schema: 'public', 
@@ -109,7 +99,6 @@ export const useSocialLinks = () => {
       .subscribe();
     
     return () => {
-      clearInterval(interval);
       supabase.removeChannel(channel);
     };
   }, [fetchSocialLinks]);
