@@ -4,7 +4,7 @@ import { MapIcon } from 'lucide-react';
 import RecycleLogo from './RecycleLogo';
 import SearchAndFilters from './map/SearchAndFilters';
 import CollectionPointCard from './map/CollectionPointCard';
-import CollectionMap from './map/CollectionMap';
+import EnhancedCollectionMap from './map/EnhancedCollectionMap';
 import { CollectionPoint } from '@/types/collection-point';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -246,7 +246,7 @@ const MapSection = () => {
                   }}
                 >
                   {/* Fornece o mapRef para invalidateSize no mobile */}
-                  <CollectionMap
+                  <EnhancedCollectionMap
                     collectionPoints={filteredPoints}
                     selectedPoint={selectedPoint}
                     onMarkerClick={handlePointSelect}
@@ -255,9 +255,6 @@ const MapSection = () => {
                 </div>
               </>
             )}
-
-            {/* MAPA - DESKTOP MESMO SEM BOTÃO */}
-            {/* O mapa acima já cobre md+: sempre aberto, sem botão */}
 
             {filteredPoints.length === 0 && (
               <div className="flex flex-col items-center justify-center py-12">
@@ -319,4 +316,3 @@ const MapSection = () => {
 };
 
 export default MapSection;
-

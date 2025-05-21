@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import AdminPage from "./pages/admin";
 import AuthPage from "./pages/auth";
 import ValuesPage from "./pages/Values";
+import EducationPage from "./pages/Educacao";
 import { AuthProvider } from "./hooks/use-auth";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
               <Route path="/valores" element={<ValuesPage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/auth" element={<AuthPage />} />
+              <Route path="/educacao" element={<EducationPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>

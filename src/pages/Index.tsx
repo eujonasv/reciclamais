@@ -6,6 +6,7 @@ import AboutSection from "@/components/AboutSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import MapSection from "@/components/MapSection";
 import FaqSection from "@/components/FaqSection";
+import EducationalSection from "@/components/EducationalSection";
 
 // Import fonts
 import "@fontsource-variable/montserrat";
@@ -18,6 +19,7 @@ const Index = () => {
       <AboutSection />
       <HowItWorksSection />
       <MapSection />
+      <EducationalSection />
       <FaqSection />
     </MainLayout>
   );

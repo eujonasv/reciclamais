@@ -1,4 +1,3 @@
-
 import React, { ReactNode, useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, Instagram, ChevronUp, Lock } from "lucide-react";
@@ -43,7 +42,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     
     if (!isHome) return;
     
-    const sections = ["inicio", "sobre", "como-funciona", "mapa", "faq"];
+    const sections = ["inicio", "sobre", "como-funciona", "mapa", "educacao", "faq"];
     for (const section of sections) {
       const element = document.getElementById(section);
       if (element) {
@@ -101,6 +100,11 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   }, {
     id: "mapa",
     text: "Mapa"
+  }, {
+    id: "educacao", 
+    text: "Educação",
+    isPage: true,
+    path: "/educacao"
   }, {
     id: "faq",
     text: "FAQ"
