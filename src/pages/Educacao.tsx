@@ -4,7 +4,7 @@ import MainLayout from "@/layouts/MainLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { Book, FileText, Video, BookOpen } from "lucide-react";
+import { Book, Video, Trophy, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const EducationPage = () => {
@@ -35,18 +35,15 @@ const EducationPage = () => {
 
         <Tabs defaultValue="dicas" className="w-full">
           <div className="flex justify-center mb-8">
-            <TabsList className="grid grid-cols-1 md:grid-cols-4 max-w-3xl">
+            <TabsList className="grid grid-cols-1 md:grid-cols-3 max-w-3xl">
               <TabsTrigger value="dicas" className="flex items-center gap-2">
                 <Book size={18} /> Dicas Rápidas
-              </TabsTrigger>
-              <TabsTrigger value="artigos" className="flex items-center gap-2">
-                <FileText size={18} /> Artigos
               </TabsTrigger>
               <TabsTrigger value="videos" className="flex items-center gap-2">
                 <Video size={18} /> Vídeos
               </TabsTrigger>
-              <TabsTrigger value="cursos" className="flex items-center gap-2">
-                <BookOpen size={18} /> Mini Cursos
+              <TabsTrigger value="desafios" className="flex items-center gap-2">
+                <Trophy size={18} /> Desafios Sustentáveis
               </TabsTrigger>
             </TabsList>
           </div>
@@ -74,109 +71,84 @@ const EducationPage = () => {
             </motion.div>
           </TabsContent>
 
-          {/* Artigos */}
-          <TabsContent value="artigos">
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
-              variants={container}
-              initial="hidden"
-              animate="show"
-            >
-              {artigos.map((artigo, index) => (
-                <motion.div key={index} variants={item}>
-                  <Card className="h-full overflow-hidden border border-gray-200 dark:border-gray-800 hover:shadow-md transition-shadow">
-                    {artigo.imagem && (
-                      <div className="w-full aspect-video overflow-hidden">
-                        <img 
-                          src={artigo.imagem} 
-                          alt={artigo.titulo} 
-                          className="w-full h-full object-cover transition-transform hover:scale-105"
-                        />
-                      </div>
-                    )}
-                    <CardHeader>
-                      <CardTitle className="text-recicla-primary dark:text-recicla-secondary">{artigo.titulo}</CardTitle>
-                      <CardDescription>{artigo.data}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600 dark:text-gray-300 line-clamp-3">{artigo.resumo}</p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" size="sm" className="hover:bg-recicla-primary/10 hover:text-recicla-primary dark:hover:bg-recicla-secondary/10 dark:hover:text-recicla-secondary">
-                        Ler artigo completo
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-          </TabsContent>
-
           {/* Vídeos */}
           <TabsContent value="videos">
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
-              variants={container}
-              initial="hidden"
-              animate="show"
-            >
-              {videos.map((video, index) => (
-                <motion.div key={index} variants={item}>
-                  <Card className="h-full overflow-hidden border border-gray-200 dark:border-gray-800 hover:shadow-md transition-shadow">
-                    <div className="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
-                      <iframe 
-                        width="100%" 
-                        height="100%" 
-                        src={`https://www.youtube.com/embed/${video.youtubeId}`} 
-                        title="YouTube video player" 
-                        frameBorder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowFullScreen
-                        className="rounded-t"
-                      ></iframe>
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="text-lg text-recicla-primary dark:text-recicla-secondary">{video.titulo}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">{video.descricao}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
+            <div className="mb-8 flex flex-col items-center">
+              <Button 
+                className="mb-8 bg-red-600 hover:bg-red-700 text-white flex items-center gap-2 px-6 py-2"
+                size="lg"
+                onClick={() => window.open("https://youtube.com/playlist?list=PLg2w_vYQQuDYSCOxXK0beBdyohQcXW5XG&si=L9s84c4CWaxu9_UJ", "_blank")}
+              >
+                <Youtube size={24} /> Acessar Nossa Playlist Completa no YouTube
+              </Button>
+              
+              <motion.div 
+                className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full"
+                variants={container}
+                initial="hidden"
+                animate="show"
+              >
+                {videos.map((video, index) => (
+                  <motion.div key={index} variants={item}>
+                    <Card className="h-full overflow-hidden border border-gray-200 dark:border-gray-800 hover:shadow-md transition-shadow">
+                      <div className="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+                        <iframe 
+                          width="100%" 
+                          height="100%" 
+                          src={`https://www.youtube.com/embed/${video.youtubeId}`} 
+                          title="YouTube video player" 
+                          frameBorder="0" 
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                          allowFullScreen
+                          className="rounded-t"
+                        ></iframe>
+                      </div>
+                      <CardHeader>
+                        <CardTitle className="text-lg text-recicla-primary dark:text-recicla-secondary">{video.titulo}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">{video.descricao}</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
           </TabsContent>
 
-          {/* Mini Cursos */}
-          <TabsContent value="cursos">
+          {/* Desafios Sustentáveis */}
+          <TabsContent value="desafios">
             <motion.div 
               className="grid grid-cols-1 md:grid-cols-3 gap-8"
               variants={container}
               initial="hidden"
               animate="show"
             >
-              {cursos.map((curso, index) => (
+              {desafios.map((desafio, index) => (
                 <motion.div key={index} variants={item}>
                   <Card className="h-full overflow-hidden border border-gray-200 dark:border-gray-800 hover:shadow-md transition-shadow">
                     <div className="w-full aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-800">
                       <img 
-                        src={curso.imagem || 'https://via.placeholder.com/400x300?text=Curso+Reciclagem'} 
-                        alt={curso.titulo} 
+                        src={desafio.imagem || 'https://via.placeholder.com/400x300?text=Desafio+Sustentável'} 
+                        alt={desafio.titulo} 
                         className="w-full h-full object-cover transition-transform hover:scale-105"
                       />
                     </div>
                     <CardHeader>
-                      <CardTitle className="text-recicla-primary dark:text-recicla-secondary">{curso.titulo}</CardTitle>
+                      <CardTitle className="text-recicla-primary dark:text-recicla-secondary">{desafio.titulo}</CardTitle>
                       <CardDescription className="flex items-center gap-2">
-                        <span>Duração: {curso.duracao}</span>
+                        <span>Duração: {desafio.duracao}</span>
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-600 dark:text-gray-300 mb-4">{curso.descricao}</p>
+                      <p className="text-gray-600 dark:text-gray-300 mb-4">{desafio.descricao}</p>
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {curso.topicos.map((topico, i) => (
+                        <span className="text-xs bg-green-100 dark:bg-green-800/30 text-green-800 dark:text-green-300 px-2 py-1 rounded">
+                          Nível: {desafio.nivel}
+                        </span>
+                        {desafio.tags.map((tag, i) => (
                           <span key={i} className="text-xs bg-recicla-primary/10 dark:bg-recicla-secondary/10 text-recicla-primary dark:text-recicla-secondary px-2 py-1 rounded">
-                            {topico}
+                            {tag}
                           </span>
                         ))}
                       </div>
@@ -185,7 +157,7 @@ const EducationPage = () => {
                       <Button 
                         className="w-full bg-recicla-primary hover:bg-recicla-accent dark:bg-recicla-secondary dark:hover:bg-recicla-primary text-white"
                       >
-                        Acessar Curso
+                        Participar do Desafio
                       </Button>
                     </CardFooter>
                   </Card>
@@ -227,33 +199,6 @@ const dicas = [
   }
 ];
 
-const artigos = [
-  {
-    titulo: "O impacto da reciclagem na redução da poluição dos oceanos",
-    data: "15/04/2025",
-    resumo: "Este artigo discute como programas eficientes de reciclagem podem reduzir significativamente a quantidade de plásticos que chegam aos oceanos, protegendo a vida marinha e preservando ecossistemas aquáticos.",
-    imagem: "https://images.unsplash.com/photo-1578354905614-7d424fd08ce9?q=80&w=1000&auto=format&fit=crop"
-  },
-  {
-    titulo: "Economia circular: repensando o ciclo de produção e consumo",
-    data: "27/03/2025",
-    resumo: "Exploramos o conceito de economia circular e como ela propõe um novo modelo econômico que visa eliminar resíduos e poluição, manter produtos e materiais em uso e regenerar sistemas naturais.",
-    imagem: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=1000&auto=format&fit=crop"
-  },
-  {
-    titulo: "Inovações tecnológicas na indústria da reciclagem",
-    data: "10/03/2025",
-    resumo: "Conheça as mais recentes tecnologias que estão revolucionando o setor de reciclagem, desde sistemas de triagem automatizados até novos processos de transformação de materiais difíceis de reciclar.",
-    imagem: "https://images.unsplash.com/photo-1616686772783-a5d155238dac?q=80&w=1000&auto=format&fit=crop"
-  },
-  {
-    titulo: "Políticas públicas para incentivo à reciclagem no Brasil",
-    data: "02/03/2025",
-    resumo: "Análise das políticas públicas brasileiras voltadas para a gestão de resíduos sólidos e reciclagem, desafios da implementação da Política Nacional de Resíduos Sólidos e casos de sucesso.",
-    imagem: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1000&auto=format&fit=crop"
-  }
-];
-
 const videos = [
   {
     titulo: "Como montar uma composteira caseira",
@@ -277,27 +222,30 @@ const videos = [
   }
 ];
 
-const cursos = [
+const desafios = [
   {
-    titulo: "Introdução à Sustentabilidade",
-    duracao: "2 semanas",
-    descricao: "Curso introdutório sobre os princípios básicos da sustentabilidade, abordando temas como consumo consciente e redução de impacto ambiental.",
-    topicos: ["Consumo Consciente", "Pegada Ecológica", "ODS"],
-    imagem: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1000&auto=format&fit=crop"
+    titulo: "7 Dias Sem Plástico",
+    duracao: "1 semana",
+    descricao: "Viva por uma semana sem utilizar produtos plásticos descartáveis. Substitua itens como sacolas, canudos e embalagens por alternativas sustentáveis.",
+    nivel: "Iniciante",
+    tags: ["Redução de Resíduos", "Consumo Consciente"],
+    imagem: "https://images.unsplash.com/photo-1605600659726-65d3571ed334?q=80&w=1000&auto=format&fit=crop"
   },
   {
-    titulo: "Reciclagem Avançada",
-    duracao: "3 semanas",
-    descricao: "Aprenda técnicas avançadas de separação de materiais e reciclagem, incluindo como criar um sistema eficiente em casa ou no trabalho.",
-    topicos: ["Triagem", "Compostagem", "Upcycling"],
-    imagem: "https://images.unsplash.com/photo-1604187351574-c75ca79f5807?q=80&w=1000&auto=format&fit=crop"
+    titulo: "Compostagem Caseira",
+    duracao: "1 mês",
+    descricao: "Crie sua própria composteira em casa e reduza o volume de resíduos orgânicos que vão para o lixo comum, transformando-os em adubo para plantas.",
+    nivel: "Intermediário",
+    tags: ["Compostagem", "Resíduo Orgânico"],
+    imagem: "https://images.unsplash.com/photo-1591130661095-a3bbfa1ff2b2?q=80&w=1000&auto=format&fit=crop"
   },
   {
-    titulo: "Gestão de Resíduos Sólidos",
-    duracao: "4 semanas",
-    descricao: "Curso técnico sobre os principais aspectos da gestão de resíduos sólidos, legislação ambiental e responsabilidade compartilhada.",
-    topicos: ["Legislação", "Logística Reversa", "Responsabilidade Estendida"],
-    imagem: "https://images.unsplash.com/photo-1528190336454-13cd56b45b5a?q=80&w=1000&auto=format&fit=crop"
+    titulo: "Guarda-roupa Sustentável",
+    duracao: "3 meses",
+    descricao: "Desafie-se a não comprar nenhuma peça de roupa nova por três meses, optando por reparar, customizar, trocar ou comprar em brechós quando necessário.",
+    nivel: "Avançado",
+    tags: ["Moda Circular", "Consumo Zero"],
+    imagem: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=1000&auto=format&fit=crop"
   }
 ];
 

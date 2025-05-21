@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Book } from 'lucide-react';
+import { Book, Trophy, Video } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import RecycleLogo from './RecycleLogo';
 
@@ -22,12 +22,12 @@ const EducationalSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {educationalResources.map((resource, index) => (
             <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700">
               <CardHeader className="bg-recicla-primary/5 dark:bg-recicla-secondary/10 pb-2">
                 <CardTitle className="text-lg font-semibold text-recicla-primary dark:text-recicla-secondary flex items-center gap-2">
-                  <Book size={18} />
+                  {resource.icon}
                   {resource.title}
                 </CardTitle>
               </CardHeader>
@@ -68,19 +68,18 @@ const EducationalSection = () => {
 const educationalResources = [
   {
     title: 'Dicas Rápidas',
-    description: 'Dicas práticas e rápidas sobre reciclagem, compostagem e consumo consciente para seu dia a dia.'
-  },
-  {
-    title: 'Artigos',
-    description: 'Artigos informativos sobre sustentabilidade, economia circular e práticas ambientais responsáveis.'
+    description: 'Dicas práticas e rápidas sobre reciclagem, compostagem e consumo consciente para seu dia a dia.',
+    icon: <Book size={18} />
   },
   {
     title: 'Vídeos',
-    description: 'Tutoriais, documentários e vídeos educativos sobre diferentes aspectos da reciclagem e meio ambiente.'
+    description: 'Tutoriais, documentários e vídeos educativos sobre diferentes aspectos da reciclagem e meio ambiente.',
+    icon: <Video size={18} />
   },
   {
-    title: 'Mini Cursos',
-    description: 'Cursos online gratuitos para aprofundar seus conhecimentos em gestão de resíduos e sustentabilidade.'
+    title: 'Desafios Sustentáveis',
+    description: 'Participe de desafios semanais para reduzir sua pegada ambiental e aprender práticas sustentáveis de forma divertida.',
+    icon: <Trophy size={18} />
   }
 ];
 
