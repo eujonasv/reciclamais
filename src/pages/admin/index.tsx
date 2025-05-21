@@ -7,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from '@/hooks/use-mobile';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { useAuth } from '@/hooks/use-auth';
-import SocialLinksManager from '@/components/admin/SocialLinksManager';
 import { LogOut } from 'lucide-react';
 
 const AdminPage = () => {
@@ -27,29 +26,9 @@ const AdminPage = () => {
             </Button>
           </div>
 
-          <Tabs
-            defaultValue="map"
-            value={activeTab}
-            onValueChange={setActiveTab}
-            className="w-full"
-          >
-            <div className="border-b mb-4">
-              <TabsList className="mb-0">
-                <TabsTrigger value="map">Pontos de Coleta</TabsTrigger>
-                <TabsTrigger value="social">Redes Sociais</TabsTrigger>
-              </TabsList>
-            </div>
-            
-            <TabsContent value="map" className="mt-0">
-              <AdminMap isMobile={isMobile} />
-            </TabsContent>
-            
-            <TabsContent value="social" className="mt-0">
-              <div className="max-w-3xl mx-auto">
-                <SocialLinksManager />
-              </div>
-            </TabsContent>
-          </Tabs>
+          <div className="w-full">
+            <AdminMap isMobile={isMobile} />
+          </div>
         </div>
       </MainLayout>
     </ProtectedRoute>

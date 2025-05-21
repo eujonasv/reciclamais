@@ -1,11 +1,10 @@
 
 import React, { ReactNode, useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, Facebook, Instagram, Linkedin, ChevronUp, Lock, MessageCircle, Youtube } from "lucide-react";
+import { Menu, X, Instagram, ChevronUp, Lock } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 import { Button } from "@/components/ui/button";
-import { useSocialLinks } from "@/hooks/use-social-links";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -18,14 +17,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>("inicio");
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false);
-  
-  // Get social links with refresh function
-  const { socialLinks, refresh: refreshSocialLinks } = useSocialLinks();
-  
-  useEffect(() => {
-    // Initial fetch to ensure links are loaded
-    refreshSocialLinks();
-  }, [refreshSocialLinks]);
   
   const toggleMenu = useCallback(() => setIsMenuOpen(!isMenuOpen), [isMenuOpen]);
   const closeMenu = useCallback(() => isMenuOpen && setIsMenuOpen(false), [isMenuOpen]);
@@ -120,67 +111,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     path: "/valores"
   }], []);
   
-  // Helper function to get the correct icon component
-  const getSocialIcon = useCallback((iconName: string) => {
-    // Icon mapping with explicit imports
-    const iconMap: Record<string, React.ComponentType<any>> = {
-      'facebook': Facebook,
-      'instagram': Instagram,
-      'x': X,
-      'twitter': X,
-      'linkedin': Linkedin,
-      'youtube': Youtube,
-      'tiktok': X,
-      'whatsapp': MessageCircle,
-      'telegram': MessageCircle,
-    };
-    
-    // Make case-insensitive comparison and handle undefined
-    if (!iconName) return Facebook; // Default fallback
-    
-    const normalizedIconName = iconName.toLowerCase();
-    return iconMap[normalizedIconName] || Facebook;
-  }, []);
-  
-  // Render social media links for the footer
-  const renderSocialLinks = useMemo(() => {
-    if (!socialLinks || socialLinks.length === 0) {
-      // Default fallback links if no social links are available
-      return (
-        <>
-          <a href="https://facebook.com/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-            <Facebook size={20} />
-          </a>
-          <a href="https://instagram.com/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-            <Instagram size={20} />
-          </a>
-          <a href="https://x.com/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-            <X size={20} />
-          </a>
-          <a href="https://linkedin.com/company/reciclaplataforma" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-            <Linkedin size={20} />
-          </a>
-        </>
-      );
-    }
-    
-    return socialLinks.map((social) => {
-      const SocialIcon = getSocialIcon(social.icon);
-      return (
-        <a 
-          key={social.id} 
-          href={social.href} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
-          aria-label={social.label}
-        >
-          <SocialIcon size={20} />
-        </a>
-      );
-    });
-  }, [socialLinks, getSocialIcon]);
-  
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 shadow-sm dark:shadow-gray-800">
@@ -273,7 +203,15 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                 Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável.
               </p>
               <div className="flex space-x-4">
-                {renderSocialLinks}
+                <a 
+                  href="https://www.instagram.com/reciclamais.br/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
+                  aria-label="Instagram"
+                >
+                  <Instagram size={20} />
+                </a>
               </div>
             </div>
 
