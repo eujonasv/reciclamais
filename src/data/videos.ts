@@ -7,24 +7,24 @@ export interface VideoData {
 
 export const videos: VideoData[] = [
   {
-    titulo: "Como montar uma composteira caseira",
-    descricao: "Aprenda passo a passo como montar sua própria composteira em casa usando materiais simples e acessíveis.",
-    youtubeId: "LkF5d_X47lg"
+    titulo: "O que é Educação Ambiental?",
+    descricao: "Um vídeo introdutório que explica de forma clara o conceito de educação ambiental, com exemplos práticos e acessíveis.",
+    youtubeId: "oV3pK3SOjxo"
   },
   {
-    titulo: "Reciclagem criativa: transformando garrafas em objetos úteis",
-    descricao: "Ideias criativas para transformar garrafas PET e de vidro em objetos decorativos e úteis para o seu dia a dia.",
-    youtubeId: "XhzFkBGAZ_o"
+    titulo: "Eficiência Energética com Energia Solar",
+    descricao: "Este vídeo apresenta dicas sobre como aproveitar a energia solar para economizar energia elétrica, promovendo a eficiência energética.",
+    youtubeId: "cy4Bds51Cs8"
   },
   {
-    titulo: "Os benefícios ambientais da coleta seletiva",
-    descricao: "Especialistas explicam como a coleta seletiva ajuda a reduzir o impacto ambiental e economizar recursos naturais.",
-    youtubeId: "GK-0Ix7D1jM"
+    titulo: "Como Reduzir o Desperdício de Alimentos",
+    descricao: "Aprenda como reduzir o desperdício de alimentos com práticas simples e eficazes, contribuindo para a sustentabilidade.",
+    youtubeId: "7GQBzPV-kJo"
   },
   {
-    titulo: "Documentário: A jornada do lixo",
-    descricao: "Acompanhe o percurso dos resíduos desde o descarte até o destino final, entendendo os desafios da gestão de resíduos.",
-    youtubeId: "4FVRAxlBnQ8"
+    titulo: "Compostagem: Como Funciona e Por que Fazer",
+    descricao: "Descubra as vantagens da compostagem e como essa prática pode beneficiar o meio ambiente e a gestão de resíduos.",
+    youtubeId: "h4gXUvyCZYA"
   }
 ];
 
