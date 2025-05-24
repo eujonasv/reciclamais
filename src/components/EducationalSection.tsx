@@ -72,14 +72,14 @@ const educationalResources = [
     icon: <Book size={18} />
   },
   {
+    title: 'Guia Rápido',
+    description: 'Guia prático para começar uma vida sustentável com ações simples e aplicáveis no dia a dia.',
+    icon: <Sprout size={18} />
+  },
+  {
     title: 'Vídeos',
     description: 'Tutoriais, documentários e vídeos educativos sobre diferentes aspectos da reciclagem e meio ambiente.',
     icon: <Video size={18} />
-  },
-  {
-    title: 'Como Começar?',
-    description: 'Guias práticos e ilustrados para iniciantes que querem começar a fazer a diferença no dia a dia de forma simples.',
-    icon: <Sprout size={18} />
   }
 ];
 
