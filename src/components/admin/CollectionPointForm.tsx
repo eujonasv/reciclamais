@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MapPin, Search } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -34,7 +33,7 @@ const formSchema = z.object({
   address: z.string().min(5, "O endereço deve ter pelo menos 5 caracteres"),
   latitude: z.coerce.number(),
   longitude: z.coerce.number(),
-  phone: z.string().min(8, "O número de telefone deve ter pelo menos 8 caracteres"),
+  phone: z.string().optional(),
   website: z.string().optional(),
   materials: z.array(z.string()).default([])
 });
@@ -251,7 +250,7 @@ export const CollectionPointForm: React.FC<CollectionPointFormProps> = ({
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Telefone</FormLabel>
+              <FormLabel>Telefone (opcional)</FormLabel>
               <FormControl>
                 <Input placeholder="Número de telefone" {...field} />
               </FormControl>
