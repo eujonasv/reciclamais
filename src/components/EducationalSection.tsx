@@ -72,8 +72,8 @@ const educationalResources = [
     icon: <Book size={18} />
   },
   {
-    title: 'Guia Rápido',
-    description: 'Guia prático para começar uma vida sustentável com ações simples e aplicáveis no dia a dia.',
+    title: 'Como Começar?',
+    description: 'Guia completo para iniciantes que querem começar uma vida sustentável com ações práticas e aplicáveis.',
     icon: <Sprout size={18} />
   },
   {
