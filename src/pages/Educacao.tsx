@@ -1,10 +1,9 @@
-
 import React from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { Book, Video, Trophy, Youtube } from "lucide-react";
+import { Book, Video, Sprout, Youtube, Download, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const EducationPage = () => {
@@ -42,8 +41,8 @@ const EducationPage = () => {
               <TabsTrigger value="videos" className="flex items-center gap-2">
                 <Video size={18} /> Vídeos
               </TabsTrigger>
-              <TabsTrigger value="desafios" className="flex items-center gap-2">
-                <Trophy size={18} /> Desafios Sustentáveis
+              <TabsTrigger value="como-comecar" className="flex items-center gap-2">
+                <Sprout size={18} /> Como Começar?
               </TabsTrigger>
             </TabsList>
           </div>
@@ -116,53 +115,69 @@ const EducationPage = () => {
             </div>
           </TabsContent>
 
-          {/* Desafios Sustentáveis */}
-          <TabsContent value="desafios">
+          {/* Como Começar? - Guias para Iniciantes */}
+          <TabsContent value="como-comecar">
             <motion.div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+              className="space-y-8"
               variants={container}
               initial="hidden"
               animate="show"
             >
-              {desafios.map((desafio, index) => (
-                <motion.div key={index} variants={item}>
-                  <Card className="h-full overflow-hidden border border-gray-200 dark:border-gray-800 hover:shadow-md transition-shadow">
-                    <div className="w-full aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-800">
-                      <img 
-                        src={desafio.imagem || 'https://via.placeholder.com/400x300?text=Desafio+Sustentável'} 
-                        alt={desafio.titulo} 
-                        className="w-full h-full object-cover transition-transform hover:scale-105"
-                      />
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="text-recicla-primary dark:text-recicla-secondary">{desafio.titulo}</CardTitle>
-                      <CardDescription className="flex items-center gap-2">
-                        <span>Duração: {desafio.duracao}</span>
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600 dark:text-gray-300 mb-4">{desafio.descricao}</p>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        <span className="text-xs bg-green-100 dark:bg-green-800/30 text-green-800 dark:text-green-300 px-2 py-1 rounded">
-                          Nível: {desafio.nivel}
-                        </span>
-                        {desafio.tags.map((tag, i) => (
-                          <span key={i} className="text-xs bg-recicla-primary/10 dark:bg-recicla-secondary/10 text-recicla-primary dark:text-recicla-secondary px-2 py-1 rounded">
-                            {tag}
-                          </span>
-                        ))}
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-recicla-primary dark:text-recicla-secondary mb-4">
+                  🌱 Guias para Iniciantes
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                  Uma série de guias simples, ilustrados e práticos para quem quer começar a fazer a diferença no dia a dia, mesmo sem saber por onde.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {guiasIniciantes.map((guia, index) => (
+                  <motion.div key={index} variants={item}>
+                    <Card className="h-full overflow-hidden border border-gray-200 dark:border-gray-800 hover:shadow-md transition-shadow">
+                      <div className="w-full aspect-[4/3] overflow-hidden bg-gradient-to-br from-green-100 to-recicla-primary/20 dark:from-green-800/30 dark:to-recicla-secondary/20">
+                        <div className="w-full h-full flex items-center justify-center">
+                          <span className="text-6xl">{guia.emoji}</span>
+                        </div>
                       </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button 
-                        className="w-full bg-recicla-primary hover:bg-recicla-accent dark:bg-recicla-secondary dark:hover:bg-recicla-primary text-white"
-                      >
-                        Participar do Desafio
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </motion.div>
-              ))}
+                      <CardHeader>
+                        <CardTitle className="text-recicla-primary dark:text-recicla-secondary">{guia.titulo}</CardTitle>
+                        <CardDescription className="text-gray-600 dark:text-gray-400">
+                          {guia.subtitulo}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {guia.topicos.map((topico, i) => (
+                            <div key={i} className="flex items-start gap-2">
+                              <span className="text-recicla-primary dark:text-recicla-secondary mt-1">•</span>
+                              <span className="text-sm text-gray-600 dark:text-gray-300">{topico}</span>
+                            </div>
+                          ))}
+                        </div>
+                        {guia.inclui && (
+                          <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                            <p className="text-sm font-medium text-green-800 dark:text-green-300 flex items-center gap-2">
+                              {guia.inclui.includes('vídeo') ? <Video size={16} /> : 
+                               guia.inclui.includes('PDF') || guia.inclui.includes('infográfico') ? <FileText size={16} /> : 
+                               <Download size={16} />}
+                              {guia.inclui}
+                            </p>
+                          </div>
+                        )}
+                      </CardContent>
+                      <CardFooter>
+                        <Button 
+                          className="w-full bg-recicla-primary hover:bg-recicla-accent dark:bg-recicla-secondary dark:hover:bg-recicla-primary text-white"
+                        >
+                          Começar Agora
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
             </motion.div>
           </TabsContent>
         </Tabs>
@@ -222,30 +237,64 @@ const videos = [
   }
 ];
 
-const desafios = [
+const guiasIniciantes = [
   {
-    titulo: "7 Dias Sem Plástico",
-    duracao: "1 semana",
-    descricao: "Viva por uma semana sem utilizar produtos plásticos descartáveis. Substitua itens como sacolas, canudos e embalagens por alternativas sustentáveis.",
-    nivel: "Iniciante",
-    tags: ["Redução de Resíduos", "Consumo Consciente"],
-    imagem: "https://images.unsplash.com/photo-1605600659726-65d3571ed334?q=80&w=1000&auto=format&fit=crop"
+    emoji: "🌱",
+    titulo: "Primeiros Passos para uma Vida Sustentável",
+    subtitulo: "Uma série de guias simples para quem quer começar a fazer a diferença",
+    topicos: [
+      "Mudanças simples que fazem grande diferença",
+      "Como criar hábitos sustentáveis",
+      "Checklist de ações diárias",
+      "Mitos e verdades sobre sustentabilidade"
+    ]
   },
   {
-    titulo: "Compostagem Caseira",
-    duracao: "1 mês",
-    descricao: "Crie sua própria composteira em casa e reduza o volume de resíduos orgânicos que vão para o lixo comum, transformando-os em adubo para plantas.",
-    nivel: "Intermediário",
-    tags: ["Compostagem", "Resíduo Orgânico"],
-    imagem: "https://images.unsplash.com/photo-1591130661095-a3bbfa1ff2b2?q=80&w=1000&auto=format&fit=crop"
+    emoji: "♻️",
+    titulo: "Separação Inteligente de Resíduos",
+    subtitulo: "Aprenda de forma visual e clara como separar corretamente",
+    topicos: [
+      "O que vai em cada lixeira (orgânico, reciclável, rejeito)",
+      "Itens que confundem (guardanapo sujo, caixa de pizza)",
+      "Como lavar materiais recicláveis",
+      "Cores das lixeiras e símbolos de reciclagem"
+    ],
+    inclui: "📎 Inclui: infográfico para imprimir e colar na cozinha"
   },
   {
-    titulo: "Guarda-roupa Sustentável",
-    duracao: "3 meses",
-    descricao: "Desafie-se a não comprar nenhuma peça de roupa nova por três meses, optando por reparar, customizar, trocar ou comprar em brechós quando necessário.",
-    nivel: "Avançado",
-    tags: ["Moda Circular", "Consumo Zero"],
-    imagem: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=1000&auto=format&fit=crop"
+    emoji: "🍃",
+    titulo: "Compostagem Fácil em Casa ou Apartamento",
+    subtitulo: "Transforme seu lixo orgânico em adubo, mesmo em pequenos espaços",
+    topicos: [
+      "Passo a passo para começar",
+      "O que pode e não pode compostar",
+      "Tipos de composteiras: caseira, balde, minhocário",
+      "Como usar o adubo produzido"
+    ],
+    inclui: "🎥 Inclui: vídeo tutorial + PDF gratuito"
+  },
+  {
+    emoji: "🧴",
+    titulo: "Reduza o Plástico Sem Sofrimento",
+    subtitulo: "Troque o descartável pelo reutilizável com ações simples",
+    topicos: [
+      "Substituições práticas (garrafa, sacola, canudo, esponja)",
+      "Produtos acessíveis e onde encontrar",
+      "Como evitar microplásticos",
+      "Receitas caseiras para produtos de limpeza"
+    ],
+    inclui: "💡 Dica: lista de apps para identificar embalagens recicláveis"
+  },
+  {
+    emoji: "💧",
+    titulo: "Economia de Água com Consciência",
+    subtitulo: "Pequenos hábitos, grande impacto",
+    topicos: [
+      "Como reaproveitar água da chuva",
+      "Economizar lavando louça, tomando banho e regando plantas",
+      "Tecnologias acessíveis (arejadores, descarga dupla)",
+      "Calculadora de consumo de água"
+    ]
   }
 ];
 

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Book, Trophy, Video } from 'lucide-react';
+import { Book, Video, Sprout } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import RecycleLogo from './RecycleLogo';
 
@@ -77,9 +77,9 @@ const educationalResources = [
     icon: <Video size={18} />
   },
   {
-    title: 'Desafios Sustentáveis',
-    description: 'Participe de desafios semanais para reduzir sua pegada ambiental e aprender práticas sustentáveis de forma divertida.',
-    icon: <Trophy size={18} />
+    title: 'Como Começar?',
+    description: 'Guias práticos e ilustrados para iniciantes que querem começar a fazer a diferença no dia a dia de forma simples.',
+    icon: <Sprout size={18} />
   }
 ];
 
