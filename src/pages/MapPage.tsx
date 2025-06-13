@@ -1,15 +1,14 @@
 
 import React from "react";
-import MainLayout from "@/layouts/MainLayout";
-import MapSection from "@/components/MapSection";
+import FullscreenMapHeader from "@/components/map/FullscreenMapHeader";
+import FullscreenMap from "@/components/map/FullscreenMap";
 
 const MapPage = () => {
   return (
-    <MainLayout>
-      <div className="pt-16">
-        <MapSection />
-      </div>
-    </MainLayout>
+    <div className="min-h-screen bg-gray-50">
+      <FullscreenMapHeader />
+      <FullscreenMap />
+    </div>
   );
 };
 
