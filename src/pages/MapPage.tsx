@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import EnhancedCollectionMap from "@/components/map/EnhancedCollectionMap";
 import SearchAndFilters from "@/components/map/SearchAndFilters";
-import CollectionPointCard from "@/components/map/CollectionPointCard";
+import CompactCollectionPointCard from "@/components/map/CompactCollectionPointCard";
 import { CollectionPoint } from "@/types/collection-point";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -215,8 +215,8 @@ const MapPage = () => {
           </div>
         </div>
 
-        {/* Floating Sidebar */}
-        <div className="absolute top-20 right-4 w-80 max-h-[calc(100vh-6rem)] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 z-[1000] overflow-hidden">
+        {/* Floating Sidebar - Aumentada para w-96 */}
+        <div className="absolute top-20 right-4 w-96 max-h-[calc(100vh-6rem)] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 z-[1000] overflow-hidden">
           <div className="p-4 border-b border-gray-200 dark:border-gray-700">
             <SearchAndFilters
               searchTerm={searchTerm}
@@ -229,7 +229,7 @@ const MapPage = () => {
           </div>
           
           <ScrollArea className="flex-1 max-h-[calc(100vh-16rem)]">
-            <div className="p-4 space-y-3">
+            <div className="p-4 space-y-2">
               {filteredPoints.length === 0 ? (
                 <div className="text-center py-8">
                   <MapPin size={48} className="text-gray-400 mx-auto mb-4" />
@@ -239,7 +239,7 @@ const MapPage = () => {
                 </div>
               ) : (
                 filteredPoints.map((point) => (
-                  <CollectionPointCard
+                  <CompactCollectionPointCard
                     key={point.id}
                     point={point}
                     isSelected={selectedPoint?.id === point.id}
