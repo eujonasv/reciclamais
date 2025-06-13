@@ -113,6 +113,11 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     text: "Diretrizes Estratégicas",
     isPage: true,
     path: "/valores"
+  }, {
+    id: "parcerias",
+    text: "Parcerias",
+    isPage: true,
+    path: "/parcerias"
   }], []);
   
   return (
