@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { MapIcon } from 'lucide-react';
+import { MapIcon, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import RecycleLogo from './RecycleLogo';
 import SearchAndFilters from './map/SearchAndFilters';
 import CollectionPointCard from './map/CollectionPointCard';
@@ -15,6 +16,7 @@ import {
   PaginationNext, 
   PaginationPrevious 
 } from '@/components/ui/pagination';
+import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 
@@ -190,6 +192,18 @@ const MapSection = () => {
             toggleFilter={toggleFilter}
             clearFilters={clearFilters}
           />
+
+          <div className="mt-6">
+            <Link to="/mapa">
+              <Button 
+                variant="outline" 
+                className="border-recicla-primary text-recicla-primary hover:bg-recicla-primary hover:text-white dark:border-recicla-secondary dark:text-recicla-secondary dark:hover:bg-recicla-secondary dark:hover:text-gray-900 transition-all duration-300"
+              >
+                <ExternalLink size={18} className="mr-2" />
+                Ver Mapa Completo
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {isLoading ? (

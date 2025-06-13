@@ -1,3 +1,4 @@
+
 import React, { ReactNode, useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, Instagram, ChevronUp, Lock } from "lucide-react";
@@ -99,7 +100,9 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     text: "Como Funciona"
   }, {
     id: "mapa",
-    text: "Mapa"
+    text: "Mapa",
+    isPage: true,
+    path: "/mapa"
   }, {
     id: "educacao", 
     text: "Educação",

@@ -11,6 +11,7 @@ import AdminPage from "./pages/admin";
 import AuthPage from "./pages/auth";
 import ValuesPage from "./pages/Values";
 import EducationPage from "./pages/Educacao";
+import MapPage from "./pages/MapPage";
 import { AuthProvider } from "./hooks/use-auth";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/educacao" element={<EducationPage />} />
+              <Route path="/mapa" element={<MapPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
