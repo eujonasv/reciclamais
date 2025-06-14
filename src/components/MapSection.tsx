@@ -259,12 +259,11 @@ const MapSection = () => {
                     // Em md+ ignora mobile collapse
                   }}
                 >
-                  {/* Fornece o mapRef para invalidateSize no mobile e showLocationButton para página inicial */}
+                  {/* Fornece o mapRef para invalidateSize no mobile */}
                   <EnhancedCollectionMap
                     collectionPoints={filteredPoints}
                     selectedPoint={selectedPoint}
                     onMarkerClick={handlePointSelect}
-                    showLocationButton={true}
                     ref={mapRef}
                   />
                 </div>

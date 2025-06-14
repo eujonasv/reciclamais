@@ -71,14 +71,12 @@ interface EnhancedCollectionMapProps {
   collectionPoints: CollectionPoint[];
   selectedPoint: CollectionPoint | null;
   onMarkerClick: (point: CollectionPoint) => void;
-  showLocationButton?: boolean;
 }
 
 const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
   collectionPoints,
   selectedPoint,
-  onMarkerClick,
-  showLocationButton = false
+  onMarkerClick
 }, ref) => {
   // Responsividade do mapa
   const [mapCenter, setMapCenter] = useState<[number, number]>([-25.59, -49.39]);
@@ -132,7 +130,6 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
         const { latitude, longitude, accuracy } = position.coords;
         setUserLocation([latitude, longitude]);
         setUserLocationAccuracy(accuracy);
-        setMapCenter([latitude, longitude]);
         setIsLocating(false);
         
         // Find closest collection point
@@ -189,7 +186,7 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
   }));
 
   return (
-    <div className="relative w-full h-full">
+    <div className="w-full h-full">
       <MapContainer
         center={mapCenter}
         zoom={14}
@@ -235,25 +232,6 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
           </Marker>
         ))}
       </MapContainer>
-
-      {/* Botão de localização - só aparece se showLocationButton for true */}
-      {showLocationButton && (
-        <div className="absolute top-4 right-4 z-10">
-          <Button
-            onClick={getUserLocation}
-            disabled={isLocating}
-            className="bg-white/90 dark:bg-gray-800/90 text-recicla-primary dark:text-recicla-secondary border border-gray-200 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-800 shadow-lg backdrop-blur-sm"
-            size="sm"
-          >
-            {isLocating ? (
-              <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-recicla-primary dark:border-recicla-secondary"></div>
-            ) : (
-              <Navigation size={16} />
-            )}
-            {!isLocating && <span className="ml-2 hidden sm:inline">Minha Localização</span>}
-          </Button>
-        </div>
-      )}
       
       <style>{`
         .leaflet-container {
