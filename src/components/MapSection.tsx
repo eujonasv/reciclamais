@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/pagination';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import { ArrowDown, ArrowUp } from 'lucide-react';
+import { ArrowDown, ArrowUp, Navigation } from 'lucide-react';
 
 const POINTS_PER_PAGE = 3;
 
@@ -29,12 +29,10 @@ const MapSection = () => {
   const [activeFilter, setActiveFilter] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const { toast } = useToast();
-
-  // Novo - estado para expandir/colapsar o mapa no mobile (padrão fechado)
   const [showMapMobile, setShowMapMobile] = useState(false);
-
-  // Ref para chamar invalidateSize via Leaflet imperativamente
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+  const [isLocating, setIsLocating] = useState(false);
+  const { toast } = useToast();
   const mapRef = useRef<any>(null);
 
   useEffect(() => {
@@ -159,7 +157,47 @@ const MapSection = () => {
     return pages;
   };
 
-  // Função para notificar o mapa que ele ficou visível e atualizar tamanho
+  const getUserLocation = () => {
+    if (!navigator.geolocation) {
+      toast({
+        title: "Geolocalização não suportada",
+        description: "Seu navegador não suporta geolocalização",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setIsLocating(true);
+    
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const location: [number, number] = [latitude, longitude];
+        setUserLocation(location);
+        
+        if (mapRef.current && typeof mapRef.current.setUserLocation === "function") {
+          mapRef.current.setUserLocation(location);
+        }
+        
+        setIsLocating(false);
+        toast({
+          title: "Localização encontrada",
+          description: "Sua localização foi marcada no mapa",
+        });
+      },
+      (error) => {
+        console.error("Erro ao obter localização:", error);
+        setIsLocating(false);
+        toast({
+          title: "Erro ao obter localização",
+          description: `Não foi possível obter sua localização: ${error.message}`,
+          variant: "destructive",
+        });
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  };
+
   useEffect(() => {
     if (showMapMobile && mapRef.current && mapRef.current.leafletElement) {
       setTimeout(() => {
@@ -224,10 +262,8 @@ const MapSection = () => {
               ))}
             </div>
 
-            {/* BOTÃO E MAPA - MOBILE */}
             {filteredPoints.length > 0 && (
               <>
-                {/* Botão exibe/esconde mapa - somente mobile */}
                 <button
                   type="button"
                   onClick={() => setShowMapMobile(s => !s)}
@@ -247,25 +283,32 @@ const MapSection = () => {
                     </>
                   )}
                 </button>
-                {/* Contêiner do mapa: mobile - animado colapsável; desktop permanece aberto */}
+
                 <div
                   id="mobile-collection-map"
-                  className={`overflow-hidden rounded-xl shadow-lg mt-3 mb-2 transition-all duration-300 ease-in-out glass-morphism border border-gray-200 dark:border-gray-700 backdrop-blur
+                  className={`relative overflow-hidden rounded-xl shadow-lg mt-3 mb-2 transition-all duration-300 ease-in-out glass-morphism border border-gray-200 dark:border-gray-700 backdrop-blur
                     ${showMapMobile ? "h-[22rem] opacity-100 scale-100 pointer-events-auto visible" : "h-0 opacity-0 scale-95 pointer-events-none invisible"}
-                    md:h-auto md:opacity-100 md:scale-100 md:pointer-events-auto md:visible md:mt-8 md:block
+                    md:h-96 md:opacity-100 md:scale-100 md:pointer-events-auto md:visible md:mt-8 md:block
                   `}
-                  style={{
-                    minHeight: showMapMobile ? undefined : 0,
-                    // Em md+ ignora mobile collapse
-                  }}
                 >
-                  {/* Fornece o mapRef para invalidateSize no mobile */}
                   <EnhancedCollectionMap
                     collectionPoints={filteredPoints}
                     selectedPoint={selectedPoint}
                     onMarkerClick={handlePointSelect}
                     ref={mapRef}
                   />
+                  
+                  <div className="absolute bottom-4 left-4 z-[1000]">
+                    <Button
+                      onClick={getUserLocation}
+                      disabled={isLocating}
+                      className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+                      size="sm"
+                    >
+                      <Navigation className="h-4 w-4 mr-2" />
+                      {isLocating ? "Localizando..." : "Minha Localização"}
+                    </Button>
+                  </div>
                 </div>
               </>
             )}
