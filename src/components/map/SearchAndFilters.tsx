@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { RECYCLABLE_MATERIALS } from "@/constants/materials";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface SearchAndFiltersProps {
   searchTerm: string;
@@ -27,13 +26,6 @@ const SearchAndFilters = ({
   showSearchIcon,
   compact,
 }: SearchAndFiltersProps) => {
-  const { translations } = useLanguage();
-
-  const getTranslatedMaterial = (material: string) => {
-    const materialKey = `materials.${material.toLowerCase()}`;
-    return translations[materialKey] || material;
-  };
-
   return (
     <div className={`mb-2 ${compact ? '' : 'max-w-3xl mx-auto mb-8'}`}>
       <div className={"flex items-center gap-2 mb-3"}>
@@ -46,7 +38,7 @@ const SearchAndFilters = ({
           )}
           <Input
             type="text"
-            placeholder={translations['search.placeholder'] || "Buscar pontos..."}
+            placeholder="Buscar pontos..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={`w-full pl-9 ${compact ? "h-9 text-sm" : ""}`}
@@ -58,7 +50,7 @@ const SearchAndFilters = ({
             variant="outline"
             className="border-recicla-primary text-recicla-primary hover:bg-recicla-primary/10 dark:border-recicla-secondary dark:text-recicla-secondary dark:hover:bg-recicla-secondary/10"
           >
-            {translations['search.clear-filters'] || "Limpar Filtros"}
+            Limpar Filtros
           </Button>
         )}
       </div>
@@ -80,7 +72,7 @@ const SearchAndFilters = ({
               onChange={() => toggleFilter(mat)}
               className="sr-only"
             />
-            <span>{getTranslatedMaterial(mat)}</span>
+            <span>{mat}</span>
           </label>
         ))}
       </div>

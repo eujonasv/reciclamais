@@ -5,29 +5,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Book, Video, Sprout } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import RecycleLogo from './RecycleLogo';
-import { useLanguage } from '@/contexts/LanguageContext';
 
 const EducationalSection = () => {
-  const { translations: t } = useLanguage();
-
-  const educationalResources = [
-    {
-      title: t['education.resource1.title'],
-      description: t['education.resource1.description'],
-      icon: <Book size={18} />
-    },
-    {
-      title: t['education.resource2.title'],
-      description: t['education.resource2.description'],
-      icon: <Sprout size={18} />
-    },
-    {
-      title: t['education.resource3.title'],
-      description: t['education.resource3.description'],
-      icon: <Video size={18} />
-    }
-  ];
-
   return (
     <section id="educacao" className="section-padding bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4 py-16">
@@ -36,11 +15,10 @@ const EducationalSection = () => {
             <RecycleLogo size="md" />
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-            {t['education.title.p1']}{' '}
-            <span className="text-recicla-primary dark:text-recicla-secondary">{t['education.title.p2']}</span>
+            Educação <span className="text-recicla-primary dark:text-recicla-secondary">Ambiental</span>
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 dark:text-gray-300 mb-8">
-            {t['education.subtitle']}
+            Amplie seus conhecimentos sobre reciclagem e sustentabilidade com nossos recursos educacionais.
           </p>
         </div>
         
@@ -65,7 +43,7 @@ const EducationalSection = () => {
                   className="p-0 text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent dark:hover:text-recicla-primary"
                   asChild
                 >
-                  <Link to="/educacao">{t['education.button.learn-more']}</Link>
+                  <Link to="/educacao">Saiba mais</Link>
                 </Button>
               </CardFooter>
             </Card>
@@ -78,7 +56,7 @@ const EducationalSection = () => {
             className="bg-recicla-primary hover:bg-recicla-accent dark:bg-recicla-secondary dark:hover:bg-recicla-primary text-white"
           >
             <Link to="/educacao">
-              {t['education.button.explore-all']}
+              Explorar todos os recursos educacionais
             </Link>
           </Button>
         </div>
@@ -86,5 +64,23 @@ const EducationalSection = () => {
     </section>
   );
 };
+
+const educationalResources = [
+  {
+    title: 'Dicas Rápidas',
+    description: 'Dicas práticas e rápidas sobre reciclagem, compostagem e consumo consciente para seu dia a dia.',
+    icon: <Book size={18} />
+  },
+  {
+    title: 'Como Começar?',
+    description: 'Guia completo para iniciantes que querem começar uma vida sustentável com ações práticas e aplicáveis.',
+    icon: <Sprout size={18} />
+  },
+  {
+    title: 'Vídeos',
+    description: 'Tutoriais, documentários e vídeos educativos sobre diferentes aspectos da reciclagem e meio ambiente.',
+    icon: <Video size={18} />
+  }
+];
 
 export default EducationalSection;
