@@ -1,17 +1,27 @@
 
 import React from 'react';
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
 
-interface SearchAndFiltersProps {
+export interface SearchAndFiltersProps {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   activeFilter: string[];
   allMaterials: string[];
-  toggleFilter: (material: string) => void;
+  toggleFilter: (mat: string) => void;
   clearFilters: () => void;
+  showSearchIcon?: boolean;
+  compact?: boolean;
 }
+
+const materialOptions = [
+  "Papel",
+  "Plástico",
+  "Metal",
+  "Vidro",
+  "Eletrônicos",
+];
 
 const SearchAndFilters = ({
   searchTerm,
@@ -19,42 +29,58 @@ const SearchAndFilters = ({
   activeFilter,
   allMaterials,
   toggleFilter,
-  clearFilters
+  clearFilters,
+  showSearchIcon,
+  compact,
 }: SearchAndFiltersProps) => {
   return (
-    <div className="max-w-4xl mx-auto mb-8">
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
-        <div className="flex-grow">
-          <Input 
+    <div className={`mb-2 ${compact ? '' : 'max-w-3xl mx-auto mb-8'}`}>
+      <div className={"flex items-center gap-2 mb-3"}>
+        <div className="relative w-full">
+          {showSearchIcon && (
+            <Search
+              className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400"
+              size={18}
+            />
+          )}
+          <Input
             type="text"
-            placeholder="Buscar por nome, endereço..."
+            placeholder="Buscar pontos..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full"
+            className={`w-full pl-9 ${compact ? "h-9 text-sm" : ""}`}
           />
         </div>
-        <Button 
-          onClick={clearFilters} 
-          variant="outline"
-          className="border-recicla-primary text-recicla-primary hover:bg-recicla-primary/10 dark:border-recicla-secondary dark:text-recicla-secondary dark:hover:bg-recicla-secondary/10"
-        >
-          Limpar Filtros
-        </Button>
-      </div>
-      
-      <div className="flex flex-wrap gap-2 justify-center">
-        {allMaterials.map((material) => (
-          <Badge 
-            key={material}
-            className={`cursor-pointer text-sm px-3 py-1 ${
-              activeFilter.includes(material) 
-                ? 'bg-recicla-primary text-white dark:bg-recicla-secondary' 
-                : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
-            }`}
-            onClick={() => toggleFilter(material)}
+        {!compact && (
+          <Button
+            onClick={clearFilters}
+            variant="outline"
+            className="border-recicla-primary text-recicla-primary hover:bg-recicla-primary/10 dark:border-recicla-secondary dark:text-recicla-secondary dark:hover:bg-recicla-secondary/10"
           >
-            {material}
-          </Badge>
+            Limpar Filtros
+          </Button>
+        )}
+      </div>
+      <div className="flex flex-wrap gap-2 mb-1">
+        {materialOptions.map((mat) => (
+          <label
+            key={mat}
+            className={`flex items-center gap-1 px-2 py-0.5 rounded-full cursor-pointer border text-xs
+              ${
+                activeFilter.includes(mat)
+                  ? "bg-recicla-primary text-white border-recicla-primary"
+                  : "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-700 dark:text-gray-300"
+              }
+            `}
+          >
+            <input
+              type="checkbox"
+              checked={activeFilter.includes(mat)}
+              onChange={() => toggleFilter(mat)}
+              className="sr-only"
+            />
+            <span>{mat}</span>
+          </label>
         ))}
       </div>
     </div>
