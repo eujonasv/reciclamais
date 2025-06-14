@@ -2,6 +2,8 @@ import React, { ReactNode, useState, useEffect, useMemo, useCallback } from "rea
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, Instagram, ChevronUp, Lock } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { LanguageToggle } from "@/components/ui/language-toggle";
+import { useLanguage } from "@/contexts/LanguageContext";
 import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 import { Button } from "@/components/ui/button";
 
@@ -12,6 +14,7 @@ interface MainLayoutProps {
 const MainLayout = ({ children }: MainLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { translations } = useLanguage();
   const isHome = location.pathname === "/";
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>("inicio");
@@ -65,10 +68,8 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     });
   }, []);
 
-  // Set active section based on current route
   useEffect(() => {
     if (location.pathname === "/") {
-      // On home page, activeSection will be managed by scroll
       const hash = window.location.hash;
       if (hash) {
         const sectionId = hash.replace("#", "");
@@ -87,7 +88,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     }
   }, [location.pathname]);
 
-  // Scroll based on URL hash when entering Home
   useEffect(() => {
     const hash = window.location.hash;
     if (isHome && hash) {
@@ -103,7 +103,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     }
   }, [isHome]);
 
-  // Enable scroll listener only on home
   useEffect(() => {
     if (!isHome) return;
     window.addEventListener("scroll", handleScroll);
@@ -112,32 +111,32 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
   const navLinks = useMemo(() => [{
     id: "inicio",
-    text: "Início"
+    text: translations['nav.home'] || "Início"
   }, {
     id: "sobre",
-    text: "Sobre"
+    text: translations['nav.about'] || "Sobre"
   }, {
     id: "como-funciona",
-    text: "Como Funciona"
+    text: translations['nav.how-it-works'] || "Como Funciona"
   }, {
     id: "mapa",
-    text: "Mapa",
+    text: translations['nav.map'] || "Mapa",
     isPage: true,
     path: "/mapa"
   }, {
     id: "educacao", 
-    text: "Educação",
+    text: translations['nav.education'] || "Educação",
     isPage: true,
     path: "/educacao"
   }, {
     id: "faq",
-    text: "FAQ"
+    text: translations['nav.faq'] || "FAQ"
   }, {
     id: "valores",
-    text: "Diretrizes Estratégicas",
+    text: translations['nav.values'] || "Diretrizes Estratégicas",
     isPage: true,
     path: "/valores"
-  }], []);
+  }], [translations]);
   
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
@@ -172,10 +171,11 @@ const MainLayout = ({ children }: MainLayoutProps) => {
               ))}
             </nav>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-2">
+              <LanguageToggle />
               <ThemeToggle />
               <button 
-                className="ml-4 md:hidden rounded-md p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none" 
+                className="ml-2 md:hidden rounded-md p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none" 
                 onClick={toggleMenu} 
                 aria-label="Menu"
               >
@@ -228,7 +228,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                 <RecycleLogoWithText size="lg" />
               </div>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável.
+                {translations['footer.description'] || "Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável."}
               </p>
               <div className="flex space-x-4">
                 <a 
@@ -244,7 +244,9 @@ const MainLayout = ({ children }: MainLayoutProps) => {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Links Rápidos</h3>
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+                {translations['footer.quick-links'] || "Links Rápidos"}
+              </h3>
               <ul className="space-y-2">
                 {navLinks.map(({id, text, isPage, path}) => (
                   <li key={id}>
@@ -267,21 +269,23 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                 <li>
                   <Link to="/admin" className="flex items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
                     <Lock size={16} />
-                    <span>Área Administrativa</span>
+                    <span>{translations['nav.admin'] || "Área Administrativa"}</span>
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Contato</h3>
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+                {translations['footer.contact'] || "Contato"}
+              </h3>
               <p className="text-gray-600 dark:text-gray-300 mb-2">reciclamais25@gmail.com</p>
             </div>
           </div>
 
           <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
             <p className="text-center text-gray-500 dark:text-gray-400">
-              © {new Date().getFullYear()} RECICLA+. Todos os direitos reservados.
+              © {new Date().getFullYear()} RECICLA+. {translations['footer.rights'] || "Todos os direitos reservados."}
             </p>
           </div>
         </div>
@@ -292,7 +296,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         className={`fixed right-6 bottom-6 bg-recicla-primary hover:bg-recicla-accent dark:bg-recicla-secondary dark:hover:bg-recicla-primary text-white rounded-full p-2 shadow-lg transition-all duration-300 ${
           showScrollToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
         }`} 
-        aria-label="Voltar ao topo"
+        aria-label={translations['footer.back-to-top'] || "Voltar ao topo"}
       >
         <ChevronUp size={24} />
       </button>
