@@ -1,10 +1,13 @@
 
 export const RECYCLABLE_MATERIALS = [
-  "Papel",
-  "Plástico", 
+  "Baterias",
+  "Eletrônicos", 
+  "Lâmpadas",
+  "Madeira",
   "Metal",
+  "Papel",
+  "Plástico",
   "Vidro",
-  "Eletrônicos",
 ] as const;
 
 export type RecyclableMaterial = typeof RECYCLABLE_MATERIALS[number];
