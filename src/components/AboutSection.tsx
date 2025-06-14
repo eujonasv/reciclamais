@@ -1,34 +1,36 @@
-
 import React from 'react';
 import { Leaf, Users, Recycle, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import RecycleLogo from './RecycleLogo';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const AboutSection = () => {
+  const { translations: t } = useLanguage();
+
   const features = [
     {
       id: 1,
       icon: <Leaf className="h-8 w-8 text-recicla-primary dark:text-recicla-secondary" />,
-      title: "Sustentabilidade",
-      description: "Promovemos práticas sustentáveis para reduzir o impacto ambiental e preservar recursos naturais."
+      title: t['about.feature1.title'],
+      description: t['about.feature1.description']
     },
     {
       id: 2,
       icon: <Users className="h-8 w-8 text-recicla-primary dark:text-recicla-secondary" />,
-      title: "Conexão",
-      description: "Facilitamos o encontro entre quem deseja reciclar e quem coleta materiais recicláveis."
+      title: t['about.feature2.title'],
+      description: t['about.feature2.description']
     },
     {
       id: 3,
       icon: <Recycle className="h-8 w-8 text-recicla-primary dark:text-recicla-secondary" />,
-      title: "Inovação",
-      description: "Utilizamos tecnologia para tornar a reciclagem mais acessível e eficiente para todos."
+      title: t['about.feature3.title'],
+      description: t['about.feature3.description']
     },
     {
       id: 4,
       icon: <TrendingUp className="h-8 w-8 text-recicla-primary dark:text-recicla-secondary" />,
-      title: "Impacto",
-      description: "Geramos renda para coletores e parceiros enquanto criamos um impacto ambiental positivo."
+      title: t['about.feature4.title'],
+      description: t['about.feature4.description']
     },
   ];
 
@@ -40,11 +42,11 @@ const AboutSection = () => {
             <RecycleLogo size="md" />
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-            Sobre a <span className="text-recicla-primary dark:text-recicla-secondary">RECICLA+</span>
+            {t['about.title.p1']}{' '}
+            <span className="text-recicla-primary dark:text-recicla-secondary">{t['about.title.p2']}</span>
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
-            Somos uma startup que revoluciona a forma como as pessoas e empresas lidam com recicláveis, 
-            conectando-as a pontos de coleta e promovendo um ciclo virtuoso de sustentabilidade.
+            {t['about.subtitle']}
           </p>
         </div>
 
@@ -70,10 +72,11 @@ const AboutSection = () => {
         <div className="mt-24">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-              O que <span className="text-recicla-primary dark:text-recicla-secondary">fazemos</span>
+              {t['about.what-we-do.title.p1']}{' '}
+              <span className="text-recicla-primary dark:text-recicla-secondary">{t['about.what-we-do.title.p2']}</span>
             </h2>
             <p className="text-lg max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
-              Nossa plataforma oferece soluções completas para tornar a reciclagem mais fácil e acessível para todos.
+              {t['about.what-we-do.subtitle']}
             </p>
           </div>
 
@@ -86,11 +89,10 @@ const AboutSection = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-white">
-                      Coleta Inteligente
+                      {t['about.what-we-do.item1.title']}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400">
-                      Conectamos pessoas e empresas a pontos de coleta próximos, 
-                      otimizando o processo de descarte de recicláveis.
+                      {t['about.what-we-do.item1.description']}
                     </p>
                   </div>
                 </li>
@@ -101,10 +103,10 @@ const AboutSection = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-white">
-                      Rede de Parceiros
+                      {t['about.what-we-do.item2.title']}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400">
-                      Trabalhamos com uma ampla rede de coletores, cooperativas e empresas recicladoras para garantir o destino correto dos materiais.
+                      {t['about.what-we-do.item2.description']}
                     </p>
                   </div>
                 </li>
@@ -115,10 +117,10 @@ const AboutSection = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-white">
-                      Impacto Ambiental e Social
+                      {t['about.what-we-do.item3.title']}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400">
-                      Geramos renda para coletores e promovemos a economia circular, reduzindo o impacto no meio ambiente.
+                      {t['about.what-we-do.item3.description']}
                     </p>
                   </div>
                 </li>
@@ -131,7 +133,7 @@ const AboutSection = () => {
                 <div className="absolute -inset-1 rounded-xl bg-recicla-primary/20 filter blur-md"></div>
                 <img 
                   src="https://plus.unsplash.com/premium_vector-1682306481700-d924b6112bcf?q=80&w=2224&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-                  alt="Reciclagem" 
+                  alt={t['about.what-we-do.image-alt']} 
                   className="rounded-xl shadow-xl max-w-full object-cover mx-auto relative z-10"
                 />
               </div>

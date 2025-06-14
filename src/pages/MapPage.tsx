@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import FloatingSidebar from "@/components/map/FloatingSidebar";
@@ -8,6 +7,7 @@ import { CollectionPoint } from "@/types/collection-point";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Sidebar width, mantenha sincronizado com FloatingSidebar.
 const MAP_SIDEBAR_WIDTH = 420;
@@ -22,6 +22,7 @@ const MapPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLocating, setIsLocating] = useState(false);
   const { toast } = useToast();
+  const { translations: t } = useLanguage();
   const mapRef = useRef<any>(null);
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const MapPage = () => {
         const { data, error } = await supabase.from("collection_points").select("*").limit(POINTS_PER_FETCH);
         if (error) {
           toast({
-            title: "Erro ao carregar pontos",
+            title: t['map.toast.load-error.title'],
             description: error.message,
             variant: "destructive",
           });
@@ -48,7 +49,7 @@ const MapPage = () => {
       }
     };
     fetchPoints();
-  }, [toast]);
+  }, [toast, t]);
 
   // Lista de materiais distintos, ordenados
   const allMaterials = Array.from(
@@ -91,8 +92,8 @@ const MapPage = () => {
   const getUserLocation = () => {
     if (!navigator.geolocation) {
       toast({
-        title: "Geolocalização não suportada",
-        description: "Seu navegador não suporta geolocalização",
+        title: t['map.toast.geo-not-supported.title'],
+        description: t['map.toast.geo-not-supported.description'],
         variant: "destructive",
       });
       return;
@@ -108,16 +109,16 @@ const MapPage = () => {
         }
         setIsLocating(false);
         toast({
-          title: "Localização encontrada",
-          description: "Sua localização foi marcada no mapa",
+          title: t['map.toast.geo-success.title'],
+          description: t['map.toast.geo-success.description'],
         });
       },
       (error) => {
         console.error("Erro ao obter localização:", error);
         setIsLocating(false);
         toast({
-          title: "Erro ao obter localização",
-          description: `Não foi possível obter sua localização: ${error.message}`,
+          title: t['map.toast.geo-error.title'],
+          description: t['map.toast.geo-error.description'].replace('{error}', error.message),
           variant: "destructive",
         });
       },
@@ -147,7 +148,7 @@ const MapPage = () => {
               size="lg"
             >
               <Navigation className="h-5 w-5 mr-2" />
-              {isLocating ? "Localizando..." : "Minha Localização"}
+              {isLocating ? t['map.button.locating'] : t['map.button.my-location']}
             </Button>
           </div>
         </div>

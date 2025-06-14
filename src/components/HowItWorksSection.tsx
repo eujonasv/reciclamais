@@ -1,31 +1,34 @@
+
 import React, { useState } from 'react';
 import { Search, MapPin, CheckCircle, ChevronLeft, ChevronRight, ArrowDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import RecycleLogo from './RecycleLogo';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const HowItWorksSection = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  const { translations: t } = useLanguage();
 
   const steps = [
     {
       number: 1,
       icon: <Search className="h-10 w-10 text-white" />,
-      title: "Encontre um ponto de coleta",
-      description: "Utilize nosso mapa interativo para encontrar o ponto de coleta mais próximo de você. Filtre por tipo de material que deseja reciclar.",
+      title: t['how-it-works.step1.title'],
+      description: t['how-it-works.step1.description'],
       image: "https://plus.unsplash.com/premium_vector-1719419318811-8c03fcdde6ef?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
       number: 2,
       icon: <MapPin className="h-10 w-10 text-white" />,
-      title: "Coleta e Reciclagem",
-      description: "Descarte seus materiais recicláveis em um dos nossos pontos de coleta parceiros. Após isso, os materiais são recolhidos e enviados para um centro especializado em reciclagem.",
+      title: t['how-it-works.step2.title'],
+      description: t['how-it-works.step2.description'],
       image: "https://plus.unsplash.com/premium_vector-1719419318789-738cb9d164d4?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
       number: 3,
       icon: <CheckCircle className="h-10 w-10 text-white" />,
-      title: "Ganhos",
-      description: "Se você é um ponto de coleta, recebe uma porcentagem da venda dos materiais reciclados.",
+      title: t['how-it-works.step3.title'],
+      description: t['how-it-works.step3.description'],
       image: "https://plus.unsplash.com/premium_vector-1719419318935-d8c67018c35c?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     }
   ];
@@ -50,10 +53,11 @@ const HowItWorksSection = () => {
             <RecycleLogo size="md" />
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-            Como <span className="text-recicla-primary dark:text-recicla-secondary">Funciona</span>
+            {t['how-it-works.title.p1']}{' '}
+            <span className="text-recicla-primary dark:text-recicla-secondary">{t['how-it-works.title.p2']}</span>
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
-            Reciclar nunca foi tão fácil. Siga estes três passos simples para começar sua jornada de reciclagem.
+            {t['how-it-works.subtitle']}
           </p>
         </div>
 
@@ -134,7 +138,7 @@ const HowItWorksSection = () => {
                 variant="ghost"
                 className="flex items-center text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent"
               >
-                <ChevronLeft className="mr-1" size={16} /> Anterior
+                <ChevronLeft className="mr-1" size={16} /> {t['how-it-works.button.previous']}
               </Button>
 
               <div className="flex space-x-2">
@@ -157,7 +161,7 @@ const HowItWorksSection = () => {
                 variant="ghost"
                 className="flex items-center text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent"
               >
-                Próximo <ChevronRight className="ml-1" size={16} />
+                {t['how-it-works.button.next']} <ChevronRight className="ml-1" size={16} />
               </Button>
             </div>
           </div>
@@ -172,7 +176,7 @@ const HowItWorksSection = () => {
             }}
             className="bg-recicla-primary hover:bg-recicla-accent text-white py-2 px-6 rounded-lg"
           >
-            Encontrar Pontos de Coleta
+            {t['how-it-works.button.find-points']}
           </Button>
         </div>
       </div>

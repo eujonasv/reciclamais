@@ -1,9 +1,12 @@
+
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import RecycleLogoWithText from './RecycleLogoWithText';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const HeroSection = () => {
+  const { translations: t } = useLanguage();
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -25,12 +28,14 @@ const HeroSection = () => {
                 <RecycleLogoWithText size="xxl" className="animate-float" />
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 dark:text-white leading-tight">
-                Seu <span className="text-recicla-primary dark:text-recicla-secondary">lixo</span>,
+                {t['hero.title.p1']}{' '}
+                <span className="text-recicla-primary dark:text-recicla-secondary">{t['hero.title.p2']}</span>,
                 <br />
-                nossa <span className="text-recicla-primary dark:text-recicla-secondary">solução</span>
+                {t['hero.title.p3']}{' '}
+                <span className="text-recicla-primary dark:text-recicla-secondary">{t['hero.title.p4']}</span>
               </h1>
               <p className="text-xl md:text-2xl mb-8 text-gray-700 dark:text-gray-300">
-                Conectamos pessoas e empresas a pontos de coleta de recicláveis para um futuro mais sustentável.
+                {t['hero.subtitle']}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                 <Button 
@@ -38,7 +43,7 @@ const HeroSection = () => {
                   size="lg"
                   className="bg-recicla-primary hover:bg-recicla-accent text-white font-medium px-6 py-3 rounded-lg"
                 >
-                  Como Funciona
+                  {t['nav.how-it-works']}
                 </Button>
                 <Button 
                   onClick={() => scrollToSection('mapa')}
@@ -46,7 +51,7 @@ const HeroSection = () => {
                   size="lg"
                   className="border-recicla-primary text-recicla-primary hover:bg-recicla-primary/10 dark:border-recicla-secondary dark:text-recicla-secondary dark:hover:bg-recicla-secondary/10"
                 >
-                  Ver Pontos de Coleta
+                  {t['hero.button.view-points']}
                 </Button>
               </div>
             </div>
@@ -58,7 +63,7 @@ const HeroSection = () => {
               <div className="absolute -inset-1 rounded-full bg-recicla-primary/20 dark:bg-recicla-primary/30 filter blur-xl animate-pulse-green"></div>
               <img 
                 src="https://plus.unsplash.com/premium_vector-1719419318688-8fb5853b53f1?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-                alt="Sustentabilidade" 
+                alt={t['hero.image-alt']} 
                 className="rounded-xl shadow-xl max-w-full object-cover mx-auto relative z-10 animate-scale-in"
               />
             </div>
@@ -69,7 +74,7 @@ const HeroSection = () => {
         <div className="absolute bottom-8 left-0 right-0 flex justify-center animate-bounce">
           <button 
             onClick={() => scrollToSection('sobre')}
-            aria-label="Scroll to about section"
+            aria-label={t['hero.scroll-aria-label']}
             className="bg-white dark:bg-gray-800 rounded-full p-2 shadow-md"
           >
             <ChevronDown className="w-6 h-6 text-recicla-primary dark:text-recicla-secondary" />
