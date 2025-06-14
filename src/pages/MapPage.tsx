@@ -9,9 +9,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { Locate } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const MAP_SIDEBAR_WIDTH = 420; // keep in sync with sidebar width
+// Sidebar width, mantenha sincronizado com FloatingSidebar.
+const MAP_SIDEBAR_WIDTH = 420;
 
-const POINTS_PER_FETCH = 100; // Mostc cases will never hit this
+const POINTS_PER_FETCH = 100;
 
 const MapPage = () => {
   const [collectionPoints, setCollectionPoints] = useState<CollectionPoint[]>([]);
@@ -22,7 +23,7 @@ const MapPage = () => {
   const { toast } = useToast();
   const mapRef = useRef<any>(null);
 
-  // User location
+  // User location (lat, lng)
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
 
   useEffect(() => {
@@ -51,12 +52,12 @@ const MapPage = () => {
     fetchPoints();
   }, [toast]);
 
-  // Material options
+  // Lista de materiais distintos, ordenados
   const allMaterials = Array.from(
     new Set(collectionPoints.flatMap((p) => p.materials))
   ).sort();
 
-  // Filtrar pontos
+  // Filtragem local
   const filteredPoints = collectionPoints.filter((point) => {
     const matchesSearch =
       point.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -80,16 +81,16 @@ const MapPage = () => {
     setSearchTerm("");
   };
 
-  // Sincronizar clique nos cards e mapa
+  // Seleção de ponto sincroniza com o mapa
   const handlePointSelect = (point: CollectionPoint) => {
     setSelectedPoint(point);
-    // centrar mapa no ponto selecionado
-    if (mapRef.current && mapRef.current.setViewFromExternal) {
+    // Centraliza mapa no ponto selecionado
+    if (mapRef.current && typeof mapRef.current.setViewFromExternal === "function") {
       mapRef.current.setViewFromExternal([point.latitude, point.longitude]);
     }
   };
 
-  // Botão de localização do usuário
+  // Botão "Minha Localização"
   const handleLocation = () => {
     if (!navigator.geolocation) {
       toast({ title: "Seu navegador não suporta geolocalização.", variant: "destructive" });
@@ -98,8 +99,8 @@ const MapPage = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setUserLocation([position.coords.latitude, position.coords.longitude]);
-        // Também pode encontrar ponto mais próximo, mas aqui só centraliza
-        if (mapRef.current && mapRef.current.setViewFromExternal) {
+        // Centralizar no mapa
+        if (mapRef.current && typeof mapRef.current.setViewFromExternal === "function") {
           mapRef.current.setViewFromExternal([position.coords.latitude, position.coords.longitude], 15);
         }
       },
@@ -116,17 +117,17 @@ const MapPage = () => {
 
   return (
     <MainLayout>
-      <div className="relative h-[calc(100vh-4rem)] w-full bg-white dark:bg-gray-900">
-        {/* MAPA */}
+      {/* Tira todo o espaço da tela abaixo do header (supondo header ~4rem) */}
+      <div className="relative h-[calc(100vh-4rem)] w-full bg-white dark:bg-gray-900 flex">
+        {/* Mapa: ocupa toda largura (menos a sidebar) e altura */}
         <div
-          className="absolute top-0 left-0 h-full w-full z-0"
-          style={{ right: `${MAP_SIDEBAR_WIDTH}px` }}
+          className="absolute top-0 left-0 h-full"
+          style={{ width: `calc(100% - ${MAP_SIDEBAR_WIDTH}px)` }}
         >
           <EnhancedCollectionMap
             collectionPoints={filteredPoints}
             selectedPoint={selectedPoint}
             onMarkerClick={handlePointSelect}
-            userLocation={userLocation}
             ref={mapRef}
           />
           {/* Botão "Minha Localização" fixo, canto inferior esquerdo */}
@@ -163,3 +164,4 @@ const MapPage = () => {
 };
 
 export default MapPage;
+
