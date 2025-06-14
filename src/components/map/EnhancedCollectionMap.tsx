@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef, forwardRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Circle, LayerGroup } from 'react-leaflet';
 import { Icon, LatLngTuple } from 'leaflet';
@@ -113,36 +114,6 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
     const firstMaterial = materials[0];
     const colorClass = materialColors[firstMaterial] || '';
     return colorClass;
-  };
-
-  const getUserLocation = () => {
-    if (!navigator.geolocation) {
-      alert("Geolocalização não é suportada pelo seu navegador");
-      return;
-    }
-    
-    setIsLocating(true);
-    
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude, accuracy } = position.coords;
-        setUserLocation([latitude, longitude]);
-        setUserLocationAccuracy(accuracy);
-        setIsLocating(false);
-        
-        // Find closest collection point
-        if (collectionPoints.length > 0) {
-          const closest = findClosestPoint([latitude, longitude], collectionPoints);
-          setClosestPoint(closest);
-        }
-      },
-      (error) => {
-        console.error("Erro ao obter localização:", error);
-        setIsLocating(false);
-        alert(`Não foi possível obter sua localização: ${error.message}`);
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-    );
   };
 
   // Calculate distance between two points using Haversine formula
