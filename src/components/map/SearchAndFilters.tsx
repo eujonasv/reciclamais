@@ -3,7 +3,6 @@ import React from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
-import { RECYCLABLE_MATERIALS } from "@/constants/materials";
 
 export interface SearchAndFiltersProps {
   searchTerm: string;
@@ -15,6 +14,14 @@ export interface SearchAndFiltersProps {
   showSearchIcon?: boolean;
   compact?: boolean;
 }
+
+const materialOptions = [
+  "Papel",
+  "Plástico",
+  "Metal",
+  "Vidro",
+  "Eletrônicos",
+];
 
 const SearchAndFilters = ({
   searchTerm,
@@ -55,7 +62,7 @@ const SearchAndFilters = ({
         )}
       </div>
       <div className="flex flex-wrap gap-2 mb-1">
-        {RECYCLABLE_MATERIALS.map((mat) => (
+        {materialOptions.map((mat) => (
           <label
             key={mat}
             className={`flex items-center gap-1 px-2 py-0.5 rounded-full cursor-pointer border text-xs
