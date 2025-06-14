@@ -289,7 +289,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
       <button 
         onClick={scrollToTop} 
-        className={`fixed right-6 bottom-6 bg-recicla-primary hover:bg-recicla-accent dark:bg-recicla-secondary dark:hover:bg-recicla-primary text-white rounded-full p-2 shadow-lg transition-all duration-300 ${
+        className={`fixed left-6 bottom-6 bg-recicla-primary hover:bg-recicla-accent dark:bg-recicla-secondary dark:hover:bg-recicla-primary text-white rounded-full p-2 shadow-lg transition-all duration-300 ${
           showScrollToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
         }`} 
         aria-label="Voltar ao topo"
