@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef, forwardRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Circle, LayerGroup } from 'react-leaflet';
 import { Icon, LatLngTuple } from 'leaflet';
@@ -82,7 +81,6 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
   const [mapCenter, setMapCenter] = useState<[number, number]>([-25.59, -49.39]);
   const [userLocation, setUserLocation] = useState<LatLngTuple | null>(null);
   const [userLocationAccuracy, setUserLocationAccuracy] = useState<number>(0);
-  const [isLocating, setIsLocating] = useState<boolean>(false);
   const [closestPoint, setClosestPoint] = useState<CollectionPoint | null>(null);
 
   // Detectar dark mode (usando next-themes)
@@ -182,6 +180,17 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
   React.useImperativeHandle(ref, () => ({
     setViewFromExternal: (coordinates: [number, number]) => {
       setMapCenter(coordinates);
+    },
+    setUserLocation: (coordinates: LatLngTuple) => {
+      setUserLocation(coordinates);
+      setMapCenter([coordinates[0], coordinates[1]]);
+      setUserLocationAccuracy(50); // Default accuracy
+      
+      // Find closest collection point
+      if (collectionPoints.length > 0) {
+        const closest = findClosestPoint(coordinates, collectionPoints);
+        setClosestPoint(closest);
+      }
     }
   }));
 
