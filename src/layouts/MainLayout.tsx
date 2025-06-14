@@ -1,4 +1,3 @@
-
 import React, { ReactNode, useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, Instagram, ChevronUp, Lock } from "lucide-react";
@@ -65,6 +64,28 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       behavior: "smooth"
     });
   }, []);
+
+  // Set active section based on current route
+  useEffect(() => {
+    if (location.pathname === "/") {
+      // On home page, activeSection will be managed by scroll
+      const hash = window.location.hash;
+      if (hash) {
+        const sectionId = hash.replace("#", "");
+        setActiveSection(sectionId);
+      } else {
+        setActiveSection("inicio");
+      }
+    } else if (location.pathname === "/mapa") {
+      setActiveSection("mapa");
+    } else if (location.pathname === "/educacao") {
+      setActiveSection("educacao");
+    } else if (location.pathname === "/valores") {
+      setActiveSection("valores");
+    } else {
+      setActiveSection("");
+    }
+  }, [location.pathname]);
 
   // Scroll based on URL hash when entering Home
   useEffect(() => {
