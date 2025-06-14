@@ -6,8 +6,6 @@ import EnhancedCollectionMap from "@/components/map/EnhancedCollectionMap";
 import { supabase } from "@/integrations/supabase/client";
 import { CollectionPoint } from "@/types/collection-point";
 import { useToast } from "@/components/ui/use-toast";
-import { Locate } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 // Sidebar width, mantenha sincronizado com FloatingSidebar.
 const MAP_SIDEBAR_WIDTH = 420;
@@ -22,9 +20,6 @@ const MapPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   const mapRef = useRef<any>(null);
-
-  // User location (lat, lng)
-  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
 
   useEffect(() => {
     const fetchPoints = async () => {
@@ -90,62 +85,20 @@ const MapPage = () => {
     }
   };
 
-  // Botão "Minha Localização"
-  const handleLocation = () => {
-    if (!navigator.geolocation) {
-      toast({ title: "Seu navegador não suporta geolocalização.", variant: "destructive" });
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setUserLocation([position.coords.latitude, position.coords.longitude]);
-        // Centralizar no mapa
-        if (mapRef.current && typeof mapRef.current.setViewFromExternal === "function") {
-          mapRef.current.setViewFromExternal([position.coords.latitude, position.coords.longitude], 15);
-        }
-      },
-      (error) => {
-        toast({
-          title: "Erro ao obter localização",
-          description: error.message,
-          variant: "destructive",
-        });
-      },
-      { enableHighAccuracy: true, timeout: 10000 }
-    );
-  };
-
   return (
     <MainLayout>
-      {/* Tira todo o espaço da tela abaixo do header (supondo header ~4rem) */}
-      <div className="relative h-[calc(100vh-4rem)] w-full bg-white dark:bg-gray-900 flex">
-        {/* Mapa: ocupa toda largura (menos a sidebar) e altura */}
-        <div
-          className="absolute top-0 left-0 h-full"
-          style={{ width: `calc(100% - ${MAP_SIDEBAR_WIDTH}px)` }}
-        >
+      {/* Layout flex que ocupa toda altura abaixo do header */}
+      <div className="flex h-[calc(100vh-4rem)] w-full bg-white dark:bg-gray-900">
+        {/* Mapa: ocupa toda largura disponível menos a sidebar */}
+        <div className="flex-1 h-full">
           <EnhancedCollectionMap
             collectionPoints={filteredPoints}
             selectedPoint={selectedPoint}
             onMarkerClick={handlePointSelect}
             ref={mapRef}
           />
-          {/* Botão "Minha Localização" fixo, canto inferior esquerdo */}
-          <div className="absolute bottom-6 left-6 z-50 flex items-center gap-2">
-            <Button
-              className="rounded-full bg-recicla-primary text-white border-none shadow-lg h-12 w-12 flex items-center justify-center"
-              size="icon"
-              onClick={handleLocation}
-              type="button"
-              title="Minha localização"
-            >
-              <Locate size={22} />
-            </Button>
-            <span className="bg-white/90 dark:bg-gray-900/90 text-sm px-3 py-1 rounded-lg text-recicla-primary dark:text-recicla-secondary font-medium shadow">
-              Minha Localização
-            </span>
-          </div>
         </div>
+        
         {/* Sidebar flutuante cards & busca */}
         <FloatingSidebar
           searchTerm={searchTerm}
@@ -164,4 +117,3 @@ const MapPage = () => {
 };
 
 export default MapPage;
-
