@@ -178,115 +178,63 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
     return closest;
   };
 
-  // Responsividade personalizada
-  // h-64 (mobile/sm), h-80 (md), h-96 (lg+)
+  // Expose method to parent component
+  React.useImperativeHandle(ref, () => ({
+    setViewFromExternal: (coordinates: [number, number]) => {
+      setMapCenter(coordinates);
+    }
+  }));
+
   return (
-    <div className="mt-8 rounded-xl overflow-hidden bg-white/70 dark:bg-gray-900/80 shadow-lg border border-gray-200 dark:border-gray-700 backdrop-blur-lg transition-colors duration-300">
-      <div className="relative">
-        <MapContainer
-          center={mapCenter}
-          zoom={14}
-          scrollWheelZoom={true}
-          className="z-0 w-full"
-          style={{
-            height: '22rem',
-            minHeight: '16rem',
-            width: '100%',
-            transition: 'background 0.3s',
-          }}
-          // Responsividade via Tailwind também:
-          // Mobile: h-64 (256px), md: h-80 (320px), lg: h-96 (384px)
-          // style acima para fallback e suavidade de animação
-          ref={ref}
-        >
-          <TileLayer
-            attribution={tileSet.attribution}
-            url={tileSet.url}
-          />
+    <div className="w-full h-full">
+      <MapContainer
+        center={mapCenter}
+        zoom={14}
+        scrollWheelZoom={true}
+        className="z-0 w-full h-full"
+        style={{ height: '100%', width: '100%' }}
+      >
+        <TileLayer
+          attribution={tileSet.attribution}
+          url={tileSet.url}
+        />
 
-          <MapCenterUpdater lat={mapCenter[0]} lng={mapCenter[1]} />
-          
-          {userLocation && (
-            <UserLocationMarker position={userLocation} accuracy={userLocationAccuracy} />
-          )}
-
-          {collectionPoints.map((point) => (
-            <Marker
-              key={point.id}
-              position={[point.latitude, point.longitude]}
-              icon={(selectedPoint?.id === point.id || closestPoint?.id === point.id) ? selectedIcon : defaultIcon}
-              eventHandlers={{
-                click: () => onMarkerClick(point),
-              }}
-            >
-              <Popup className={`rounded-lg shadow-xl ${getMaterialColors(point.materials)}`}>
-                <div>
-                  <h3 className="font-bold text-recicla-primary dark:text-recicla-secondary transition-colors">{point.name}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{point.description}</p>
-                  <p className="text-xs mt-1 text-gray-500 dark:text-gray-400">{point.address}</p>
-                  
-                  {userLocation && (
-                    <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
-                        Distância aproximada: {(calculateDistance(userLocation, [point.latitude, point.longitude]) / 1000).toFixed(2)} km
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
+        <MapCenterUpdater lat={mapCenter[0]} lng={mapCenter[1]} />
         
-        <div className="absolute top-3 right-16 z-[1000]">
-          <Button 
-            variant="default" 
-            size="sm" 
-            className="bg-white/90 hover:bg-white text-recicla-primary shadow-md dark:bg-gray-800/90 dark:hover:bg-gray-800"
-            onClick={getUserLocation}
-            disabled={isLocating}
+        {userLocation && (
+          <UserLocationMarker position={userLocation} accuracy={userLocationAccuracy} />
+        )}
+
+        {collectionPoints.map((point) => (
+          <Marker
+            key={point.id}
+            position={[point.latitude, point.longitude]}
+            icon={(selectedPoint?.id === point.id || closestPoint?.id === point.id) ? selectedIcon : defaultIcon}
+            eventHandlers={{
+              click: () => onMarkerClick(point),
+            }}
           >
-            {isLocating ? (
-              <>
-                <span className="animate-spin mr-1">⏳</span> Localizando...
-              </>
-            ) : (
-              <>
-                <Target size={16} className="mr-1" /> Minha Localização
-              </>
-            )}
-          </Button>
-        </div>
-      </div>
-      
-      {userLocation && closestPoint && (
-        <div className="p-3 bg-recicla-primary/10 dark:bg-recicla-secondary/10 border-t border-recicla-primary/20 dark:border-recicla-secondary/20">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <MapPin size={18} className="text-recicla-primary dark:text-recicla-secondary" />
-              <span className="text-sm font-semibold">
-                Ponto mais próximo: <span className="text-recicla-primary dark:text-recicla-secondary">{closestPoint.name}</span> 
-                <span className="text-xs font-normal text-gray-600 dark:text-gray-400 ml-1">
-                  ({(calculateDistance(userLocation, [closestPoint.latitude, closestPoint.longitude]) / 1000).toFixed(2)} km)
-                </span>
-              </span>
-            </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-xs hover:bg-recicla-primary/20 text-recicla-primary dark:text-recicla-secondary dark:hover:bg-recicla-secondary/20"
-              onClick={() => onMarkerClick(closestPoint)}
-            >
-              <Navigation size={14} className="mr-1" /> Ver detalhes
-            </Button>
-          </div>
-        </div>
-      )}
+            <Popup className={`rounded-lg shadow-xl ${getMaterialColors(point.materials)}`}>
+              <div>
+                <h3 className="font-bold text-recicla-primary dark:text-recicla-secondary transition-colors">{point.name}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{point.description}</p>
+                <p className="text-xs mt-1 text-gray-500 dark:text-gray-400">{point.address}</p>
+                
+                {userLocation && (
+                  <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      Distância aproximada: {(calculateDistance(userLocation, [point.latitude, point.longitude]) / 1000).toFixed(2)} km
+                    </p>
+                  </div>
+                )}
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
       
       <style>{`
         .leaflet-container {
-          border-radius: 0.75rem !important;
-          box-shadow: 0 4px 30px rgba(0,0,0,0.10);
           font-family: "Montserrat Variable", sans-serif;
         }
         .leaflet-popup-content-wrapper,
