@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -117,8 +118,8 @@ const AuthPage = () => {
       </div>
       <div className="hidden bg-muted lg:block">
         <img
-          src="https://images.unsplash.com/photo-1625296229988-558bff309449"
-          alt="Ilustração de uma cidade sustentável com turbinas eólicas e vegetação"
+          src="https://images.unsplash.com/photo-1633421755122-a7d0a4bab13c"
+          alt="Ilustração colorida sobre ecologia e sustentabilidade"
           className="h-screen w-full object-cover dark:brightness-[0.3]"
         />
       </div>
