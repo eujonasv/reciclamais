@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { MoveRight, TrendingUp, MapPin, Users } from 'lucide-react';
+import { MoveRight } from 'lucide-react';
+import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 
 const HeroSection = () => {
   const scrollToSection = (sectionId: string) => {
@@ -27,6 +28,10 @@ const HeroSection = () => {
 
       <div className="container mx-auto px-4 z-10 text-center">
         <div className="max-w-4xl mx-auto">
+          {/* LOGO CENTRALIZADA */}
+          <div className="flex justify-center mb-8 animate-fade-in-up">
+            <RecycleLogoWithText size="xl" />
+          </div>
           <div className="animate-fade-in-up">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-gray-900 dark:text-white leading-tight tracking-tighter">
               Seu lixo, <span className="text-recicla-primary">nossa solução</span>
