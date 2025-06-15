@@ -43,25 +43,29 @@ function UserLocationMarker({ position, accuracy }: { position: LatLngTuple | nu
   );
 }
 
-// Define map marker icon (azul claro)
+// Helper to create custom SVG icons for map markers
+const createSvgIcon = (color: string) => {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3" fill="white" stroke="${color}"/></svg>`;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+};
+
+// Define map marker icon
 const defaultIcon = new Icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: createSvgIcon('#3b82f6'), // blue-500
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
   shadowSize: [41, 41],
-  className: "marker-normal"
 });
 
-// Define selected marker icon (verde destaque)
+// Define selected marker icon
 const selectedIcon = new Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  iconUrl: createSvgIcon('#2ecc71'), // recicla-primary
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+  popupAnchor: [0, -40],
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [30, 48],
-  iconAnchor: [15, 48],
-  popupAnchor: [1, -36],
   shadowSize: [41, 41],
   className: "marker-selected"
 });
@@ -193,19 +197,39 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
               click: () => onMarkerClick(point),
             }}
           >
-            <Popup className={`rounded-lg shadow-xl ${getMaterialColors(point.materials)}`}>
-              <div>
-                <h3 className="font-bold text-recicla-primary dark:text-recicla-secondary transition-colors">{point.name}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{point.description}</p>
+            <Popup className="recicla-popup">
+              <div className="p-2.5 w-64">
+                <h3 className="font-bold text-base text-recicla-primary dark:text-recicla-secondary transition-colors mb-1.5">{point.name}</h3>
+                {point.description && <p className="text-xs text-gray-600 dark:text-gray-300 mb-2 leading-snug">{point.description}</p>}
                 <p className="text-xs mt-1 text-gray-500 dark:text-gray-400">{point.address}</p>
                 
                 {userLocation && (
                   <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                     <p className="text-xs text-gray-600 dark:text-gray-400">
-                      Distância aproximada: {(calculateDistance(userLocation, [point.latitude, point.longitude]) / 1000).toFixed(2)} km
+                      Distância: ~{(calculateDistance(userLocation, [point.latitude, point.longitude]) / 1000).toFixed(2)} km
                     </p>
                   </div>
                 )}
+                 <div className="mt-3 pt-2.5 border-t border-gray-200 dark:border-gray-700 flex items-center gap-2">
+                   <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${point.latitude},${point.longitude}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Obter rotas no Google Maps"
+                      className="flex-1 text-center text-xs px-2 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors font-medium"
+                    >
+                      Google Maps
+                    </a>
+                    <a
+                      href={`https://waze.com/ul?ll=${point.latitude},${point.longitude}&navigate=yes`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Obter rotas no Waze"
+                      className="flex-1 text-center text-xs px-2 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors font-medium"
+                    >
+                      Waze
+                    </a>
+                </div>
               </div>
             </Popup>
           </Marker>
@@ -216,26 +240,15 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
         .leaflet-container {
           font-family: "Montserrat Variable", sans-serif;
         }
-        .leaflet-popup-content-wrapper,
-        .leaflet-popup-tip {
-          background: rgba(255,255,255,0.95);
-          color: #333;
+        .marker-selected .leaflet-marker-icon {
+          animation: pulse-marker 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
-        .dark .leaflet-popup-content-wrapper,
-        .dark .leaflet-popup-tip {
-          background: rgba(34,34,34,0.98);
-          color: #eee;
-        }
-        .marker-selected {
-          filter: drop-shadow(0 0 8px #36e67a99);
-          animation: pulse-green 1.6s cubic-bezier(0.4,0,0.6,1) infinite;
-        }
-        @keyframes pulse-green {
+        @keyframes pulse-marker {
           0%, 100% {
-            box-shadow: 0 0 0 0 rgba(46,204,113,0.5);
+            transform: scale(1);
           }
           50% {
-            box-shadow: 0 0 0 10px rgba(46,204,113,0);
+            transform: scale(1.1);
           }
         }
       `}</style>

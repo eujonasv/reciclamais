@@ -148,26 +148,26 @@ const MapPage = () => {
           />
           
           {/* Botões flutuantes no mapa */}
-          <div className="absolute bottom-6 left-6 z-[1000] flex flex-col md:flex-row gap-2">
+          <div className="absolute bottom-4 left-4 z-[1000] flex flex-col sm:flex-row gap-2">
             <Button
               onClick={getUserLocation}
               disabled={isLocating}
               className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700"
-              size="lg"
+              size={isMobile ? "icon" : "lg"}
+              aria-label="Minha Localização"
             >
-              <Navigation className="h-5 w-5 mr-2" />
-              {isLocating ? "Localizando..." : "Minha Localização"}
+              <Navigation className={isMobile ? "h-5 w-5" : "h-5 w-5 mr-2"} />
+              {!isMobile && (isLocating ? "Localizando..." : "Minha Localização")}
             </Button>
 
             {isMobile && (
               <Button
                 onClick={() => setIsSidebarOpen(true)}
                 className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 md:hidden"
-                size="lg"
+                size="icon"
                 aria-label="Ver lista de pontos"
               >
-                <List className="h-5 w-5 mr-2" />
-                Ver Lista
+                <List className="h-5 w-5" />
               </Button>
             )}
           </div>

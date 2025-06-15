@@ -44,7 +44,7 @@ const FloatingSidebar: React.FC<FloatingSidebarProps> = ({
       ${
         isMobile
           ? `fixed top-16 inset-x-0 bottom-0 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} z-[1001]`
-          : `relative w-[420px] border-l border-gray-200 dark:border-gray-700 h-full ${isOpen ? 'flex' : 'hidden'}`
+          : `relative w-[420px] border-l border-gray-200 dark:border-gray-700 h-full ${isOpen ? 'flex' : 'hidden'} md:shadow-xl`
       }
     `}
     role="dialog"
@@ -99,3 +99,4 @@ const FloatingSidebar: React.FC<FloatingSidebarProps> = ({
 );
 
 export default FloatingSidebar;
+

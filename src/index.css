@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -137,5 +136,30 @@ h1, h2, h3, h4, h5, h6 {
   
   .faq-item {
     @apply border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm overflow-hidden mb-4;
+  }
+}
+
+@layer components {
+  /* Custom popup styles for Leaflet */
+  .recicla-popup .leaflet-popup-content-wrapper {
+    @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-0;
+  }
+  .recicla-popup .leaflet-popup-content {
+    @apply m-0;
+  }
+  .recicla-popup .leaflet-popup-tip-container {
+    @apply -mt-px;
+  }
+  .recicla-popup .leaflet-popup-tip {
+    @apply bg-white/80 dark:bg-gray-900/80;
+  }
+  .recicla-popup a.leaflet-popup-close-button {
+    @apply text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors p-1 rounded-full bg-black/5 hover:bg-black/10;
+    top: 6px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    font-size: 18px;
+    line-height: 24px;
   }
 }
