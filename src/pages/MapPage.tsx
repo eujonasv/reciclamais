@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import FloatingSidebar from "@/components/map/FloatingSidebar";
+import MobilePointsDrawer from "@/components/map/MobilePointsDrawer";
 import EnhancedCollectionMap from "@/components/map/EnhancedCollectionMap";
 import { supabase } from "@/integrations/supabase/client";
 import { CollectionPoint } from "@/types/collection-point";
@@ -173,21 +174,37 @@ const MapPage = () => {
           </div>
         </div>
         
-        {/* Sidebar responsiva */}
-        <FloatingSidebar
-          isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
-          isMobile={isMobile}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          activeFilter={activeFilter}
-          allMaterials={allMaterials}
-          toggleFilter={toggleFilter}
-          clearFilters={clearFilters}
-          filteredPoints={filteredPoints}
-          selectedPoint={selectedPoint}
-          onPointSelect={handlePointSelect}
-        />
+        {/* Sidebar/Drawer responsiva */}
+        {isMobile ? (
+          <MobilePointsDrawer
+            isOpen={isSidebarOpen}
+            onOpenChange={setIsSidebarOpen}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            activeFilter={activeFilter}
+            allMaterials={allMaterials}
+            toggleFilter={toggleFilter}
+            clearFilters={clearFilters}
+            filteredPoints={filteredPoints}
+            selectedPoint={selectedPoint}
+            onPointSelect={handlePointSelect}
+          />
+        ) : (
+          <FloatingSidebar
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+            isMobile={false}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            activeFilter={activeFilter}
+            allMaterials={allMaterials}
+            toggleFilter={toggleFilter}
+            clearFilters={clearFilters}
+            filteredPoints={filteredPoints}
+            selectedPoint={selectedPoint}
+            onPointSelect={handlePointSelect}
+          />
+        )}
       </div>
     </MainLayout>
   );
