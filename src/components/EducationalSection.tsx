@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Book, Video, Sprout, ArrowRight } from 'lucide-react';
+import { Book, Video, Sprout, ArrowRight, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const EducationalSection = () => {
@@ -29,7 +29,7 @@ const EducationalSection = () => {
           {/* Educational Cards */}
           <div className="space-y-6 animate-fade-in-right">
             {educationalResources.map((resource, index) => (
-              <Link to="/educacao" key={index} className="block">
+              <Link to={`/educacao?tab=${resource.tabId}`} key={index} className="block">
                 <Card className="group transform transition-all duration-300 hover:scale-[1.03] hover:shadow-xl bg-white/60 dark:bg-white/10 backdrop-blur-md border-gray-200/50 dark:border-white/10 rounded-2xl">
                   <CardContent className="p-6 flex items-center gap-6">
                     <div className="p-4 rounded-xl bg-recicla-primary/10 group-hover:bg-recicla-primary/20 transition-colors duration-300">
@@ -55,17 +55,26 @@ const educationalResources = [
   {
     title: 'Dicas para o Dia a Dia',
     description: 'Ações práticas para reduzir, reutilizar e reciclar.',
-    icon: <Book size={24} className="text-recicla-primary dark:text-recicla-secondary" />
+    icon: <Book size={24} className="text-recicla-primary dark:text-recicla-secondary" />,
+    tabId: 'dicas'
   },
   {
     title: 'Guias para Iniciantes',
     description: 'Passo a passo para começar sua jornada sustentável.',
-    icon: <Sprout size={24} className="text-recicla-primary dark:text-recicla-secondary" />
+    icon: <Sprout size={24} className="text-recicla-primary dark:text-recicla-secondary" />,
+    tabId: 'guia'
   },
   {
     title: 'Vídeos Educativos',
     description: 'Conteúdo visual para aprender de forma rápida e clara.',
-    icon: <Video size={24} className="text-recicla-primary dark:text-recicla-secondary" />
+    icon: <Video size={24} className="text-recicla-primary dark:text-recicla-secondary" />,
+    tabId: 'videos'
+  },
+  {
+    title: 'Teste seu Conhecimento',
+    description: 'Faça nosso quiz e veja o quanto você sabe sobre reciclagem.',
+    icon: <HelpCircle size={24} className="text-recicla-primary dark:text-recicla-secondary" />,
+    tabId: 'quiz'
   }
 ];
 

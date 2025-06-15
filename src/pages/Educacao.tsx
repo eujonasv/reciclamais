@@ -7,8 +7,15 @@ import { Book, Video, Sprout, Youtube, CheckCircle, XCircle, Play, HelpCircle } 
 import { Button } from "@/components/ui/button";
 import { videos } from "@/data/videos";
 import QuizReciclagem from "@/components/QuizReciclagem";
+import { useSearchParams } from "react-router-dom";
 
 const EducationPage = () => {
+  const [searchParams] = useSearchParams();
+  const tab = searchParams.get("tab");
+
+  const validTabs = ["dicas", "guia", "videos", "quiz"];
+  const defaultTab = tab && validTabs.includes(tab) ? tab : "dicas";
+
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -36,7 +43,7 @@ const EducationPage = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="dicas" className="w-full">
+        <Tabs defaultValue={defaultTab} className="w-full">
           <div className="flex justify-center mb-6">
             <TabsList className="grid grid-cols-4 w-full max-w-lg">
               <TabsTrigger value="dicas" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm">
