@@ -100,7 +100,7 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
           .eq("id", editingPoint.id);
       } else {
         // Para novos pontos, definir uma ordem de exibição alta para que apareçam no final
-        const newOrder = points.length > 0 ? Math.max(...points.map(p => p.display_order)) + 1 : 1;
+        const newOrder = points.length > 0 ? Math.max(...points.map(p => p.display_order ?? 0)) + 1 : 1;
         result = await supabase.from("collection_points").insert({...payload, display_order: newOrder});
       }
 
@@ -148,11 +148,20 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
     setPoints(reorderedPoints);
 
     const updates = reorderedPoints.map((point, index) => ({
-      id: point.id,
-      display_order: index,
+        id: point.id,
+        name: point.name,
+        description: point.description,
+        address: point.address,
+        latitude: point.latitude,
+        longitude: point.longitude,
+        phone: point.phone,
+        website: point.website,
+        materials: point.materials.join(','),
+        display_order: index,
     }));
 
     const { error } = await supabase.from('collection_points').upsert(updates);
+    
     if (error) {
       toast({
         title: "Erro ao salvar a nova ordem",
