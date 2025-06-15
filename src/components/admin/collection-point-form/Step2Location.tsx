@@ -4,9 +4,44 @@ import { useFormContext } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search } from 'lucide-react';
+import { Search, MapPin } from 'lucide-react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
+
+// Helper function to format address from Nominatim
+const formatNominatimAddress = (result: any): string => {
+  const { address, display_name } = result;
+  if (!address) return display_name; // Fallback to full display name
+
+  // Prioritize more specific location types
+  const mainName = address.road || address.pedestrian || address.attraction || address.amenity || '';
+  const houseNumber = address.house_number || '';
+  const suburb = address.suburb || ''; // Bairro
+  const city = address.city || address.town || address.village || '';
+  const state = address.state || '';
+
+  const addressParts = [
+    mainName ? `${mainName}${houseNumber ? `, ${houseNumber}` : ''}` : '',
+    suburb,
+    city
+  ].filter(Boolean).join(', ');
+
+  let finalAddress = addressParts;
+  if (state) {
+    finalAddress = `${addressParts} - ${state}`;
+  }
+
+  // If the formatted address is too short or generic, fallback to a more complete version
+  if (finalAddress.length < 15 && display_name) {
+    const fallbackParts = display_name.split(',').slice(0, 4).join(', ');
+    if (fallbackParts.length > finalAddress.length) {
+      return fallbackParts;
+    }
+  }
+
+  return finalAddress || display_name;
+};
+
 
 const Step2Location = () => {
   const { control, setValue } = useFormContext();
@@ -20,7 +55,8 @@ const Step2Location = () => {
     
     setIsSearching(true);
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchAddress)}`);
+      // Added addressdetails=1 to get structured address & countrycodes=br to restrict to Brazil
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&q=${encodeURIComponent(searchAddress)}&countrycodes=br`);
       const data = await response.json();
       setSearchResults(data);
     } catch (error) {
@@ -31,10 +67,13 @@ const Step2Location = () => {
   };
 
   const selectAddress = (result: any) => {
-    const { display_name, lat, lon } = result;
-    setValue("address", display_name, { shouldValidate: true });
+    const formattedAddress = formatNominatimAddress(result);
+    const { lat, lon } = result;
+    
+    setValue("address", formattedAddress, { shouldValidate: true });
     setValue("latitude", parseFloat(lat), { shouldValidate: true });
     setValue("longitude", parseFloat(lon), { shouldValidate: true });
+    
     setShowAddressSearch(false);
     setSearchAddress("");
     setSearchResults([]);
@@ -51,7 +90,7 @@ const Step2Location = () => {
               <FormLabel>Endereço</FormLabel>
               <div className="flex space-x-2">
                 <FormControl>
-                  <Input placeholder="Endereço completo" {...field} />
+                  <Input placeholder="Clique na lupa para buscar..." {...field} />
                 </FormControl>
                 <SheetTrigger asChild>
                   <Button variant="outline" type="button" className="shrink-0" onClick={() => setShowAddressSearch(true)}>
@@ -67,7 +106,7 @@ const Step2Location = () => {
           <SheetHeader>
             <SheetTitle>Buscar Endereço</SheetTitle>
             <SheetDescription>
-              Digite um endereço para obter automaticamente suas coordenadas.
+              Digite um endereço para buscar as coordenadas. A busca é otimizada para o Brasil.
             </SheetDescription>
           </SheetHeader>
           <div className="py-6 space-y-4">
@@ -84,27 +123,33 @@ const Step2Location = () => {
             </div>
             
             <div className="max-h-[70vh] overflow-y-auto space-y-2 pr-2">
-              {searchResults.map((result, index) => (
+              {searchResults.map((result) => (
                 <div 
-                  key={index}
+                  key={result.place_id}
                   className="p-3 border rounded-md hover:bg-accent cursor-pointer transition-colors"
                   onClick={() => selectAddress(result)}
                 >
-                  <p className="text-sm font-medium">{result.display_name}</p>
-                  <div className="flex space-x-2 mt-1">
-                    <Badge variant="secondary">
-                      Lat: {parseFloat(result.lat).toFixed(6)}
-                    </Badge>
-                    <Badge variant="secondary">
-                      Lon: {parseFloat(result.lon).toFixed(6)}
-                    </Badge>
+                   <div className="flex items-start space-x-3">
+                    <MapPin className="h-5 w-5 text-muted-foreground mt-1 shrink-0" />
+                    <div className="flex-grow">
+                      <p className="text-sm font-medium">{formatNominatimAddress(result)}</p>
+                      <p className="text-xs text-muted-foreground capitalize">{result.type}</p>
+                      <div className="flex space-x-2 mt-2">
+                        <Badge variant="secondary">
+                          Lat: {parseFloat(result.lat).toFixed(6)}
+                        </Badge>
+                        <Badge variant="secondary">
+                          Lon: {parseFloat(result.lon).toFixed(6)}
+                        </Badge>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
               
               {searchResults.length === 0 && !isSearching && searchAddress.length > 2 && (
                 <p className="text-center text-muted-foreground py-4">
-                  Nenhum resultado encontrado.
+                  Nenhum resultado encontrado. Tente um termo de busca diferente.
                 </p>
               )}
               
@@ -131,6 +176,7 @@ const Step2Location = () => {
                   step="any" 
                   placeholder="-25.4284" 
                   {...field}
+                  onChange={e => field.onChange(parseFloat(e.target.value))}
                 />
               </FormControl>
               <FormMessage />
@@ -149,6 +195,7 @@ const Step2Location = () => {
                   step="any"
                   placeholder="-49.2733" 
                   {...field}
+                  onChange={e => field.onChange(parseFloat(e.target.value))}
                 />
               </FormControl>
               <FormMessage />
@@ -161,4 +208,3 @@ const Step2Location = () => {
 };
 
 export default Step2Location;
-
