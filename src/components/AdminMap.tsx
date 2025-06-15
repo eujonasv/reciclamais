@@ -231,7 +231,7 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
         </div>
       ) : (
         <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="collection-points-grid">
+          <Droppable droppableId="collection-points-list" direction="vertical">
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
@@ -240,10 +240,6 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
                   grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[200px]
                   ${snapshot.isDraggingOver ? 'bg-gray-50 dark:bg-gray-800/50 rounded-lg p-2' : ''}
                 `}
-                style={{
-                  gridAutoFlow: 'row',
-                  gridTemplateRows: 'repeat(auto-fit, minmax(200px, auto))'
-                }}
               >
                 {points.map((point, index) => (
                   <Draggable key={point.id} draggableId={point.id} index={index}>
