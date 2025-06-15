@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Book, Video, Sprout } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import RecycleLogo from './RecycleLogo';
+import { GlassCard } from './GlassCard';
 
 const EducationalSection = () => {
   return (
-    <section id="educacao" className="section-padding bg-gray-50 dark:bg-gray-900/70 transition-all">
+    <section id="educacao" className="section-padding bg-white dark:bg-gray-900 transition-all">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-4">
@@ -26,19 +27,23 @@ const EducationalSection = () => {
             <Link 
               to="/educacao" 
               key={index} 
-              className="group rounded-2xl bg-white/70 dark:bg-gray-900/90 shadow-lg border border-recicla-primary/10 dark:border-recicla-secondary/10 p-7 hover:-translate-y-2 hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20 transition-all duration-300 backdrop-blur-md flex flex-col justify-between animate-fade-in"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="flex"
             >
-              <div>
-                <div className="mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-recicla-primary/10 dark:bg-recicla-secondary/10 text-recicla-primary dark:text-recicla-secondary transition-transform group-hover:scale-110">
-                  {resource.icon}
+              <GlassCard
+                delay={index * 100}
+                className="flex flex-col justify-between w-full"
+              >
+                <div>
+                  <div className="mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-recicla-primary/10 dark:bg-recicla-secondary/10 text-recicla-primary dark:text-recicla-secondary transition-transform group-hover:scale-110">
+                    {resource.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{resource.title}</h3>
+                  <p className="text-gray-700 dark:text-gray-300">{resource.description}</p>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{resource.title}</h3>
-                <p className="text-gray-700 dark:text-gray-300">{resource.description}</p>
-              </div>
-              <span className="mt-4 text-sm font-semibold text-recicla-primary dark:text-recicla-secondary group-hover:underline">
-                Saiba mais &rarr;
-              </span>
+                <span className="mt-4 text-sm font-semibold text-recicla-primary dark:text-recicla-secondary group-hover:underline">
+                  Saiba mais &rarr;
+                </span>
+              </GlassCard>
             </Link>
           ))}
         </div>

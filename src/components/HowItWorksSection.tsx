@@ -64,7 +64,7 @@ const HowItWorksSection = () => {
             <div key={index} className="flex flex-col items-center max-w-sm relative">
               {/* Step Card */}
               <div
-                className={`w-full rounded-xl shadow-md overflow-hidden bg-white dark:bg-gray-900 transition-all duration-300 hover:-translate-y-2 cursor-pointer hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20 ${
+                className={`w-full rounded-xl shadow-md overflow-hidden bg-white/60 dark:bg-gray-800/80 backdrop-blur-xl border border-recicla-primary/10 dark:border-recicla-secondary/20 transition-all duration-300 hover:-translate-y-2 cursor-pointer hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20 ${
                   currentStep === index ? 'ring-2 ring-recicla-primary dark:ring-recicla-secondary' : ''
                 }`}
                 onClick={() => goToStep(index)}
@@ -102,7 +102,7 @@ const HowItWorksSection = () => {
 
         {/* Steps for Mobile */}
         <div className="md:hidden">
-          <div className="relative rounded-xl shadow-md overflow-hidden bg-white dark:bg-gray-900">
+          <div className="relative rounded-xl shadow-md overflow-hidden bg-white/60 dark:bg-gray-800/80 backdrop-blur-xl border border-recicla-primary/10 dark:border-recicla-secondary/20">
             {/* Step Number */}
             <div className="absolute top-4 left-4 z-10 text-white text-xl font-bold">
               {steps[currentStep].number}

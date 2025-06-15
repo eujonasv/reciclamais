@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Leaf, Users, Recycle, TrendingUp } from 'lucide-react';
-import { Card, CardContent } from "@/components/ui/card";
 import RecycleLogo from './RecycleLogo';
+import { GlassCard } from './GlassCard';
 
 const features = [
   {
@@ -58,17 +57,5 @@ const AboutSection = () => {
     </section>
   );
 };
-
-// Glass morphism effect card
-const GlassCard = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
-  <div
-    style={{
-      animationDelay: `${delay}ms`,
-    }}
-    className="group rounded-2xl bg-white/60 dark:bg-gray-800/80 shadow-xl backdrop-blur-xl border border-recicla-primary/10 dark:border-recicla-secondary/20 p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20 animate-fade-in"
-  >
-    {children}
-  </div>
-);
 
 export default AboutSection;

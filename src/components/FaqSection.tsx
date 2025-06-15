@@ -45,7 +45,7 @@ const FaqSection = () => {
   ];
 
   return (
-    <section id="faq" className="section-padding bg-white dark:bg-gray-900/70">
+    <section id="faq" className="section-padding bg-gray-50 dark:bg-gray-800">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-4">
@@ -65,7 +65,7 @@ const FaqSection = () => {
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`}
-                className="rounded-2xl bg-white/70 dark:bg-gray-900/90 shadow-lg border border-recicla-primary/10 dark:border-recicla-secondary/10 transition-all duration-300 backdrop-blur-md animate-fade-in hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20"
+                className="rounded-2xl bg-white/60 dark:bg-gray-800/80 shadow-xl backdrop-blur-xl border border-recicla-primary/10 dark:border-recicla-secondary/20 transition-all duration-300 animate-fade-in hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20"
                 style={{ animationDelay: `${index * 80}ms` }}
               >
                 <AccordionTrigger className="px-6 py-4 text-left font-semibold text-lg text-gray-900 dark:text-white hover:no-underline">

@@ -1,6 +1,6 @@
-
 import React from "react";
 import { CheckCircle, MapPin, Users, TrendingUp } from "lucide-react";
+import { GlassCard } from "./GlassCard";
 
 const benefits = [
   {
@@ -26,7 +26,7 @@ const benefits = [
 ];
 
 const BenefitsSection = () => (
-  <section className="section-padding bg-white dark:bg-gray-900/70 transition-all">
+  <section className="section-padding bg-white dark:bg-gray-900 transition-all">
     <div className="container mx-auto">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
@@ -38,15 +38,13 @@ const BenefitsSection = () => (
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-7">
         {benefits.map((benefit, idx) => (
-          <div
-            key={benefit.title}
-            style={{ animationDelay: `${idx * 80}ms` }}
-            className="rounded-2xl bg-white/70 dark:bg-gray-900/90 shadow-lg border border-recicla-primary/10 dark:border-recicla-secondary/10 p-7 hover:-translate-y-2 hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20 transition-all duration-300 animate-fade-in backdrop-blur-md"
-          >
-            <div className="mb-4 flex items-center justify-center">{benefit.icon}</div>
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{benefit.title}</h3>
-            <p className="text-gray-700 dark:text-gray-300">{benefit.desc}</p>
-          </div>
+          <GlassCard key={benefit.title} delay={idx * 100}>
+            <div className="mb-4 p-3 rounded-full bg-recicla-primary/10 dark:bg-recicla-secondary/10 flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+              {benefit.icon}
+            </div>
+            <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{benefit.title}</h3>
+            <p className="text-gray-600 dark:text-gray-300">{benefit.desc}</p>
+          </GlassCard>
         ))}
       </div>
     </div>
