@@ -133,7 +133,7 @@ const MapSection = () => {
                     compactPopup
                   />
                   
-                  <div className="absolute bottom-4 left-4 z-[1000]">
+                  <div className="absolute bottom-4 right-4 z-[1000]">
                     <Button
                       onClick={getUserLocation}
                       disabled={isLocating}

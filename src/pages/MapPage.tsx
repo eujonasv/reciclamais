@@ -164,7 +164,7 @@ const MapPage = () => {
           />
           
           {/* Botões flutuantes no mapa */}
-          <div className="absolute bottom-4 left-4 z-20 flex flex-col sm:flex-row gap-3">
+          <div className="absolute bottom-4 right-4 z-20 flex flex-col sm:flex-row gap-3">
             {!isMobile && !isSidebarOpen && (
               <Button
                 onClick={() => setIsSidebarOpen(true)}
