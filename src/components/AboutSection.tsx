@@ -46,7 +46,7 @@ const AboutSection = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
           {features.map((feature, idx) => (
             <GlassCard key={feature.title} delay={idx * 100}>
-              <div className="mb-4 p-3 rounded-full bg-recicla-primary/10 dark:bg-recicla-secondary/10 flex items-center justify-center transition-transform duration-200 hover:scale-110">
+              <div className="mb-4 p-3 rounded-full bg-recicla-primary/10 dark:bg-recicla-secondary/10 flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
                 {feature.icon}
               </div>
               <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{feature.title}</h3>
@@ -65,7 +65,7 @@ const GlassCard = ({ children, delay = 0 }: { children: React.ReactNode; delay?:
     style={{
       animationDelay: `${delay}ms`,
     }}
-    className="rounded-2xl bg-white/60 dark:bg-gray-800/80 shadow-xl backdrop-blur-xl border border-recicla-primary/10 dark:border-recicla-secondary/20 p-8 transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-fade-in"
+    className="group rounded-2xl bg-white/60 dark:bg-gray-800/80 shadow-xl backdrop-blur-xl border border-recicla-primary/10 dark:border-recicla-secondary/20 p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20 animate-fade-in"
   >
     {children}
   </div>

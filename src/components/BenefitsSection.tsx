@@ -41,7 +41,7 @@ const BenefitsSection = () => (
           <div
             key={benefit.title}
             style={{ animationDelay: `${idx * 80}ms` }}
-            className="rounded-2xl bg-white/70 dark:bg-gray-900/90 shadow-lg border border-recicla-primary/10 dark:border-recicla-secondary/10 p-7 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 animate-fade-in backdrop-blur-md"
+            className="rounded-2xl bg-white/70 dark:bg-gray-900/90 shadow-lg border border-recicla-primary/10 dark:border-recicla-secondary/10 p-7 hover:-translate-y-2 hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20 transition-all duration-300 animate-fade-in backdrop-blur-md"
           >
             <div className="mb-4 flex items-center justify-center">{benefit.icon}</div>
             <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{benefit.title}</h3>

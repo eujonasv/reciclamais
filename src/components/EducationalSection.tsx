@@ -26,7 +26,7 @@ const EducationalSection = () => {
             <Link 
               to="/educacao" 
               key={index} 
-              className="group rounded-2xl bg-white/70 dark:bg-gray-900/90 shadow-lg border border-recicla-primary/10 dark:border-recicla-secondary/10 p-7 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 backdrop-blur-md flex flex-col justify-between animate-fade-in"
+              className="group rounded-2xl bg-white/70 dark:bg-gray-900/90 shadow-lg border border-recicla-primary/10 dark:border-recicla-secondary/10 p-7 hover:-translate-y-2 hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20 transition-all duration-300 backdrop-blur-md flex flex-col justify-between animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div>
