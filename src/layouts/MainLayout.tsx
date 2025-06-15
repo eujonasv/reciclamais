@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, Instagram, ChevronUp, Lock } from "lucide-react";
+import { Menu, X, Instagram, ChevronUp, Lock, Mail } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 import { Button } from "@/components/ui/button";
@@ -220,25 +220,25 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         {children}
       </main>
 
-      <footer className="bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+        <div className="container mx-auto px-4 py-12 md:py-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
             {/* Coluna 1: Sobre */}
-            <div className="sm:col-span-2 lg:col-span-1">
-              <Link to="/" onClick={() => scrollToSection("inicio")} className="inline-block mb-3">
+            <div className="sm:col-span-2 lg:col-span-2">
+              <Link to="/" onClick={() => scrollToSection("inicio")} className="inline-block mb-4">
                 <div className="origin-left">
                   <RecycleLogoWithText size="lg" />
                 </div>
               </Link>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">
+              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                 Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável.
               </p>
             </div>
 
             {/* Coluna 2: Navegação */}
             <div>
-              <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white uppercase tracking-wider">Navegação</h3>
-              <ul className="space-y-2">
+              <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Navegação</h3>
+              <ul className="space-y-3">
                 {navLinks.map(({id, text, isPage, path}) => (
                   <li key={id}>
                     <button
@@ -262,8 +262,8 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
             {/* Coluna 3: Institucional */}
             <div>
-              <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white uppercase tracking-wider">Institucional</h3>
-              <ul className="space-y-2">
+              <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Institucional</h3>
+              <ul className="space-y-3">
                 <li>
                   <Link to="/politica-de-privacidade" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">Política de Privacidade</Link>
                 </li>
@@ -281,18 +281,21 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
             {/* Coluna 4: Contato */}
             <div>
-              <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white uppercase tracking-wider">Contato</h3>
-              <ul className="space-y-2">
+              <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Contato</h3>
+              <ul className="space-y-3">
                 <li>
-                  <a href="mailto:reciclamais25@gmail.com" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">reciclamais25@gmail.com</a>
+                  <a href="mailto:reciclamais25@gmail.com" className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">
+                    <Mail size={16} />
+                    <span>reciclamais25@gmail.com</span>
+                  </a>
                 </li>
               </ul>
-              <div className="flex space-x-4 mt-3">
+              <div className="flex space-x-3 mt-6">
                 <a 
                   href="https://www.instagram.com/reciclamais.br/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
+                  className="text-gray-500 hover:text-recicla-primary dark:text-white dark:hover:text-recicla-secondary p-2 bg-gray-200 dark:bg-gray-700/50 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-full transition-all duration-300"
                   aria-label="Instagram"
                 >
                   <Instagram size={20} />
@@ -301,7 +304,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
             </div>
           </div>
 
-          <div className="pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center">
+          <div className="pt-8 mt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center">
             <p className="text-sm text-gray-500 dark:text-gray-400 text-center sm:text-left mb-4 sm:mb-0">
               © {new Date().getFullYear()} RECICLA+. Todos os direitos reservados.
             </p>
