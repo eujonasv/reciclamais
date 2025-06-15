@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { MapIcon, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -295,6 +296,7 @@ const MapSection = () => {
                     selectedPoint={selectedPoint}
                     onMarkerClick={handlePointSelect}
                     ref={mapRef}
+                    compactPopup
                   />
                   
                   <div className="absolute bottom-4 left-4 z-[1000]">
