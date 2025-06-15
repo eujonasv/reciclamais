@@ -3,6 +3,7 @@ import React from 'react';
 import type { CollectionPoint } from '@/types/collection-point';
 import { LatLngTuple, calculateDistance } from '@/lib/map-utils';
 import { MapPin, Navigation } from 'lucide-react';
+import { materialColors } from '@/types/collection-point';
 
 interface MapPopupContentProps {
     point: CollectionPoint;
@@ -22,9 +23,21 @@ const MapPopupContent = ({ point, userLocation }: MapPopupContentProps) => {
                     <span className="truncate">{point.address}</span>
                 </div>
                 {distanceInKm && (
-                    <p className="text-xs text-gray-600 dark:text-gray-300 font-medium">
+                    <p className="text-xs text-gray-600 dark:text-gray-300 font-medium mb-2">
                         Aproximadamente {distanceInKm} km de distância
                     </p>
+                )}
+                {point.materials && point.materials.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 text-xs">
+                        {point.materials.map((material) => (
+                            <span
+                                key={material}
+                                className={`px-2 py-0.5 font-semibold rounded-full ${materialColors[material] || 'bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-gray-200'}`}
+                            >
+                                {material}
+                            </span>
+                        ))}
+                    </div>
                 )}
             </div>
             <div className="px-3 pb-3 pt-2 border-t border-black/10 dark:border-white/10 flex items-center gap-2">
