@@ -1,38 +1,15 @@
 
 import React, { useRef, useEffect, useImperativeHandle, forwardRef, useState } from 'react';
-import ReactDOM from 'react-dom';
-import mapboxgl, { Map, Marker, Popup } from 'mapbox-gl';
+import mapboxgl, { Map } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useTheme } from 'next-themes';
 import type { CollectionPoint } from '@/types/collection-point';
-import MapPopupContent from './MapPopupContent';
 import { LatLngTuple } from '@/lib/map-utils';
+import { MAPBOX_TOKEN, mapStyles } from './mapbox-utils';
+import { useMapboxMarkers } from '@/hooks/useMapboxMarkers';
+import { useMapboxPopups } from '@/hooks/useMapboxPopups';
 
-const MAPBOX_TOKEN = 'pk.eyJ1IjoicmVjaWNsYW1haXMiLCJhIjoiY21ieDNncjVzMWJhODJpcHF1MHlnbXpsMCJ9.zP9rfJT0CKvH72NEaA5dQg';
 mapboxgl.accessToken = MAPBOX_TOKEN;
-
-const mapStyles = {
-  light: 'mapbox://styles/mapbox/streets-v12',
-  dark: 'mapbox://styles/mapbox/dark-v11',
-};
-
-const createMarkerElement = (color: string, size: number, isSelected: boolean = false) => {
-  const el = document.createElement('div');
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="${color}" stroke="#FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.3));"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3.5" fill="white" stroke="${color}" stroke-width="1.5" /></svg>`;
-  el.innerHTML = svg;
-  el.style.cursor = 'pointer';
-  if (isSelected) {
-    el.style.animation = 'pulse-marker 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite';
-    el.style.transformOrigin = 'bottom';
-  }
-  return el;
-};
-
-const createUserMarkerElement = () => {
-    const el = document.createElement('div');
-    el.className = 'user-location-dot';
-    return el;
-};
 
 export interface MapboxCollectionMapRef {
   setViewFromExternal: (coordinates: [number, number]) => void;
@@ -55,12 +32,12 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
 }, ref) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
-  const markersRef = useRef<{ [key: string]: Marker }>({});
-  const popupsRef = useRef<{ [key: string]: Popup }>({});
-  const userMarkerRef = useRef<Marker | null>(null);
   const [userLocation, setUserLocation] = useState<LatLngTuple | null>(null);
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
+
+  const { markersRef, createOrUpdateMarker, removeMarker, setUserLocation: setUserMarkerLocation } = useMapboxMarkers();
+  const { popupsRef, createPopup, updatePopupContent, removeAllPopups, removePopup, showPopup } = useMapboxPopups();
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -74,9 +51,9 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
     mapRef.current = map;
 
     map.on('load', () => {
-        if (collectionPoints.length > 0) {
-            map.setCenter([collectionPoints[0].longitude, collectionPoints[0].latitude]);
-        }
+      if (collectionPoints.length > 0) {
+        map.setCenter([collectionPoints[0].longitude, collectionPoints[0].latitude]);
+      }
     });
 
     return () => {
@@ -86,8 +63,8 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
   }, []);
 
   useEffect(() => {
-    if(mapRef.current) {
-        mapRef.current.setStyle(isDark ? mapStyles.dark : mapStyles.light);
+    if (mapRef.current) {
+      mapRef.current.setStyle(isDark ? mapStyles.dark : mapStyles.light);
     }
   }, [isDark]);
 
@@ -95,81 +72,37 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
     if (!mapRef.current) return;
     const map = mapRef.current;
     
-    // Remover marcadores antigos que não estão mais na lista
+    // Remove old markers that are no longer in the list
     Object.keys(markersRef.current).forEach(pointId => {
       if (!collectionPoints.find(p => p.id === pointId)) {
-        markersRef.current[pointId].remove();
-        delete markersRef.current[pointId];
-        if (popupsRef.current[pointId]) {
-          popupsRef.current[pointId].remove();
-          delete popupsRef.current[pointId];
-        }
+        removeMarker(pointId);
+        removePopup(pointId);
       }
     });
     
     collectionPoints.forEach(point => {
       const isSelected = selectedPoint?.id === point.id;
-      const lngLat: [number, number] = [point.longitude, point.latitude];
-      const markerColor = isSelected ? '#2ecc71' : '#3b82f6';
-      const markerSize = isSelected ? 40 : 32;
-
-      const markerElement = createMarkerElement(markerColor, markerSize, isSelected);
-
-      if (markersRef.current[point.id]) {
-        // Atualizar marcador existente
-        markersRef.current[point.id].getElement().innerHTML = markerElement.innerHTML;
-      } else {
-        // Criar novo marcador
-        const newMarker = new Marker({ element: markerElement, anchor: 'bottom' })
-          .setLngLat(lngLat)
-          .addTo(map);
-        
-        // Adicionar event listener de clique
-        newMarker.getElement().addEventListener('click', (e) => {
-            e.stopPropagation();
-            onMarkerClick(point);
-        });
-        
-        markersRef.current[point.id] = newMarker;
-        
-        // Criar popup para este marcador
-        const popupNode = document.createElement('div');
-        const popup = new Popup({ 
-          offset: [0, -35], 
-          closeButton: false, 
-          className: 'recicla-mapbox-popup' 
-        }).setDOMContent(popupNode);
-        popupsRef.current[point.id] = popup;
+      
+      createOrUpdateMarker(point, isSelected, onMarkerClick, map);
+      
+      // Create popup if it doesn't exist
+      if (!popupsRef.current[point.id]) {
+        createPopup(point);
       }
       
-      // Atualizar conteúdo do popup
-      const popup = popupsRef.current[point.id];
-      if (popup) {
-        const popupNode = document.createElement('div');
-        const root = (ReactDOM as any).createRoot ? (ReactDOM as any).createRoot(popupNode) : null;
-        
-        if (root) {
-          root.render(<MapPopupContent point={point} userLocation={userLocation} compact={compactPopup} />);
-        } else {
-          ReactDOM.render(<MapPopupContent point={point} userLocation={userLocation} compact={compactPopup} />, popupNode);
-        }
-        popup.setDOMContent(popupNode);
-      }
+      // Update popup content
+      updatePopupContent(point, userLocation, compactPopup);
     });
     
-  }, [collectionPoints, userLocation, compactPopup, onMarkerClick, isDark]);
+  }, [collectionPoints, userLocation, compactPopup, onMarkerClick, isDark, selectedPoint, createOrUpdateMarker, removeMarker, removePopup, createPopup, updatePopupContent]);
   
   useEffect(() => {
     if (!mapRef.current) return;
 
-    // Remover todos os popups abertos
-    Object.values(popupsRef.current).forEach(popup => {
-      if (popup.isOpen()) {
-        popup.remove();
-      }
-    });
+    // Remove all open popups
+    removeAllPopups();
 
-    // Se há um ponto selecionado, mostrar seu popup
+    // If there's a selected point, show its popup
     if (selectedPoint) {
       mapRef.current.flyTo({
         center: [selectedPoint.longitude, selectedPoint.latitude],
@@ -177,14 +110,13 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
         duration: 1200,
       });
       
-      const popup = popupsRef.current[selectedPoint.id];
-      if (popup && mapRef.current) {
-        setTimeout(() => {
-          popup.setLngLat([selectedPoint.longitude, selectedPoint.latitude]).addTo(mapRef.current!);
-        }, 300);
-      }
+      setTimeout(() => {
+        if (mapRef.current) {
+          showPopup(selectedPoint, mapRef.current);
+        }
+      }, 300);
     }
-  }, [selectedPoint]);
+  }, [selectedPoint, removeAllPopups, showPopup]);
 
   useImperativeHandle(ref, () => ({
     setViewFromExternal: (coordinates: [number, number]) => {
@@ -193,27 +125,26 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
       }
     },
     setUserLocation: (coordinates: LatLngTuple, accuracy: number) => {
-        if (!mapRef.current) return;
-        const map = mapRef.current;
-        const lngLat: [number, number] = [coordinates[1], coordinates[0]];
+      if (!mapRef.current) return;
+      const map = mapRef.current;
+      const lngLat: [number, number] = [coordinates[1], coordinates[0]];
 
-        setUserLocation(coordinates);
-        map.flyTo({ center: lngLat, zoom: 15, duration: 1500 });
-        
-        if (userMarkerRef.current) {
-            userMarkerRef.current.setLngLat(lngLat);
-        } else {
-            const el = createUserMarkerElement();
-            userMarkerRef.current = new Marker({ element: el, anchor: 'center' }).setLngLat(lngLat).addTo(map);
-        }
+      setUserLocation(coordinates);
+      map.flyTo({ center: lngLat, zoom: 15, duration: 1500 });
+      
+      setUserMarkerLocation(coordinates, map);
     },
     getMap: () => mapRef.current,
   }));
 
   if (!MAPBOX_TOKEN) {
-    return <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-800 rounded-xl">
-        <p className="text-red-500 font-semibold text-center p-4">Token do Mapbox não fornecido. <br/> Por favor, crie um arquivo `.env` e adicione `VITE_MAPBOX_TOKEN="SUA_CHAVE_AQUI"`.</p>
-    </div>
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-800 rounded-xl">
+        <p className="text-red-500 font-semibold text-center p-4">
+          Token do Mapbox não fornecido. <br/> Por favor, crie um arquivo `.env` e adicione `VITE_MAPBOX_TOKEN="SUA_CHAVE_AQUI"`.
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -230,7 +161,7 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background-color: #3b82f6; /* Tailwind blue-500 */
+          background-color: #3b82f6;
           border: 4px solid white;
           box-shadow: 0 0 0 4px #3b82f6;
           animation: pulse-blue 2s infinite;
