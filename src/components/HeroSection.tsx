@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -59,8 +60,8 @@ const HeroSection = () => {
             <div className="relative">
               <div className="absolute -inset-1 rounded-full bg-recicla-primary/25 dark:bg-recicla-primary/30 filter blur-2xl animate-pulse-green" />
               <img
-                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1934&q=80"
-                alt="Paisagem natural com lago e árvores, simbolizando sustentabilidade"
+                src="https://images.unsplash.com/photo-1476231682828-37e571bc172f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Paisagem natural com montanhas verdes e céu azul, simbolizando um ambiente limpo e sustentável"
                 className="rounded-3xl shadow-2xl max-w-full object-cover mx-auto relative z-10 animate-scale-in border-2 border-recicla-primary/10"
               />
             </div>

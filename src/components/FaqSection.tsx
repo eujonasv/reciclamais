@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Accordion,
@@ -65,7 +64,7 @@ const FaqSection = () => {
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`}
-                className="rounded-2xl bg-white/60 dark:bg-gray-800/80 shadow-xl backdrop-blur-xl border border-recicla-primary/10 dark:border-recicla-secondary/20 transition-all duration-300 animate-fade-in hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20"
+                className="rounded-2xl bg-white/60 dark:bg-gray-800/80 shadow-xl backdrop-blur-xl border border-recicla-primary/10 dark:border-recicla-secondary/20 transition-all duration-300 animate-fade-in hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20 hover:-translate-y-1 hover:ring-2 hover:ring-recicla-primary/20 dark:hover:ring-recicla-secondary/20"
                 style={{ animationDelay: `${index * 80}ms` }}
               >
                 <AccordionTrigger className="px-6 py-4 text-left font-semibold text-lg text-gray-900 dark:text-white hover:no-underline">

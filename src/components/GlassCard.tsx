@@ -12,7 +12,7 @@ const GlassCard = React.forwardRef<
       animationDelay: `${delay}ms`,
     }}
     className={cn(
-      "group rounded-2xl bg-white/60 dark:bg-gray-800/80 shadow-xl backdrop-blur-xl border border-recicla-primary/10 dark:border-recicla-secondary/20 p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20 animate-fade-in",
+      "group rounded-2xl bg-white/60 dark:bg-gray-800/80 shadow-xl backdrop-blur-xl border border-recicla-primary/10 dark:border-recicla-secondary/20 p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20 animate-fade-in hover:ring-2 hover:ring-recicla-primary/20 dark:hover:ring-recicla-secondary/20",
       className
     )}
     {...props}
