@@ -17,7 +17,7 @@ const mapStyles = {
 
 const createMarkerElement = (color: string, size: number, isSelected: boolean = false) => {
   const el = document.createElement('div');
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3" fill="white" stroke="${color}"/></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="${color}" stroke="#FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.3));"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3.5" fill="white" stroke="${color}" stroke-width="1.5" /></svg>`;
   el.innerHTML = svg;
   el.style.cursor = 'pointer';
   if (isSelected) {
@@ -187,23 +187,18 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
       <style>{`
         .mapboxgl-popup-content {
           padding: 0;
-          border-radius: 8px;
+          border-radius: 12px;
           background: transparent;
           box-shadow: none;
         }
-        .mapboxgl-popup-tip {
-            border-top-color: white !important;
-        }
-        .dark .mapboxgl-popup-tip {
-            border-top-color: #1f2937 !important;
-        }
         .user-location-dot {
-          width: 20px;
-          height: 20px;
-          border: 3px solid #fff;
+          width: 24px;
+          height: 24px;
           border-radius: 50%;
-          background-color: #1a73e8;
-          box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.3);
+          background-color: #3b82f6; /* Tailwind blue-500 */
+          border: 4px solid white;
+          box-shadow: 0 0 0 4px #3b82f6;
+          animation: pulse-blue 2s infinite;
         }
         @keyframes pulse-marker {
           0%, 100% { transform: scale(1); }

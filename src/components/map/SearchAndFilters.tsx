@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -28,11 +27,11 @@ const SearchAndFilters = ({
 }: SearchAndFiltersProps) => {
   return (
     <div className={`mb-2 ${compact ? '' : 'max-w-3xl mx-auto mb-8'}`}>
-      <div className={"flex items-center gap-2 mb-3"}>
+      <div className={"flex items-center gap-2 mb-4"}>
         <div className="relative w-full">
           {showSearchIcon && (
             <Search
-              className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"
               size={18}
             />
           )}
@@ -41,7 +40,7 @@ const SearchAndFilters = ({
             placeholder="Buscar por nome, endereço..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className={`w-full ${showSearchIcon ? 'pl-9' : 'pl-3'} ${compact ? "h-9 text-sm" : ""}`}
+            className={`w-full bg-white/50 dark:bg-gray-800/50 transition-all focus:bg-white dark:focus:bg-gray-800 ${showSearchIcon ? 'pl-10' : 'pl-4'} ${compact ? "h-10 text-sm" : ""}`}
           />
         </div>
         {!compact && (
@@ -54,32 +53,27 @@ const SearchAndFilters = ({
           </Button>
         )}
       </div>
-      <div className="flex flex-wrap gap-2 mb-1 justify-center items-center">
+      <div className="flex flex-wrap gap-2 justify-center items-center">
         {RECYCLABLE_MATERIALS.map((mat) => (
-          <label
+          <button
             key={mat}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-full cursor-pointer border text-xs font-medium transition-all
+            onClick={() => toggleFilter(mat)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full cursor-pointer border text-xs font-bold transition-all duration-200
               ${
                 activeFilter.includes(mat)
-                  ? "bg-recicla-primary text-white border-recicla-primary"
-                  : "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600"
+                  ? "bg-recicla-primary text-white border-recicla-primary/50 shadow-md"
+                  : "bg-gray-100/80 text-gray-700 border-gray-200/50 dark:bg-gray-700/80 dark:text-gray-300 dark:border-gray-600/50 hover:bg-gray-200 dark:hover:bg-gray-600 hover:border-gray-300 dark:hover:border-gray-500"
               }
             `}
           >
-            <input
-              type="checkbox"
-              checked={activeFilter.includes(mat)}
-              onChange={() => toggleFilter(mat)}
-              className="sr-only"
-            />
             <span>{mat}</span>
-          </label>
+          </button>
         ))}
          {activeFilter.length > 0 && compact && (
           <Button
             variant="ghost"
             size="sm"
-            className="text-xs h-auto py-0.5 px-2 text-recicla-primary dark:text-recicla-secondary hover:bg-recicla-primary/10 dark:hover:bg-recicla-secondary/10 rounded-full"
+            className="text-xs h-auto py-1 px-2.5 text-recicla-primary dark:text-recicla-secondary hover:bg-recicla-primary/10 dark:hover:bg-recicla-secondary/10 rounded-full"
             onClick={clearFilters}
           >
             <XCircle className="w-4 h-4 mr-1"/>

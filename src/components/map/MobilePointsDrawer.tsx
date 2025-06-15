@@ -36,7 +36,7 @@ const MobilePointsDrawer: React.FC<MobilePointsDrawerProps> = ({
 }) => {
   return (
     <Drawer open={isOpen} onOpenChange={onOpenChange}>
-      <DrawerContent className="h-[90svh] flex flex-col">
+      <DrawerContent className="h-[90svh] flex flex-col bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-t border-black/10 dark:border-white/10">
         <DrawerHeader className="text-left flex-shrink-0">
           <DrawerTitle>Pontos de Coleta</DrawerTitle>
           <DrawerDescription>
@@ -82,7 +82,7 @@ const MobilePointsDrawer: React.FC<MobilePointsDrawerProps> = ({
           </ScrollArea>
         </div>
 
-        <DrawerFooter className="pt-2 flex-shrink-0">
+        <DrawerFooter className="pt-2 flex-shrink-0 border-t border-black/10 dark:border-white/10">
           <DrawerClose asChild>
             <Button variant="outline">Fechar</Button>
           </DrawerClose>

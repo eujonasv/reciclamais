@@ -10,7 +10,6 @@ import { X } from "lucide-react";
 interface FloatingSidebarProps {
   isOpen: boolean;
   onClose: () => void;
-  isMobile: boolean;
   searchTerm: string;
   setSearchTerm: (v: string) => void;
   activeFilter: string[];
@@ -25,7 +24,6 @@ interface FloatingSidebarProps {
 const FloatingSidebar: React.FC<FloatingSidebarProps> = ({
   isOpen,
   onClose,
-  isMobile,
   searchTerm,
   setSearchTerm,
   activeFilter,
@@ -38,31 +36,24 @@ const FloatingSidebar: React.FC<FloatingSidebarProps> = ({
 }) => (
   <div
     className={`
-      flex flex-col
-      bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm 
+      absolute top-0 left-0 h-full
+      flex flex-col z-30
+      bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg
       transition-transform duration-300 ease-in-out
-      ${
-        isMobile
-          ? `fixed top-16 inset-x-0 bottom-0 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} z-[1001]`
-          : `relative w-[420px] border-l border-gray-200 dark:border-gray-700 h-full ${isOpen ? 'flex' : 'hidden'} md:shadow-xl`
-      }
+      w-[400px] max-w-[90vw] border-r border-black/10 dark:border-white/10 shadow-2xl
+      ${isOpen ? 'translate-x-0' : '-translate-x-full'}
     `}
     role="dialog"
-    aria-modal={isMobile && isOpen}
     aria-hidden={!isOpen}
   >
-    {/* Header com título e botão de fechar (mobile) */}
-    <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between sticky top-0 bg-white/95 dark:bg-gray-900/95 z-10">
+    <div className="p-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between sticky top-0 bg-inherit z-10">
       <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">Pontos de Coleta</h2>
-      {isMobile && (
-        <Button variant="ghost" size="icon" onClick={onClose} aria-label="Fechar lista de pontos">
-          <X className="h-6 w-6" />
-        </Button>
-      )}
+      <Button variant="ghost" size="icon" onClick={onClose} aria-label="Fechar lista de pontos">
+        <X className="h-6 w-6" />
+      </Button>
     </div>
 
-    {/* Header fixo com busca e filtros */}
-    <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+    <div className="p-4 border-b border-black/10 dark:border-white/10">
       <SearchAndFilters
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -75,7 +66,6 @@ const FloatingSidebar: React.FC<FloatingSidebarProps> = ({
       />
     </div>
 
-    {/* Lista de pontos com scroll */}
     <div className="flex-1 min-h-0">
       <ScrollArea className="h-full w-full">
         <div className="p-4 space-y-3">
@@ -99,4 +89,3 @@ const FloatingSidebar: React.FC<FloatingSidebarProps> = ({
 );
 
 export default FloatingSidebar;
-
