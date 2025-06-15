@@ -9,6 +9,7 @@ export interface CollectionPoint {
   phone: string;
   website?: string;
   materials: string[];
+  display_order: number;
 }
 
 export const materialColors: Record<string, string> = {

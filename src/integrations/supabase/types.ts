@@ -14,6 +14,7 @@ export type Database = {
           address: string
           created_at: string | null
           description: string | null
+          display_order: number
           id: string
           latitude: number | null
           longitude: number | null
@@ -27,6 +28,7 @@ export type Database = {
           address: string
           created_at?: string | null
           description?: string | null
+          display_order: number
           id?: string
           latitude?: number | null
           longitude?: number | null
@@ -40,6 +42,7 @@ export type Database = {
           address?: string
           created_at?: string | null
           description?: string | null
+          display_order?: number
           id?: string
           latitude?: number | null
           longitude?: number | null

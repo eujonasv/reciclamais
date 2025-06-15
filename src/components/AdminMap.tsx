@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { CollectionPoint, materialColors } from '@/types/collection-point';
 import AdminCollectionPointCard from './admin/AdminCollectionPointCard';
 import { CollectionPointForm } from './admin/CollectionPointForm';
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 
 interface AdminMapProps {
   isMobile?: boolean;
@@ -25,7 +25,7 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
 
   // Load collection points from Supabase
   const loadPoints = async () => {
-    const { data, error } = await supabase.from("collection_points").select("*");
+    const { data, error } = await supabase.from("collection_points").select("*").order('display_order', { ascending: true });
     if (error) {
       toast({
         title: "Erro ao carregar pontos de coleta",
@@ -38,7 +38,7 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
         data.map((point) => ({
           ...point,
           materials: point.materials?.split(',').map((m: string) => m.trim()) || []
-        }))
+        })) as CollectionPoint[]
       );
     }
   };
@@ -99,7 +99,9 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
           .update(payload)
           .eq("id", editingPoint.id);
       } else {
-        result = await supabase.from("collection_points").insert(payload);
+        // Para novos pontos, definir uma ordem de exibição alta para que apareçam no final
+        const newOrder = points.length > 0 ? Math.max(...points.map(p => p.display_order)) + 1 : 1;
+        result = await supabase.from("collection_points").insert({...payload, display_order: newOrder});
       }
 
       const { error } = result;
@@ -129,6 +131,40 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
         variant: "destructive",
       });
       console.error("Error processing form data:", error);
+    }
+  };
+
+  const handleDragEnd = async (result: DropResult) => {
+    const { destination, source } = result;
+    if (!destination || destination.index === source.index) {
+      return;
+    }
+
+    const reorderedPoints = Array.from(points);
+    const [movedPoint] = reorderedPoints.splice(source.index, 1);
+    reorderedPoints.splice(destination.index, 0, movedPoint);
+
+    // Update local state for immediate feedback
+    setPoints(reorderedPoints);
+
+    const updates = reorderedPoints.map((point, index) => ({
+      id: point.id,
+      display_order: index,
+    }));
+
+    const { error } = await supabase.from('collection_points').upsert(updates);
+    if (error) {
+      toast({
+        title: "Erro ao salvar a nova ordem",
+        description: error.message,
+        variant: "destructive",
+      });
+      // Revert on error
+      loadPoints();
+    } else {
+      toast({
+        title: "Ordem dos pontos atualizada!",
+      });
     }
   };
 
@@ -165,28 +201,48 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
         </Dialog>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {points.length === 0 ? (
-          <div className="col-span-full py-8 text-center">
-            <p className="text-gray-500 dark:text-gray-400 mb-4">
-              Nenhum ponto de coleta cadastrado
-            </p>
-            <Button onClick={handleAddPoint}>
-              <Plus size={16} className="mr-2" />
-              Adicionar Ponto de Coleta
-            </Button>
-          </div>
-        ) : (
-          points.map((point) => (
-            <AdminCollectionPointCard
-              key={point.id}
-              point={point}
-              onEdit={handleEditPoint}
-              onDelete={handleDeletePoint}
-            />
-          ))
-        )}
-      </div>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="collection-points-list">
+          {(provided) => (
+            <div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {points.length === 0 ? (
+                <div className="col-span-full py-8 text-center">
+                  <p className="text-gray-500 dark:text-gray-400 mb-4">
+                    Nenhum ponto de coleta cadastrado
+                  </p>
+                  <Button onClick={handleAddPoint}>
+                    <Plus size={16} className="mr-2" />
+                    Adicionar Ponto de Coleta
+                  </Button>
+                </div>
+              ) : (
+                points.map((point, index) => (
+                  <Draggable key={point.id} draggableId={point.id} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                      >
+                        <AdminCollectionPointCard
+                          point={point}
+                          onEdit={handleEditPoint}
+                          onDelete={handleDeletePoint}
+                          dragHandleProps={provided.dragHandleProps}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))
+              )}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 };
