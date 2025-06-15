@@ -26,7 +26,7 @@ const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
       className={cn(
         "bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-4 h-full flex flex-col transition-all duration-300 cursor-default",
         isDragging 
-          ? "shadow-2xl bg-gray-50 dark:bg-gray-750 border-blue-300 dark:border-blue-600" 
+          ? "shadow-2xl bg-gray-50 dark:bg-gray-750 border-blue-300 dark:border-blue-600 opacity-90" 
           : "shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600"
       )}
     >
