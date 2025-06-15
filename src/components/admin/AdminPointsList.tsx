@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import { motion } from 'framer-motion';
 import { CollectionPoint } from '@/types/collection-point';
 import AdminCollectionPointCard from './AdminCollectionPointCard';
 
@@ -32,23 +33,25 @@ const AdminPointsList: React.FC<AdminPointsListProps> = ({
           >
             {points.map((point, index) => (
               <Draggable key={point.id} draggableId={point.id} index={index} isDragDisabled={!isReordering}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
+                {(providedDraggable, snapshot) => (
+                  <motion.div
+                    ref={providedDraggable.innerRef}
+                    {...providedDraggable.draggableProps}
+                    layout="position"
+                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                   >
                     <AdminCollectionPointCard
                       point={point}
                       onEdit={onEdit}
                       onDelete={onDelete}
-                      dragHandleProps={provided.dragHandleProps}
+                      dragHandleProps={providedDraggable.dragHandleProps}
                       isDragging={snapshot.isDragging}
                       isReordering={isReordering}
                       handleMovePoint={handleMovePoint}
                       index={index}
                       totalPoints={points.length}
                     />
-                  </div>
+                  </motion.div>
                 )}
               </Draggable>
             ))}
