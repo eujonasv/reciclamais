@@ -1,8 +1,28 @@
 
 import MainLayout from "@/layouts/MainLayout";
 import RecycleLogo from "@/components/RecycleLogo";
+import { Target, Eye, Gem, CheckCircle } from "lucide-react";
 
 const ValuesPage = () => {
+  const valores = [
+    {
+      titulo: "Reciclagem:",
+      descricao: "estamos comprometidos com o meio ambiente.",
+    },
+    {
+      titulo: "Acessibilidade:",
+      descricao: "a reciclagem deve estar ao alcance de todos.",
+    },
+    {
+      titulo: "Inovação:",
+      descricao: "buscamos soluções criativas para problemas ambientais urbanos.",
+    },
+    {
+      titulo: "Responsabilidade Social:",
+      descricao: "valorizamos a geração de renda justa e o impacto positivo na vida das pessoas.",
+    },
+  ];
+
   return (
     <MainLayout>
       <section className="section-padding bg-white dark:bg-gray-900" id="visao">
@@ -20,33 +40,56 @@ const ValuesPage = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            <div className="card-hover p-6 rounded-xl bg-gray-50 dark:bg-gray-800 shadow-lg">
-              <h3 className="text-xl font-semibold mb-4 text-recicla-primary dark:text-recicla-secondary">
-                Missão
-              </h3>
+            {/* Missão Card */}
+            <div className="p-8 rounded-2xl bg-gray-50 dark:bg-gray-800 shadow-lg transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+              <div className="flex items-center mb-5">
+                <div className="p-3 rounded-full bg-recicla-primary/10 mr-4">
+                  <Target className="h-7 w-7 text-recicla-primary dark:text-recicla-secondary" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
+                  Missão
+                </h3>
+              </div>
               <p className="text-gray-700 dark:text-gray-300">
-                Facilitar e incentivar a reciclagem nas cidades por meio de uma plataforma que conecta pessoas e empresas a pontos de coleta parceiros, promovendo sustentabilidade, conciência ambiental e geração de renda de forma acessível e colaborativa.
+                Facilitar e incentivar a reciclagem nas cidades por meio de uma plataforma que conecta pessoas e empresas a pontos de coleta parceiros, promovendo sustentabilidade, consciência ambiental e geração de renda de forma acessível e colaborativa.
               </p>
             </div>
 
-            <div className="card-hover p-6 rounded-xl bg-gray-50 dark:bg-gray-800 shadow-lg">
-              <h3 className="text-xl font-semibold mb-4 text-recicla-primary dark:text-recicla-secondary">
-                Visão
-              </h3>
+            {/* Visão Card */}
+            <div className="p-8 rounded-2xl bg-gray-50 dark:bg-gray-800 shadow-lg transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+              <div className="flex items-center mb-5">
+                <div className="p-3 rounded-full bg-recicla-primary/10 mr-4">
+                  <Eye className="h-7 w-7 text-recicla-primary dark:text-recicla-secondary" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
+                  Visão
+                </h3>
+              </div>
               <p className="text-gray-700 dark:text-gray-300">
                 Em até 3 anos, expandir e consolidar a presença da RECICLA+ em todas as regiões de Araucária, garantindo acesso fácil à reciclagem, fortalecendo parcerias locais e promovendo impacto social e ambiental positivo por meio da tecnologia.
               </p>
             </div>
 
-            <div className="card-hover p-6 rounded-xl bg-gray-50 dark:bg-gray-800 shadow-lg">
-              <h3 className="text-xl font-semibold mb-4 text-recicla-primary dark:text-recicla-secondary">
-                Valores
-              </h3>
-              <ul className="text-gray-700 dark:text-gray-300 space-y-2">
-                <li>1. Reciclagem: estamos comprometidos com o meio ambiente.</li>
-                <li>2. Acessibilidade: a reciclagem deve estar ao alcance de todos</li>
-                <li>3. Inovação: buscamos soluções criativas para problemas ambientais urbanos.</li>
-                <li>4. Responsabilidade Social: valorizamos a geração de renda justa e o impacto positivo na vida das pessoas</li>
+            {/* Valores Card */}
+            <div className="p-8 rounded-2xl bg-gray-50 dark:bg-gray-800 shadow-lg transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+              <div className="flex items-center mb-5">
+                <div className="p-3 rounded-full bg-recicla-primary/10 mr-4">
+                  <Gem className="h-7 w-7 text-recicla-primary dark:text-recicla-secondary" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
+                  Valores
+                </h3>
+              </div>
+              <ul className="text-gray-700 dark:text-gray-300 space-y-4">
+                {valores.map((valor) => (
+                  <li key={valor.titulo} className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-recicla-primary dark:text-recicla-secondary mr-3 mt-1 flex-shrink-0" />
+                    <span>
+                      <strong className="font-semibold text-gray-800 dark:text-gray-100">{valor.titulo}</strong>
+                      {' '}{valor.descricao}
+                    </span>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
