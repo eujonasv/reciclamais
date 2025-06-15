@@ -1,4 +1,3 @@
-
 import { DropResult } from '@hello-pangea/dnd';
 import { CollectionPoint } from '@/types/collection-point';
 import { collectionPointsService } from '@/services/collection-points-service';
@@ -13,38 +12,37 @@ export const useDragHandler = (
 
   const handleDragEnd = async (result: DropResult) => {
     const { destination, source } = result;
-    
+
+    // Se não mudou de posição, não faz nada.
     if (!destination || destination.index === source.index) {
       return;
     }
 
-    // Create a new array with the item moved to the correct position
+    // Move o card de fato para a nova posição
     const newPoints = Array.from(points);
-    const [removed] = newPoints.splice(source.index, 1);
-    newPoints.splice(destination.index, 0, removed);
+    const [moved] = newPoints.splice(source.index, 1);
+    newPoints.splice(destination.index, 0, moved);
 
-    // Update local state immediately
+    // Atualiza local pela ordem nova
     setPoints(newPoints);
 
-    // Update display_order for all points
-    const updates = newPoints.map((point, index) => ({
-      id: point.id,
-      name: point.name,
-      description: point.description,
-      address: point.address,
-      latitude: point.latitude,
-      longitude: point.longitude,
-      phone: point.phone,
-      website: point.website,
-      materials: point.materials.join(','),
-      display_order: index + 1,
+    // Monta a lista de updates para display_order
+    const updates = newPoints.map((p, idx) => ({
+      id: p.id,
+      name: p.name,
+      description: p.description,
+      address: p.address,
+      latitude: p.latitude,
+      longitude: p.longitude,
+      phone: p.phone,
+      website: p.website,
+      materials: p.materials.join(','),
+      display_order: idx + 1,
     }));
 
     try {
       await collectionPointsService.updateAllPointsOrder(updates);
-      toast({
-        title: "Ordem dos cards atualizada!",
-      });
+      toast({ title: "Ordem dos cards atualizada!" });
     } catch (error) {
       console.error('Error updating order:', error);
       toast({
@@ -52,7 +50,7 @@ export const useDragHandler = (
         description: error instanceof Error ? error.message : "Erro desconhecido",
         variant: "destructive",
       });
-      // Revert on error
+      // Reverte se falhar
       loadPoints();
     }
   };

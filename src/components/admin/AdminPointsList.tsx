@@ -32,6 +32,7 @@ const AdminPointsList: React.FC<AdminPointsListProps> = ({
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
+                    // Nenhuma classe de animação ou efeito
                   >
                     <AdminCollectionPointCard
                       point={point}
