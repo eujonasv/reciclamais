@@ -1,8 +1,10 @@
-
 import React, { useEffect, useState, useRef, forwardRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Circle, LayerGroup } from 'react-leaflet';
 import { Icon, LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import MarkerClusterGroup from 'react-leaflet-markercluster';
 import type { CollectionPoint } from '@/types/collection-point';
 import { materialColors } from '@/types/collection-point';
 import { useTheme } from "next-themes";
@@ -185,32 +187,35 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
           <UserLocationMarker position={userLocation} accuracy={userLocationAccuracy} />
         )}
 
-        {collectionPoints.map((point) => (
-          <Marker
-            key={point.id}
-            position={[point.latitude, point.longitude]}
-            icon={(selectedPoint?.id === point.id || closestPoint?.id === point.id) ? selectedIcon : defaultIcon}
-            eventHandlers={{
-              click: () => onMarkerClick(point),
-            }}
-          >
-            <Popup className={`rounded-lg shadow-xl ${getMaterialColors(point.materials)}`}>
-              <div>
-                <h3 className="font-bold text-recicla-primary dark:text-recicla-secondary transition-colors">{point.name}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{point.description}</p>
-                <p className="text-xs mt-1 text-gray-500 dark:text-gray-400">{point.address}</p>
-                
-                {userLocation && (
-                  <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
-                      Distância aproximada: {(calculateDistance(userLocation, [point.latitude, point.longitude]) / 1000).toFixed(2)} km
-                    </p>
-                  </div>
-                )}
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+        <MarkerClusterGroup>
+          {collectionPoints.map((point) => (
+            <Marker
+              key={point.id}
+              position={[point.latitude, point.longitude]}
+              icon={(selectedPoint?.id === point.id || closestPoint?.id === point.id) ? selectedIcon : defaultIcon}
+              eventHandlers={{
+                click: () => onMarkerClick(point),
+              }}
+            >
+              <Popup className={`rounded-lg shadow-xl ${getMaterialColors(point.materials)}`}>
+                <div>
+                  <h3 className="font-bold text-recicla-primary dark:text-recicla-secondary transition-colors">{point.name}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">{point.description}</p>
+                  <p className="text-xs mt-1 text-gray-500 dark:text-gray-400">{point.address}</p>
+                  
+                  {userLocation && (
+                    <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                      <p className="text-xs text-gray-600 dark:text-gray-400">
+                        Distância aproximada: {(calculateDistance(userLocation, [point.latitude, point.longitude]) / 1000).toFixed(2)} km
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </Popup>
+            </Marker>
+          ))}
+        </MarkerClusterGroup>
+
       </MapContainer>
       
       <style>{`
@@ -238,6 +243,52 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
           50% {
             box-shadow: 0 0 0 10px rgba(46,204,113,0);
           }
+        }
+
+        /* Marker Cluster Styles */
+        .marker-cluster-small div {
+          background-color: rgba(26, 115, 232, 0.8); /* Azul Primário */
+        }
+        .marker-cluster-small {
+          background-color: rgba(26, 115, 232, 0.5);
+        }
+        .marker-cluster-medium div {
+          background-color: rgba(245, 124, 0, 0.8); /* Laranja */
+        }
+        .marker-cluster-medium {
+          background-color: rgba(245, 124, 0, 0.5);
+        }
+        .marker-cluster-large div {
+          background-color: rgba(211, 47, 47, 0.8); /* Vermelho */
+        }
+        .marker-cluster-large {
+          background-color: rgba(211, 47, 47, 0.5);
+        }
+        .marker-cluster div {
+          width: 32px;
+          height: 32px;
+          margin-left: 5px;
+          margin-top: 5px;
+          color: #fff;
+          text-align: center;
+          border-radius: 16px;
+          font-size: 14px;
+          font-weight: bold;
+          line-height: 32px;
+          text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .marker-cluster {
+          border-radius: 21px;
+        }
+
+        .dark .marker-cluster div {
+          color: #111827; /* Dark text on light background */
+        }
+        .dark .marker-cluster-small div {
+          background-color: rgba(54, 230, 122, 0.9); /* Verde Secundário */
+        }
+        .dark .marker-cluster-small {
+          background-color: rgba(54, 230, 122, 0.5);
         }
       `}</style>
     </div>
