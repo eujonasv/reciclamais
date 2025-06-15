@@ -214,12 +214,12 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
         <Droppable droppableId="collection-points-list">
           {(provided) => (
             <div
-              className="space-y-4"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
               {points.length === 0 ? (
-                <div className="py-8 text-center">
+                <div className="col-span-full py-8 text-center">
                   <p className="text-gray-500 dark:text-gray-400 mb-4">
                     Nenhum ponto de coleta cadastrado
                   </p>
@@ -237,7 +237,7 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
                         {...provided.draggableProps}
                         className={`
                           transition-all duration-200 
-                          ${snapshot.isDragging ? 'shadow-2xl scale-[1.02] rotate-1 z-50' : 'shadow-sm'}
+                          ${snapshot.isDragging ? 'shadow-2xl scale-[1.02] rotate-1 z-50' : ''}
                         `}
                       >
                         <AdminCollectionPointCard
