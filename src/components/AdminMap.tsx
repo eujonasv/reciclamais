@@ -4,7 +4,7 @@ import { Plus } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { CollectionPoint, materialColors } from '@/types/collection-point';
 import AdminCollectionPointCard from './admin/AdminCollectionPointCard';
 import { CollectionPointForm } from './admin/CollectionPointForm';
@@ -136,49 +136,58 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
 
   const handleDragEnd = async (result: DropResult) => {
     const { destination, source } = result;
+    
     if (!destination || destination.index === source.index) {
       return;
     }
 
-    const reorderedPoints = Array.from(points);
-    const [movedPoint] = reorderedPoints.splice(source.index, 1);
-    reorderedPoints.splice(destination.index, 0, movedPoint);
+    // Create a new array with the reordered items
+    const newPoints = Array.from(points);
+    const [draggedItem] = newPoints.splice(source.index, 1);
+    newPoints.splice(destination.index, 0, draggedItem);
 
-    // Update local state for immediate feedback
-    setPoints(reorderedPoints);
+    // Update local state immediately for smooth UX
+    setPoints(newPoints);
 
-    const updates = reorderedPoints.map((point, index) => ({
-        id: point.id,
-        name: point.name,
-        description: point.description,
-        address: point.address,
-        latitude: point.latitude,
-        longitude: point.longitude,
-        phone: point.phone,
-        website: point.website,
-        materials: point.materials.join(','),
-        display_order: index,
+    // Prepare batch updates for all items to ensure correct order
+    const updates = newPoints.map((point, index) => ({
+      id: point.id,
+      name: point.name,
+      description: point.description,
+      address: point.address,
+      latitude: point.latitude,
+      longitude: point.longitude,
+      phone: point.phone,
+      website: point.website,
+      materials: point.materials.join(','),
+      display_order: index + 1,
     }));
 
-    const { error } = await supabase.from('collection_points').upsert(updates);
-    
-    if (error) {
-      toast({
-        title: "Erro ao salvar a nova ordem",
-        description: error.message,
-        variant: "destructive",
-      });
+    try {
+      const { error } = await supabase.from('collection_points').upsert(updates);
+      
+      if (error) {
+        toast({
+          title: "Erro ao salvar a nova ordem",
+          description: error.message,
+          variant: "destructive",
+        });
+        // Revert on error
+        loadPoints();
+      } else {
+        toast({
+          title: "Ordem dos pontos atualizada!",
+        });
+      }
+    } catch (error) {
+      console.error('Error updating order:', error);
       // Revert on error
       loadPoints();
-    } else {
-      toast({
-        title: "Ordem dos pontos atualizada!",
-      });
     }
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Gerenciar Pontos de Coleta</h1>
         <Dialog open={open} onOpenChange={setOpen}>
@@ -210,35 +219,47 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
         </Dialog>
       </div>
       
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId="collection-points-list">
-          {(provided) => (
-            <div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              {points.length === 0 ? (
-                <div className="col-span-full py-8 text-center">
-                  <p className="text-gray-500 dark:text-gray-400 mb-4">
-                    Nenhum ponto de coleta cadastrado
-                  </p>
-                  <Button onClick={handleAddPoint}>
-                    <Plus size={16} className="mr-2" />
-                    Adicionar Ponto de Coleta
-                  </Button>
-                </div>
-              ) : (
-                points.map((point, index) => (
+      {points.length === 0 ? (
+        <div className="col-span-full py-12 text-center">
+          <p className="text-gray-500 dark:text-gray-400 mb-4">
+            Nenhum ponto de coleta cadastrado
+          </p>
+          <Button onClick={handleAddPoint}>
+            <Plus size={16} className="mr-2" />
+            Adicionar Ponto de Coleta
+          </Button>
+        </div>
+      ) : (
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="collection-points-grid" direction="horizontal">
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className={`
+                  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[200px]
+                  ${snapshot.isDraggingOver ? 'bg-gray-50 dark:bg-gray-800/50 rounded-lg p-2' : ''}
+                `}
+              >
+                {points.map((point, index) => (
                   <Draggable key={point.id} draggableId={point.id} index={index}>
                     {(provided, snapshot) => (
                       <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         className={`
-                          transition-all duration-200 
-                          ${snapshot.isDragging ? 'shadow-2xl scale-[1.02] rotate-1 z-50' : ''}
+                          transition-all duration-200 ease-in-out
+                          ${snapshot.isDragging ? 
+                            'transform rotate-3 scale-105 shadow-2xl z-50 opacity-90' : 
+                            'hover:shadow-lg'
+                          }
                         `}
+                        style={{
+                          ...provided.draggableProps.style,
+                          ...(snapshot.isDragging && {
+                            transform: `${provided.draggableProps.style?.transform} rotate(3deg) scale(1.05)`,
+                          }),
+                        }}
                       >
                         <AdminCollectionPointCard
                           point={point}
@@ -250,13 +271,13 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
                       </div>
                     )}
                   </Draggable>
-                ))
-              )}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      )}
     </div>
   );
 };
