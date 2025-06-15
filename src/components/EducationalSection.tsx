@@ -1,64 +1,50 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Book, Video, Sprout } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Book, Video, Sprout, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import RecycleLogo from './RecycleLogo';
 
 const EducationalSection = () => {
   return (
-    <section id="educacao" className="section-padding bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-4">
-            <RecycleLogo size="md" />
+    <section id="educacao" className="section-padding bg-gray-50 dark:bg-gray-900 overflow-hidden">
+      <div className="container mx-auto px-4">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Text Content */}
+          <div className="animate-fade-in-left">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
+              Conhecimento que <span className="text-recicla-primary dark:text-recicla-secondary">Transforma</span>
+            </h2>
+            <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
+              Acreditamos que a educação é a semente para um futuro mais sustentável. Explore nossos guias, dicas e vídeos para aprofundar seu conhecimento e fazer parte da mudança.
+            </p>
+            <Button asChild size="lg" className="bg-recicla-primary hover:bg-recicla-accent dark:bg-recicla-secondary dark:hover:bg-recicla-primary text-white group">
+              <Link to="/educacao">
+                Ver todo o conteúdo
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Button>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-            Educação <span className="text-recicla-primary dark:text-recicla-secondary">Ambiental</span>
-          </h2>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 dark:text-gray-300 mb-8">
-            Amplie seus conhecimentos sobre reciclagem e sustentabilidade com nossos recursos educacionais.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {educationalResources.map((resource, index) => (
-            <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700">
-              <CardHeader className="bg-recicla-primary/5 dark:bg-recicla-secondary/10 pb-2">
-                <CardTitle className="text-lg font-semibold text-recicla-primary dark:text-recicla-secondary flex items-center gap-2">
-                  {resource.icon}
-                  {resource.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-4">
-                <p className="text-gray-600 dark:text-gray-300 text-sm">
-                  {resource.description}
-                </p>
-              </CardContent>
-              <CardFooter className="pt-0">
-                <Button 
-                  variant="link" 
-                  size="sm" 
-                  className="p-0 text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent dark:hover:text-recicla-primary"
-                  asChild
-                >
-                  <Link to="/educacao">Saiba mais</Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-        
-        <div className="text-center">
-          <Button 
-            asChild 
-            className="bg-recicla-primary hover:bg-recicla-accent dark:bg-recicla-secondary dark:hover:bg-recicla-primary text-white"
-          >
-            <Link to="/educacao">
-              Explorar todos os recursos educacionais
-            </Link>
-          </Button>
+
+          {/* Educational Cards */}
+          <div className="space-y-6 animate-fade-in-right">
+            {educationalResources.map((resource, index) => (
+              <Link to="/educacao" key={index} className="block">
+                <Card className="group transform transition-all duration-300 hover:scale-[1.03] hover:shadow-xl bg-white/60 dark:bg-white/10 backdrop-blur-md border-gray-200/50 dark:border-white/10 rounded-2xl">
+                  <CardContent className="p-6 flex items-center gap-6">
+                    <div className="p-4 rounded-xl bg-recicla-primary/10 group-hover:bg-recicla-primary/20 transition-colors duration-300">
+                      {resource.icon}
+                    </div>
+                    <div className="flex-grow">
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{resource.title}</h3>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">{resource.description}</p>
+                    </div>
+                    <ArrowRight className="ml-auto h-5 w-5 text-gray-400 group-hover:text-recicla-primary dark:group-hover:text-recicla-secondary transition-all duration-300 group-hover:translate-x-1" />
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -67,19 +53,19 @@ const EducationalSection = () => {
 
 const educationalResources = [
   {
-    title: 'Dicas Rápidas',
-    description: 'Dicas práticas e rápidas sobre reciclagem, compostagem e consumo consciente para seu dia a dia.',
-    icon: <Book size={18} />
+    title: 'Dicas para o Dia a Dia',
+    description: 'Ações práticas para reduzir, reutilizar e reciclar.',
+    icon: <Book size={24} className="text-recicla-primary dark:text-recicla-secondary" />
   },
   {
-    title: 'Como Começar?',
-    description: 'Guia completo para iniciantes que querem começar uma vida sustentável com ações práticas e aplicáveis.',
-    icon: <Sprout size={18} />
+    title: 'Guias para Iniciantes',
+    description: 'Passo a passo para começar sua jornada sustentável.',
+    icon: <Sprout size={24} className="text-recicla-primary dark:text-recicla-secondary" />
   },
   {
-    title: 'Vídeos',
-    description: 'Tutoriais, documentários e vídeos educativos sobre diferentes aspectos da reciclagem e meio ambiente.',
-    icon: <Video size={18} />
+    title: 'Vídeos Educativos',
+    description: 'Conteúdo visual para aprender de forma rápida e clara.',
+    icon: <Video size={24} className="text-recicla-primary dark:text-recicla-secondary" />
   }
 ];
 

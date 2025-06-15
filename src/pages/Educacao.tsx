@@ -3,9 +3,10 @@ import MainLayout from "@/layouts/MainLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { Book, Video, Sprout, Youtube, CheckCircle, XCircle, Play } from "lucide-react";
+import { Book, Video, Sprout, Youtube, CheckCircle, XCircle, Play, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { videos } from "@/data/videos";
+import QuizReciclagem from "@/components/QuizReciclagem";
 
 const EducationPage = () => {
   const container = {
@@ -37,7 +38,7 @@ const EducationPage = () => {
 
         <Tabs defaultValue="dicas" className="w-full">
           <div className="flex justify-center mb-6">
-            <TabsList className="grid grid-cols-3 w-full max-w-md md:max-w-lg">
+            <TabsList className="grid grid-cols-4 w-full max-w-lg">
               <TabsTrigger value="dicas" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm">
                 <Book size={16} className="md:w-4 md:h-4" /> 
                 <span className="hidden sm:inline">Dicas Rápidas</span>
@@ -50,6 +51,9 @@ const EducationPage = () => {
               </TabsTrigger>
               <TabsTrigger value="videos" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm">
                 <Video size={16} className="md:w-4 md:h-4" /> Vídeos
+              </TabsTrigger>
+              <TabsTrigger value="quiz" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm">
+                <HelpCircle size={16} className="md:w-4 md:h-4" /> Quiz
               </TabsTrigger>
             </TabsList>
           </div>
@@ -162,6 +166,17 @@ const EducationPage = () => {
                 ))}
               </motion.div>
             </div>
+          </TabsContent>
+
+          {/* Quiz */}
+          <TabsContent value="quiz" className="pt-6">
+             <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                <QuizReciclagem />
+            </motion.div>
           </TabsContent>
         </Tabs>
       </div>
