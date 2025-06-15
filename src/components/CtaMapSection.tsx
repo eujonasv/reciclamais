@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -30,11 +29,11 @@ const CtaMapSection = () => {
               <Button 
                 asChild 
                 size="lg" 
-                className="bg-white hover:bg-gray-100 text-recicla-primary dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-recicla-secondary font-bold text-lg py-4 px-8 shadow-lg transform hover:scale-105 transition-transform"
+                className="group bg-white hover:bg-gray-100 text-recicla-primary dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-recicla-secondary font-bold text-lg py-4 px-8 shadow-lg transform hover:scale-110 transition-transform duration-300"
               >
                 <Link to="/mapa">
                   Acessar o Mapa
-                  <ArrowRight className="ml-3" />
+                  <ArrowRight className="ml-3 transition-transform duration-300 group-hover:translate-x-2" />
                 </Link>
               </Button>
             </div>
