@@ -141,34 +141,54 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
       return;
     }
 
-    // Create a new array with the reordered items
+    // Create a new array for the swap
     const newPoints = Array.from(points);
-    const [draggedItem] = newPoints.splice(source.index, 1);
-    newPoints.splice(destination.index, 0, draggedItem);
+    
+    // Get the items to swap
+    const sourceItem = newPoints[source.index];
+    const destinationItem = newPoints[destination.index];
+    
+    // Swap only these two items
+    newPoints[source.index] = destinationItem;
+    newPoints[destination.index] = sourceItem;
 
     // Update local state immediately for smooth UX
     setPoints(newPoints);
 
-    // Prepare batch updates for all items to ensure correct order
-    const updates = newPoints.map((point, index) => ({
-      id: point.id,
-      name: point.name,
-      description: point.description,
-      address: point.address,
-      latitude: point.latitude,
-      longitude: point.longitude,
-      phone: point.phone,
-      website: point.website,
-      materials: point.materials.join(','),
-      display_order: index + 1,
-    }));
+    // Prepare updates only for the two swapped items
+    const updates = [
+      {
+        id: sourceItem.id,
+        name: sourceItem.name,
+        description: sourceItem.description,
+        address: sourceItem.address,
+        latitude: sourceItem.latitude,
+        longitude: sourceItem.longitude,
+        phone: sourceItem.phone,
+        website: sourceItem.website,
+        materials: sourceItem.materials.join(','),
+        display_order: destination.index + 1,
+      },
+      {
+        id: destinationItem.id,
+        name: destinationItem.name,
+        description: destinationItem.description,
+        address: destinationItem.address,
+        latitude: destinationItem.latitude,
+        longitude: destinationItem.longitude,
+        phone: destinationItem.phone,
+        website: destinationItem.website,
+        materials: destinationItem.materials.join(','),
+        display_order: source.index + 1,
+      }
+    ];
 
     try {
       const { error } = await supabase.from('collection_points').upsert(updates);
       
       if (error) {
         toast({
-          title: "Erro ao salvar a nova ordem",
+          title: "Erro ao trocar posições",
           description: error.message,
           variant: "destructive",
         });
@@ -176,11 +196,11 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
         loadPoints();
       } else {
         toast({
-          title: "Ordem dos pontos atualizada!",
+          title: "Posições dos cards trocadas!",
         });
       }
     } catch (error) {
-      console.error('Error updating order:', error);
+      console.error('Error swapping positions:', error);
       // Revert on error
       loadPoints();
     }
@@ -231,7 +251,7 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
         </div>
       ) : (
         <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="collection-points-list" direction="vertical">
+          <Droppable droppableId="collection-points-swap" direction="vertical">
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
@@ -250,15 +270,12 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
                         className={`
                           transition-all duration-200 ease-in-out
                           ${snapshot.isDragging ? 
-                            'transform rotate-2 scale-105 shadow-2xl z-50 opacity-90' : 
+                            'transform scale-105 shadow-2xl z-50 opacity-90' : 
                             'hover:shadow-lg'
                           }
                         `}
                         style={{
                           ...provided.draggableProps.style,
-                          ...(snapshot.isDragging && {
-                            transform: `${provided.draggableProps.style?.transform} rotate(2deg) scale(1.05)`,
-                          }),
                         }}
                       >
                         <AdminCollectionPointCard
