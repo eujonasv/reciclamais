@@ -1,12 +1,14 @@
 
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import RecycleLogoWithText from '@/components/RecycleLogoWithText';
 import { useAuth } from '@/hooks/use-auth';
+import { ArrowLeft, Mail, Lock } from 'lucide-react';
 
 const AuthPage = () => {
   const [email, setEmail] = React.useState('');
@@ -28,14 +30,9 @@ const AuthPage = () => {
     setLoading(true);
 
     try {
-      // Set session expiry to 8 hours
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: {
-          // Using properties compatible with Supabase Auth
-          // expiresIn is not a valid option, we need to handle session timeout differently
-        }
       });
 
       if (error) throw error;
@@ -50,7 +47,6 @@ const AuthPage = () => {
     } catch (error: any) {
       let errorMessage = error.message;
       
-      // More user-friendly error messages
       if (error.message.includes("Invalid login")) {
         errorMessage = "Email ou senha inválidos";
       }
@@ -66,49 +62,66 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="flex flex-col items-center">
-          <RecycleLogoWithText size="xl" className="mb-6" />
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            Acesso Administrativo
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            Faça login para acessar o painel administrativo
-          </p>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <Input
-                type="email"
-                required
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <Input
-                type="password"
-                required
-                placeholder="Senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+    <div className="w-full min-h-screen lg:grid lg:grid-cols-2">
+      <div className="flex items-center justify-center py-12">
+        <div className="mx-auto grid w-[380px] gap-6 p-4 md:p-0">
+          <div className="grid gap-4 text-center">
+            <Link to="/" className="flex justify-center mb-4">
+              <RecycleLogoWithText size="lg" />
+            </Link>
+            <h1 className="text-3xl font-bold">Acesso Administrativo</h1>
+            <p className="text-balance text-muted-foreground">
+              Faça login para gerenciar a plataforma RECICLA+
+            </p>
           </div>
-
-          <div>
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading}
-            >
+          <form onSubmit={handleLogin} className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Senha</Label>
+               <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  placeholder="Sua senha"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+            </div>
+            <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Entrando...' : 'Entrar'}
             </Button>
+          </form>
+           <div className="mt-4 text-center text-sm">
+            <Link to="/" className="inline-flex items-center gap-2 underline text-muted-foreground hover:text-primary transition-colors">
+              <ArrowLeft size={16} /> Voltar para o site
+            </Link>
           </div>
-        </form>
+        </div>
+      </div>
+      <div className="hidden bg-muted lg:block">
+        <img
+          src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=2070&auto=format&fit=crop"
+          alt="Imagem de um laptop em uma mesa"
+          className="h-screen w-full object-cover dark:brightness-[0.3]"
+        />
       </div>
     </div>
   );
