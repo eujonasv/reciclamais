@@ -30,23 +30,25 @@ const HeroSection = () => {
         />
       </div>
 
-      <div className="container mx-auto px-4 z-10 text-center">
-        <div className="max-w-4xl mx-auto">
-          {/* LOGO */}
-          <div className="flex justify-center mb-6 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            <RecycleLogoWithText size="lg" />
-          </div>
+      <div className="container mx-auto px-4 z-10 flex flex-col items-center justify-center text-center">
+        {/* LOGO GRANDE E BONITO */}
+        <div className="animate-fade-in-up mb-8" style={{ animationDelay: '0.1s' }}>
+          <RecycleLogoWithText size="xxl" />
+        </div>
 
-          <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-5 text-gray-900 dark:text-white leading-tight tracking-tight">
-              Transforme lixo em <span className="text-recicla-primary">oportunidade</span>.
+        {/* Conteúdo de Texto */}
+        <div className="max-w-3xl">
+          <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 text-gray-900 dark:text-white leading-tight tracking-tight">
+              A revolução da reciclagem começa com <span className="text-recicla-primary">você</span>.
             </h1>
-            <p className="text-lg md:text-xl mb-10 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Conectamos você a pontos de coleta para um descarte consciente e um futuro mais verde.
+            <p className="text-lg md:text-xl mb-8 text-gray-600 dark:text-gray-300">
+              Encontre pontos de coleta, descarte seu lixo de forma consciente e ajude a construir um futuro mais verde. Simples, rápido e impactante.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          {/* Botões de Ação */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
             <Button 
               onClick={() => scrollToSection('mapa')}
               size="lg"
