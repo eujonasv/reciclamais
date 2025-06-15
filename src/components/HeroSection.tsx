@@ -53,41 +53,8 @@ const HeroSection = () => {
             </p>
           </div>
 
-          {/* Estatísticas */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-emerald-200/50 dark:border-emerald-700/50">
-              <div className="flex items-center justify-center mb-3">
-                <div className="bg-emerald-100 dark:bg-emerald-900/50 rounded-full p-3">
-                  <MapPin className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
-                </div>
-              </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">200+</div>
-              <div className="text-gray-600 dark:text-gray-400">Pontos de Coleta</div>
-            </div>
-            
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-emerald-200/50 dark:border-emerald-700/50">
-              <div className="flex items-center justify-center mb-3">
-                <div className="bg-green-100 dark:bg-green-900/50 rounded-full p-3">
-                  <Recycle className="w-8 h-8 text-green-600 dark:text-green-400" />
-                </div>
-              </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">50+</div>
-              <div className="text-gray-600 dark:text-gray-400">Tipos de Materiais</div>
-            </div>
-            
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-emerald-200/50 dark:border-emerald-700/50">
-              <div className="flex items-center justify-center mb-3">
-                <div className="bg-emerald-100 dark:bg-emerald-900/50 rounded-full p-3">
-                  <Leaf className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
-                </div>
-              </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">100%</div>
-              <div className="text-gray-600 dark:text-gray-400">Sustentável</div>
-            </div>
-          </div>
-
           {/* Call to action buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <Button 
               onClick={() => scrollToSection('mapa')}
               size="lg"
@@ -106,38 +73,71 @@ const HeroSection = () => {
             </Button>
           </div>
 
-          {/* Benefícios destacados */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in" style={{ animationDelay: '0.8s' }}>
-            <div className="text-center p-4">
-              <div className="bg-emerald-100 dark:bg-emerald-900/30 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <MapPin className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
+          {/* Pilares principais */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+            <div className="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-emerald-200/50 dark:border-emerald-700/50 hover:shadow-xl hover:scale-105 transition-all duration-300">
+              <div className="flex items-center justify-center mb-4">
+                <div className="bg-emerald-100 dark:bg-emerald-900/50 rounded-full p-4 group-hover:bg-emerald-200 dark:group-hover:bg-emerald-800/70 transition-colors duration-300">
+                  <MapPin className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
+                </div>
               </div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Localização Fácil</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Encontre pontos de coleta próximos a você</p>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Localização Inteligente</h3>
+              <p className="text-gray-600 dark:text-gray-400">Encontre os pontos de coleta mais próximos usando nossa tecnologia de mapeamento</p>
             </div>
             
-            <div className="text-center p-4">
-              <div className="bg-green-100 dark:bg-green-900/30 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Recycle className="w-8 h-8 text-green-600 dark:text-green-400" />
+            <div className="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-emerald-200/50 dark:border-emerald-700/50 hover:shadow-xl hover:scale-105 transition-all duration-300">
+              <div className="flex items-center justify-center mb-4">
+                <div className="bg-green-100 dark:bg-green-900/50 rounded-full p-4 group-hover:bg-green-200 dark:group-hover:bg-green-800/70 transition-colors duration-300">
+                  <Recycle className="w-8 h-8 text-green-600 dark:text-green-400" />
+                </div>
               </div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Reciclagem Eficiente</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Diversos tipos de materiais aceitos</p>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Reciclagem Eficiente</h3>
+              <p className="text-gray-600 dark:text-gray-400">Conectamos diferentes tipos de materiais aos coletores especializados</p>
             </div>
             
-            <div className="text-center p-4">
-              <div className="bg-emerald-100 dark:bg-emerald-900/30 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
+            <div className="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-emerald-200/50 dark:border-emerald-700/50 hover:shadow-xl hover:scale-105 transition-all duration-300">
+              <div className="flex items-center justify-center mb-4">
+                <div className="bg-emerald-100 dark:bg-emerald-900/50 rounded-full p-4 group-hover:bg-emerald-200 dark:group-hover:bg-emerald-800/70 transition-colors duration-300">
+                  <Users className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
+                </div>
               </div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Comunidade Ativa</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Participe de uma rede sustentável</p>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Comunidade Sustentável</h3>
+              <p className="text-gray-600 dark:text-gray-400">Faça parte de uma rede que valoriza a sustentabilidade e o meio ambiente</p>
+            </div>
+          </div>
+
+          {/* Valores principais */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in" style={{ animationDelay: '0.8s' }}>
+            <div className="text-center p-4 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-600/50">
+              <div className="bg-emerald-100 dark:bg-emerald-900/30 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                <MapPin className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm">Acessibilidade</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Fácil de usar</p>
             </div>
             
-            <div className="text-center p-4">
-              <div className="bg-green-100 dark:bg-green-900/30 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Leaf className="w-8 h-8 text-green-600 dark:text-green-400" />
+            <div className="text-center p-4 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-600/50">
+              <div className="bg-green-100 dark:bg-green-900/30 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                <Recycle className="w-6 h-6 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Impacto Real</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Contribua para um futuro mais verde</p>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm">Sustentabilidade</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Impacto positivo</p>
+            </div>
+            
+            <div className="text-center p-4 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-600/50">
+              <div className="bg-emerald-100 dark:bg-emerald-900/30 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                <Users className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm">Comunidade</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Conectados</p>
+            </div>
+            
+            <div className="text-center p-4 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-600/50">
+              <div className="bg-green-100 dark:bg-green-900/30 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                <Leaf className="w-6 h-6 text-green-600 dark:text-green-400" />
+              </div>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm">Futuro Verde</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Preservação</p>
             </div>
           </div>
         </div>
