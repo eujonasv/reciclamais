@@ -1,3 +1,4 @@
+
 import React from "react";
 import { CheckCircle, MapPin, Users, TrendingUp } from "lucide-react";
 import { GlassCard } from "./GlassCard";
@@ -26,7 +27,7 @@ const benefits = [
 ];
 
 const BenefitsSection = () => (
-  <section className="section-padding bg-white dark:bg-gray-900 transition-all">
+  <section className="section-padding bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-900/95 transition-all">
     <div className="container mx-auto">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">

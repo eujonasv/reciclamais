@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { Search, MapPin, CheckCircle, ChevronLeft, ChevronRight, ArrowDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import RecycleLogo from './RecycleLogo';
+import { useNavigate } from 'react-router-dom';
 
 const HowItWorksSection = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  const navigate = useNavigate();
 
   const steps = [
     {
@@ -167,11 +169,9 @@ const HowItWorksSection = () => {
         {/* Call to action */}
         <div className="mt-16 text-center">
           <Button
-            onClick={() => {
-              const mapSection = document.getElementById('mapa');
-              if (mapSection) mapSection.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="bg-recicla-primary hover:bg-recicla-accent text-white py-2 px-6 rounded-lg"
+            size="lg"
+            onClick={() => navigate('/mapa')}
+            className="bg-recicla-primary hover:bg-recicla-primary/90 text-white font-bold px-8 py-4 rounded-xl shadow-lg transition-transform hover:scale-105"
           >
             Encontrar Pontos de Coleta
           </Button>

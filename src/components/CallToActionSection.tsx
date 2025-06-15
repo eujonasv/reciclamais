@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { MapPin } from "lucide-react";
@@ -8,7 +7,7 @@ const CallToActionSection = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="section-padding relative flex items-center justify-center bg-gradient-to-r from-recicla-primary/80 via-green-200/70 to-recicla-secondary/80 dark:from-recicla-secondary/80 dark:via-bg-gray-900 dark:to-recicla-primary/60">
+    <section className="section-padding relative flex items-center justify-center bg-gradient-to-r from-recicla-primary/80 via-green-200/70 to-recicla-secondary/80 dark:from-recicla-secondary/80 dark:via-gray-900 dark:to-recicla-primary/60">
       <div className="absolute inset-0 bg-white/20 dark:bg-gray-800/10 backdrop-blur-xl pointer-events-none" />
       <div className="container mx-auto relative z-10 flex flex-col items-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white tracking-tight drop-shadow-lg">

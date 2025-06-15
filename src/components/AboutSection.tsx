@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Leaf, Users, Recycle, TrendingUp } from 'lucide-react';
 import RecycleLogo from './RecycleLogo';
@@ -28,7 +29,7 @@ const features = [
 
 const AboutSection = () => {
   return (
-    <section id="sobre" className="section-padding bg-transparent relative">
+    <section id="sobre" className="section-padding bg-gray-50 dark:bg-gray-900/95 relative transition-colors duration-300">
       <div className="container mx-auto">
         <div className="text-center mb-14">
           <div className="flex justify-center mb-4">
