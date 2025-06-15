@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Accordion,
@@ -52,10 +51,10 @@ const FaqSection = () => {
             <RecycleLogo size="md" />
           </div>
           <h2 aria-level={2} className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-            Dúvidas <span className="text-recicla-primary dark:text-recicla-secondary">Frequentes</span>
+            Perguntas <span className="text-recicla-primary dark:text-recicla-secondary">Frequentes</span>
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
-            Tudo o que você precisa saber para começar a reciclar com a gente.
+            Tire suas dúvidas sobre a RECICLA+ e aprenda mais sobre como funciona nosso sistema de reciclagem.
           </p>
         </div>
 
@@ -65,26 +64,25 @@ const FaqSection = () => {
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`}
-                className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg shadow-sm"
+                className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900"
               >
-                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-lg text-gray-800 dark:text-white hover:no-underline">
+                <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 text-left font-medium text-gray-900 dark:text-white">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="px-6 pb-6 text-gray-600 dark:text-gray-300">
+                <AccordionContent className="px-6 py-4 text-gray-700 dark:text-gray-300">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
 
-          <div className="mt-12 text-center p-8 bg-white dark:bg-gray-900 rounded-lg shadow-sm">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Ainda com dúvidas?</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Nossa equipe está pronta para ajudar. Entre em contato conosco.
+          <div className="mt-12 text-center">
+            <p className="text-gray-600 dark:text-gray-400">
+              Ainda tem dúvidas? Entre em contato conosco.
             </p>
             <a 
               href="mailto:reciclamais25@gmail.com" 
-              className="font-semibold text-recicla-primary dark:text-recicla-secondary hover:underline"
+              className="inline-block mt-4 text-recicla-primary dark:text-recicla-secondary hover:underline font-medium"
             >
               reciclamais25@gmail.com
             </a>

@@ -1,9 +1,7 @@
-
 import React, { useState } from 'react';
-import { Search, MapPin, CheckCircle } from 'lucide-react';
+import { Search, MapPin, CheckCircle, ChevronLeft, ChevronRight, ArrowDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import RecycleLogo from './RecycleLogo';
-import { AnimatePresence, motion } from 'framer-motion';
 
 const HowItWorksSection = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -11,26 +9,34 @@ const HowItWorksSection = () => {
   const steps = [
     {
       number: 1,
-      icon: <Search className="h-8 w-8 text-recicla-primary" />,
-      title: "Encontre um Ponto de Coleta",
+      icon: <Search className="h-10 w-10 text-white" />,
+      title: "Encontre um ponto de coleta",
       description: "Utilize nosso mapa interativo para encontrar o ponto de coleta mais próximo de você. Filtre por tipo de material que deseja reciclar.",
       image: "https://plus.unsplash.com/premium_vector-1719419318811-8c03fcdde6ef?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
       number: 2,
-      icon: <MapPin className="h-8 w-8 text-recicla-primary" />,
-      title: "Descarte e Coleta",
-      description: "Leve seus materiais recicláveis a um de nossos pontos parceiros. Nossa equipe realiza a coleta e encaminha para centros de triagem especializados.",
+      icon: <MapPin className="h-10 w-10 text-white" />,
+      title: "Coleta e Reciclagem",
+      description: "Descarte seus materiais recicláveis em um dos nossos pontos de coleta parceiros. Após isso, os materiais são recolhidos e enviados para um centro especializado em reciclagem.",
       image: "https://plus.unsplash.com/premium_vector-1719419318789-738cb9d164d4?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
       number: 3,
-      icon: <CheckCircle className="h-8 w-8 text-recicla-primary" />,
-      title: "Gere Impacto e Ganhos",
-      description: "Ao reciclar, você contribui para um planeta mais limpo. Pontos de coleta parceiros ainda geram uma renda extra com a venda dos materiais.",
+      icon: <CheckCircle className="h-10 w-10 text-white" />,
+      title: "Ganhos",
+      description: "Se você é um ponto de coleta, recebe uma porcentagem da venda dos materiais reciclados.",
       image: "https://plus.unsplash.com/premium_vector-1719419318935-d8c67018c35c?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     }
   ];
+
+  const nextStep = () => {
+    setCurrentStep((prev) => (prev === steps.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevStep = () => {
+    setCurrentStep((prev) => (prev === 0 ? steps.length - 1 : prev - 1));
+  };
 
   const goToStep = (index: number) => {
     setCurrentStep(index);
@@ -47,53 +53,113 @@ const HowItWorksSection = () => {
             Como <span className="text-recicla-primary dark:text-recicla-secondary">Funciona</span>
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
-            Reciclar nunca foi tão fácil e recompensador. Siga estes três passos simples para começar.
+            Reciclar nunca foi tão fácil. Siga estes três passos simples para começar sua jornada de reciclagem.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Step Details */}
-          <div className="md:order-1">
-            <div className="flex flex-col gap-8">
-              {steps.map((step, index) => (
-                <div
-                  key={index}
-                  className={`p-6 rounded-xl cursor-pointer transition-all duration-300 ${
-                    currentStep === index
-                      ? 'bg-white dark:bg-gray-900 shadow-lg ring-2 ring-recicla-primary/50'
-                      : 'bg-transparent dark:bg-gray-800/50 hover:bg-white/70 dark:hover:bg-gray-900/70'
-                  }`}
-                  onClick={() => goToStep(index)}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 p-3 bg-recicla-primary/10 dark:bg-recicla-secondary/20 rounded-full">
-                      {step.icon}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{step.title}</h3>
-                      <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
+        {/* Steps for Desktop */}
+        <div className="hidden md:flex justify-center gap-8 relative">
+          {steps.map((step, index) => (
+            <div key={index} className="flex flex-col items-center max-w-sm relative">
+              {/* Step Card */}
+              <div
+                className={`w-full rounded-xl shadow-md overflow-hidden bg-white dark:bg-gray-900 transition-all duration-300 hover:-translate-y-2 cursor-pointer ${
+                  currentStep === index ? 'ring-2 ring-recicla-primary dark:ring-recicla-secondary' : ''
+                }`}
+                onClick={() => goToStep(index)}
+              >
+                {/* Image */}
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={step.image}
+                    alt={step.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
+                    <div className="p-4 w-full">
+                      <h3 className="text-xl font-bold text-white">{step.title}</h3>
                     </div>
                   </div>
                 </div>
-              ))}
+
+                {/* Content */}
+                <div className="p-6">
+                  <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
+                </div>
+              </div>
+
+              {/* Arrow */}
+              {index < steps.length - 1 && (
+                <div className="absolute right-[-1.5rem] top-1/2 transform -translate-y-1/2">
+                  <ArrowDown className="-rotate-90 text-recicla-primary dark:text-recicla-secondary h-6 w-6" />
+                </div>
+              )}
             </div>
-          </div>
-          
-          {/* Right Side - Image */}
-          <div className="relative md:order-2 h-80 md:h-full min-h-[400px]">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={currentStep}
+          ))}
+        </div>
+
+        {/* Steps for Mobile */}
+        <div className="md:hidden">
+          <div className="relative rounded-xl shadow-md overflow-hidden bg-white dark:bg-gray-900">
+            {/* Step Number */}
+            <div className="absolute top-4 left-4 z-10 text-white text-xl font-bold">
+              {steps[currentStep].number}
+            </div>
+
+            {/* Image */}
+            <div className="relative h-64 overflow-hidden">
+              <img
                 src={steps[currentStep].image}
                 alt={steps[currentStep].title}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-                className="w-full h-full object-contain rounded-xl"
+                className="w-full h-full object-cover"
                 loading="lazy"
               />
-            </AnimatePresence>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                <div className="p-6 w-full">
+                  <h3 className="text-2xl font-bold text-white">{steps[currentStep].title}</h3>
+                </div>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              <p className="text-gray-600 dark:text-gray-400">{steps[currentStep].description}</p>
+            </div>
+
+            {/* Navigation buttons */}
+            <div className="flex justify-between items-center p-4 border-t border-gray-100 dark:border-gray-700">
+              <Button
+                onClick={prevStep}
+                variant="ghost"
+                className="flex items-center text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent"
+              >
+                <ChevronLeft className="mr-1" size={16} /> Anterior
+              </Button>
+
+              <div className="flex space-x-2">
+                {steps.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToStep(index)}
+                    className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                      currentStep === index
+                        ? 'bg-recicla-primary dark:bg-recicla-secondary'
+                        : 'bg-gray-300 dark:bg-gray-600'
+                    }`}
+                    aria-label={`Go to step ${index + 1}`}
+                  />
+                ))}
+              </div>
+
+              <Button
+                onClick={nextStep}
+                variant="ghost"
+                className="flex items-center text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent"
+              >
+                Próximo <ChevronRight className="ml-1" size={16} />
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -104,8 +170,7 @@ const HowItWorksSection = () => {
               const mapSection = document.getElementById('mapa');
               if (mapSection) mapSection.scrollIntoView({ behavior: 'smooth' });
             }}
-            size="lg"
-            className="bg-recicla-primary hover:bg-recicla-accent text-white py-3 px-8 rounded-lg"
+            className="bg-recicla-primary hover:bg-recicla-accent text-white py-2 px-6 rounded-lg"
           >
             Encontrar Pontos de Coleta
           </Button>
