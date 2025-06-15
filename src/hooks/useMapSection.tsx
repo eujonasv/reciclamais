@@ -3,6 +3,8 @@ import { CollectionPoint } from '@/types/collection-point';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
 import type { MapboxCollectionMapRef } from '@/components/map/MapboxCollectionMap';
+import { findClosestPoint } from '@/lib/map-utils';
+import type { LatLngTuple } from '@/lib/map-utils';
 
 const POINTS_PER_PAGE = 3;
 
@@ -144,18 +146,28 @@ export const useMapSection = () => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude, accuracy } = position.coords;
-                const location: [number, number] = [latitude, longitude];
+                const location: LatLngTuple = [latitude, longitude];
                 setUserLocation(location);
 
                 if (mapRef.current?.setUserLocation) {
                     mapRef.current.setUserLocation(location, accuracy);
                 }
 
+                const closestPoint = findClosestPoint(location, collectionPoints);
+                if (closestPoint) {
+                    setSelectedPoint(closestPoint);
+                    toast({
+                        title: "Ponto mais próximo encontrado!",
+                        description: `Exibindo o ponto de coleta mais perto de você: ${closestPoint.name}.`,
+                    });
+                } else {
+                    toast({
+                        title: "Localização encontrada",
+                        description: "Sua localização foi marcada no mapa",
+                    });
+                }
+
                 setIsLocating(false);
-                toast({
-                    title: "Localização encontrada",
-                    description: "Sua localização foi marcada no mapa",
-                });
             },
             (error) => {
                 console.error("Erro ao obter localização:", error);
@@ -168,7 +180,7 @@ export const useMapSection = () => {
             },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
         );
-    }, [toast, mapRef]);
+    }, [toast, mapRef, collectionPoints]);
 
     useEffect(() => {
         if (showMapMobile) {

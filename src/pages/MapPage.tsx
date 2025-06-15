@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import FloatingSidebar from "@/components/map/FloatingSidebar";
@@ -11,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Navigation, List } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { LatLngTuple } from "@/lib/map-utils";
+import { findClosestPoint } from "@/lib/map-utils";
 
 const POINTS_PER_FETCH = 100;
 
@@ -114,14 +114,27 @@ const MapPage = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude, accuracy } = position.coords;
+        const userLatLng: LatLngTuple = [latitude, longitude];
+
         if (mapRef.current && typeof mapRef.current.setUserLocation === "function") {
-          mapRef.current.setUserLocation([latitude, longitude], accuracy);
+          mapRef.current.setUserLocation(userLatLng, accuracy);
         }
+        
+        const closestPoint = findClosestPoint(userLatLng, collectionPoints);
+        if (closestPoint) {
+            handlePointSelect(closestPoint);
+            toast({
+                title: "Ponto mais próximo encontrado!",
+                description: `Exibindo o ponto de coleta mais perto de você: ${closestPoint.name}.`,
+            });
+        } else {
+            toast({
+              title: "Localização encontrada",
+              description: "Sua localização foi marcada no mapa",
+            });
+        }
+
         setIsLocating(false);
-        toast({
-          title: "Localização encontrada",
-          description: "Sua localização foi marcada no mapa",
-        });
       },
       (error) => {
         console.error("Erro ao obter localização:", error);
