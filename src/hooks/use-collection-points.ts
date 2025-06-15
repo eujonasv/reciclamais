@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { collectionPointsService } from '@/services/collection-points-service';
 import { useCollectionPointsState } from './use-collection-points-state';
@@ -24,7 +24,7 @@ export const useCollectionPoints = () => {
   } = useCollectionPointsState();
 
   // Load collection points from Supabase
-  const loadPoints = async () => {
+  const loadPoints = useCallback(async () => {
     try {
       const data = await collectionPointsService.loadPoints();
       setPoints(data);
@@ -36,17 +36,17 @@ export const useCollectionPoints = () => {
       });
       console.error("Error loading collection points:", error);
     }
-  };
+  }, [setPoints, toast]);
 
   useEffect(() => {
     loadPoints();
-  }, []);
+  }, [loadPoints]);
 
   // Delete a collection point
-  const handleDeletePoint = async (id: string) => {
+  const handleDeletePoint = useCallback(async (id: string) => {
     try {
       await collectionPointsService.deletePoint(id);
-      setPoints(points.filter((point) => point.id !== id));
+      setPoints(points => points.filter((point) => point.id !== id));
       toast({ title: "Ponto de coleta deletado com sucesso" });
     } catch (error) {
       toast({
@@ -56,7 +56,7 @@ export const useCollectionPoints = () => {
       });
       console.error("Error deleting collection point:", error);
     }
-  };
+  }, [setPoints, toast]);
 
   // Handle form submission
   const handleSubmit = async (values: any) => {

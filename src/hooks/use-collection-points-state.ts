@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { CollectionPoint, materialColors } from '@/types/collection-point';
 
 export const useCollectionPointsState = () => {
@@ -10,23 +10,23 @@ export const useCollectionPointsState = () => {
   const [availableMaterials] = useState<string[]>(Object.keys(materialColors));
   const [isReordering, setIsReordering] = useState(false);
 
-  const handleEditPoint = (point: CollectionPoint) => {
+  const handleEditPoint = useCallback((point: CollectionPoint) => {
     setEditingPoint(point);
     setIsEditing(true);
     setOpen(true);
-  };
+  }, []);
 
-  const handleAddPoint = () => {
+  const handleAddPoint = useCallback(() => {
     setIsEditing(false);
     setEditingPoint(null);
     setOpen(true);
-  };
+  }, []);
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setOpen(false);
     setEditingPoint(null);
     setIsEditing(false);
-  };
+  }, []);
 
   return {
     points,

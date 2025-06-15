@@ -29,29 +29,33 @@ const AdminPointsList: React.FC<AdminPointsListProps> = ({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            className="flex flex-wrap -mx-2"
           >
             {points.map((point, index) => (
               <Draggable key={point.id} draggableId={point.id} index={index} isDragDisabled={!isReordering}>
                 {(providedDraggable, snapshot) => (
-                  <motion.div
+                  <div
                     ref={providedDraggable.innerRef}
                     {...providedDraggable.draggableProps}
-                    layout="position"
-                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                    className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4"
                   >
-                    <AdminCollectionPointCard
-                      point={point}
-                      onEdit={onEdit}
-                      onDelete={onDelete}
-                      dragHandleProps={providedDraggable.dragHandleProps}
-                      isDragging={snapshot.isDragging}
-                      isReordering={isReordering}
-                      handleMovePoint={handleMovePoint}
-                      index={index}
-                      totalPoints={points.length}
-                    />
-                  </motion.div>
+                    <motion.div
+                      layout="position"
+                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                    >
+                      <AdminCollectionPointCard
+                        point={point}
+                        onEdit={onEdit}
+                        onDelete={onDelete}
+                        dragHandleProps={providedDraggable.dragHandleProps}
+                        isDragging={snapshot.isDragging}
+                        isReordering={isReordering}
+                        handleMovePoint={handleMovePoint}
+                        index={index}
+                        totalPoints={points.length}
+                      />
+                    </motion.div>
+                  </div>
                 )}
               </Draggable>
             ))}

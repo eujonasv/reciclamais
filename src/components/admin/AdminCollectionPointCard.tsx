@@ -17,7 +17,7 @@ interface AdminCollectionPointCardProps {
   totalPoints?: number;
 }
 
-const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
+const AdminCollectionPointCardComponent: React.FC<AdminCollectionPointCardProps> = ({
   point,
   onEdit,
   onDelete,
@@ -126,4 +126,5 @@ const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
   );
 };
 
+export const AdminCollectionPointCard = React.memo(AdminCollectionPointCardComponent);
 export default AdminCollectionPointCard;
