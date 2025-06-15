@@ -7,10 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { CollectionPoint } from "@/types/collection-point";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { Navigation } from "lucide-react";
-
-// Sidebar width, mantenha sincronizado com FloatingSidebar.
-const MAP_SIDEBAR_WIDTH = 420;
+import { Navigation, List } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const POINTS_PER_FETCH = 100;
 
@@ -23,6 +21,14 @@ const MapPage = () => {
   const [isLocating, setIsLocating] = useState(false);
   const { toast } = useToast();
   const mapRef = useRef<any>(null);
+  const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+
+  useEffect(() => {
+    // Quando o status de 'isMobile' muda, ajustamos a sidebar.
+    // Em mobile, ela começa fechada; em desktop, aberta.
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   useEffect(() => {
     const fetchPoints = async () => {
@@ -79,12 +85,15 @@ const MapPage = () => {
     setSearchTerm("");
   };
 
-  // Seleção de ponto sincroniza com o mapa
+  // Seleção de ponto sincroniza com o mapa e sidebar
   const handlePointSelect = (point: CollectionPoint) => {
     setSelectedPoint(point);
-    // Centraliza mapa no ponto selecionado
     if (mapRef.current && typeof mapRef.current.setViewFromExternal === "function") {
       mapRef.current.setViewFromExternal([point.latitude, point.longitude]);
+    }
+    // Em mobile, ao selecionar um ponto, fechamos a lista para o usuário ver o mapa
+    if (isMobile) {
+      setIsSidebarOpen(false);
     }
   };
 
@@ -129,7 +138,7 @@ const MapPage = () => {
     <MainLayout>
       {/* Layout flex que ocupa toda altura abaixo do header */}
       <div className="flex h-[calc(100vh-4rem)] w-full bg-white dark:bg-gray-900 relative">
-        {/* Mapa: ocupa toda largura disponível menos a sidebar */}
+        {/* Mapa: ocupa toda a área */}
         <div className="flex-1 h-full relative">
           <EnhancedCollectionMap
             collectionPoints={filteredPoints}
@@ -138,8 +147,8 @@ const MapPage = () => {
             ref={mapRef}
           />
           
-          {/* Botão "Minha Localização" flutuante */}
-          <div className="absolute bottom-6 left-6 z-[1000]">
+          {/* Botões flutuantes no mapa */}
+          <div className="absolute bottom-6 left-6 z-[1000] flex flex-col md:flex-row gap-2">
             <Button
               onClick={getUserLocation}
               disabled={isLocating}
@@ -149,11 +158,26 @@ const MapPage = () => {
               <Navigation className="h-5 w-5 mr-2" />
               {isLocating ? "Localizando..." : "Minha Localização"}
             </Button>
+
+            {isMobile && (
+              <Button
+                onClick={() => setIsSidebarOpen(true)}
+                className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 md:hidden"
+                size="lg"
+                aria-label="Ver lista de pontos"
+              >
+                <List className="h-5 w-5 mr-2" />
+                Ver Lista
+              </Button>
+            )}
           </div>
         </div>
         
-        {/* Sidebar flutuante cards & busca */}
+        {/* Sidebar responsiva */}
         <FloatingSidebar
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+          isMobile={isMobile}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           activeFilter={activeFilter}
