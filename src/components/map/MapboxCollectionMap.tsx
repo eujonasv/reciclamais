@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useImperativeHandle, forwardRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import mapboxgl, { Map, Marker, Popup } from 'mapbox-gl';
@@ -8,12 +7,8 @@ import type { CollectionPoint } from '@/types/collection-point';
 import MapPopupContent from './MapPopupContent';
 import { LatLngTuple } from '@/lib/map-utils';
 
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
-if (MAPBOX_TOKEN) {
-  mapboxgl.accessToken = MAPBOX_TOKEN;
-} else {
-  console.error("Mapbox token not set. Please add VITE_MAPBOX_TOKEN to your .env file.");
-}
+const MAPBOX_TOKEN = 'pk.eyJ1IjoicmVjaWNsYW1haXMiLCJhIjoiY21ieDNncjVzMWJhODJpcHF1MHlnbXpsMCJ9.zP9rfJT0CKvH72NEaA5dQg';
+mapboxgl.accessToken = MAPBOX_TOKEN;
 
 const mapStyles = {
   light: 'mapbox://styles/mapbox/streets-v12',
@@ -67,7 +62,7 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
   const isDark = resolvedTheme === "dark";
 
   useEffect(() => {
-    if (!mapContainer.current || !MAPBOX_TOKEN) return;
+    if (!mapContainer.current) return;
 
     const map = new Map({
       container: mapContainer.current,
