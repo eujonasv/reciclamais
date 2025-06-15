@@ -40,10 +40,10 @@ const FloatingSidebar: React.FC<FloatingSidebarProps> = ({
     className={`
       flex flex-col
       bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm 
-      transition-transform duration-300 ease-in-out z-[1001]
+      transition-transform duration-300 ease-in-out
       ${
         isMobile
-          ? `fixed top-16 inset-x-0 bottom-0 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`
+          ? `fixed top-16 inset-x-0 bottom-0 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} z-[1001]`
           : `relative w-[420px] border-l border-gray-200 dark:border-gray-700 h-full ${isOpen ? 'flex' : 'hidden'}`
       }
     `}
