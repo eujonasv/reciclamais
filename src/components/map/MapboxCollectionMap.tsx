@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useImperativeHandle, forwardRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import mapboxgl, { Map, Marker, Popup } from 'mapbox-gl';
@@ -94,6 +95,18 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
     if (!mapRef.current) return;
     const map = mapRef.current;
     
+    // Remover marcadores antigos que não estão mais na lista
+    Object.keys(markersRef.current).forEach(pointId => {
+      if (!collectionPoints.find(p => p.id === pointId)) {
+        markersRef.current[pointId].remove();
+        delete markersRef.current[pointId];
+        if (popupsRef.current[pointId]) {
+          popupsRef.current[pointId].remove();
+          delete popupsRef.current[pointId];
+        }
+      }
+    });
+    
     collectionPoints.forEach(point => {
       const isSelected = selectedPoint?.id === point.id;
       const lngLat: [number, number] = [point.longitude, point.latitude];
@@ -103,53 +116,75 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
       const markerElement = createMarkerElement(markerColor, markerSize, isSelected);
 
       if (markersRef.current[point.id]) {
+        // Atualizar marcador existente
         markersRef.current[point.id].getElement().innerHTML = markerElement.innerHTML;
       } else {
-        const popupNode = document.createElement('div');
-        const popup = new Popup({ offset: [0, -35], closeButton: false, className: 'recicla-mapbox-popup' }).setDOMContent(popupNode);
-        popupsRef.current[point.id] = popup;
-
+        // Criar novo marcador
         const newMarker = new Marker({ element: markerElement, anchor: 'bottom' })
           .setLngLat(lngLat)
           .addTo(map);
         
+        // Adicionar event listener de clique
         newMarker.getElement().addEventListener('click', (e) => {
             e.stopPropagation();
             onMarkerClick(point);
         });
         
         markersRef.current[point.id] = newMarker;
+        
+        // Criar popup para este marcador
+        const popupNode = document.createElement('div');
+        const popup = new Popup({ 
+          offset: [0, -35], 
+          closeButton: false, 
+          className: 'recicla-mapbox-popup' 
+        }).setDOMContent(popupNode);
+        popupsRef.current[point.id] = popup;
       }
       
+      // Atualizar conteúdo do popup
       const popup = popupsRef.current[point.id];
       if (popup) {
         const popupNode = document.createElement('div');
-        ReactDOM.render(<MapPopupContent point={point} userLocation={userLocation} compact={compactPopup} />, popupNode);
+        const root = (ReactDOM as any).createRoot ? (ReactDOM as any).createRoot(popupNode) : null;
+        
+        if (root) {
+          root.render(<MapPopupContent point={point} userLocation={userLocation} compact={compactPopup} />);
+        } else {
+          ReactDOM.render(<MapPopupContent point={point} userLocation={userLocation} compact={compactPopup} />, popupNode);
+        }
         popup.setDOMContent(popupNode);
       }
     });
     
-  }, [collectionPoints, selectedPoint, userLocation, compactPopup, onMarkerClick, isDark]);
+  }, [collectionPoints, userLocation, compactPopup, onMarkerClick, isDark]);
   
   useEffect(() => {
-    if (mapRef.current) {
-        Object.values(popupsRef.current).forEach(p => p.isOpen() && p.remove());
+    if (!mapRef.current) return;
 
-        if (selectedPoint) {
-            mapRef.current.flyTo({
-                center: [selectedPoint.longitude, selectedPoint.latitude],
-                zoom: mapRef.current.getZoom() < 15 ? 15 : mapRef.current.getZoom(),
-                duration: 1200,
-            });
-            
-            const popup = popupsRef.current[selectedPoint.id];
-            if (popup) {
-                setTimeout(() => popup.setLngLat([selectedPoint.longitude, selectedPoint.latitude]).addTo(mapRef.current!), 300);
-            }
-        }
+    // Remover todos os popups abertos
+    Object.values(popupsRef.current).forEach(popup => {
+      if (popup.isOpen()) {
+        popup.remove();
+      }
+    });
+
+    // Se há um ponto selecionado, mostrar seu popup
+    if (selectedPoint) {
+      mapRef.current.flyTo({
+        center: [selectedPoint.longitude, selectedPoint.latitude],
+        zoom: mapRef.current.getZoom() < 15 ? 15 : mapRef.current.getZoom(),
+        duration: 1200,
+      });
+      
+      const popup = popupsRef.current[selectedPoint.id];
+      if (popup && mapRef.current) {
+        setTimeout(() => {
+          popup.setLngLat([selectedPoint.longitude, selectedPoint.latitude]).addTo(mapRef.current!);
+        }, 300);
+      }
     }
   }, [selectedPoint]);
-
 
   useImperativeHandle(ref, () => ({
     setViewFromExternal: (coordinates: [number, number]) => {
