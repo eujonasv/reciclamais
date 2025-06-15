@@ -18,57 +18,37 @@ export const useDragHandler = (
       return;
     }
 
-    // Create a new array for the swap
+    // Create a new array with the item moved to the correct position
     const newPoints = Array.from(points);
-    
-    // Get the items to swap
-    const sourceItem = newPoints[source.index];
-    const destinationItem = newPoints[destination.index];
-    
-    // Swap only these two items
-    newPoints[source.index] = destinationItem;
-    newPoints[destination.index] = sourceItem;
+    const [removed] = newPoints.splice(source.index, 1);
+    newPoints.splice(destination.index, 0, removed);
 
     // Update local state immediately for smooth UX
     setPoints(newPoints);
 
-    // Prepare updates only for the two swapped items
-    const updates = [
-      {
-        id: sourceItem.id,
-        name: sourceItem.name,
-        description: sourceItem.description,
-        address: sourceItem.address,
-        latitude: sourceItem.latitude,
-        longitude: sourceItem.longitude,
-        phone: sourceItem.phone,
-        website: sourceItem.website,
-        materials: sourceItem.materials.join(','),
-        display_order: destination.index + 1,
-      },
-      {
-        id: destinationItem.id,
-        name: destinationItem.name,
-        description: destinationItem.description,
-        address: destinationItem.address,
-        latitude: destinationItem.latitude,
-        longitude: destinationItem.longitude,
-        phone: destinationItem.phone,
-        website: destinationItem.website,
-        materials: destinationItem.materials.join(','),
-        display_order: source.index + 1,
-      }
-    ];
+    // Prepare updates for all affected items (all items need new display_order)
+    const updates = newPoints.map((point, index) => ({
+      id: point.id,
+      name: point.name,
+      description: point.description,
+      address: point.address,
+      latitude: point.latitude,
+      longitude: point.longitude,
+      phone: point.phone,
+      website: point.website,
+      materials: point.materials.join(','),
+      display_order: index + 1,
+    }));
 
     try {
-      await collectionPointsService.swapPointsOrder(updates);
+      await collectionPointsService.updateAllPointsOrder(updates);
       toast({
-        title: "Posições dos cards trocadas!",
+        title: "Posição do card atualizada!",
       });
     } catch (error) {
-      console.error('Error swapping positions:', error);
+      console.error('Error updating positions:', error);
       toast({
-        title: "Erro ao trocar posições",
+        title: "Erro ao atualizar posição",
         description: error instanceof Error ? error.message : "Erro desconhecido",
         variant: "destructive",
       });

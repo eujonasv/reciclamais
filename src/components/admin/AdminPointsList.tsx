@@ -19,12 +19,14 @@ const AdminPointsList: React.FC<AdminPointsListProps> = ({
 }) => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="collection-points-swap">
+      <Droppable droppableId="collection-points-list">
         {(provided, snapshot) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 transition-colors duration-200 ${
+              snapshot.isDraggingOver ? 'bg-blue-50 dark:bg-blue-900/10' : ''
+            }`}
           >
             {points.map((point, index) => (
               <Draggable key={point.id} draggableId={point.id} index={index}>
@@ -32,17 +34,18 @@ const AdminPointsList: React.FC<AdminPointsListProps> = ({
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
-                    style={{
-                      ...provided.draggableProps.style,
-                      transform: snapshot.isDragging ? provided.draggableProps.style?.transform : 'none'
-                    }}
+                    className={`transition-all duration-200 ${
+                      snapshot.isDragging 
+                        ? 'rotate-2 scale-105 shadow-2xl z-50' 
+                        : 'hover:shadow-lg'
+                    }`}
                   >
                     <AdminCollectionPointCard
                       point={point}
                       onEdit={onEdit}
                       onDelete={onDelete}
                       dragHandleProps={provided.dragHandleProps}
-                      isDragging={false}
+                      isDragging={snapshot.isDragging}
                     />
                   </div>
                 )}

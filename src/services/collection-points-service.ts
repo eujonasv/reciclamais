@@ -51,7 +51,7 @@ export const collectionPointsService = {
     }
   },
 
-  async swapPointsOrder(updates: any[]): Promise<void> {
+  async updateAllPointsOrder(updates: any[]): Promise<void> {
     const { error } = await supabase
       .from('collection_points')
       .upsert(updates);
