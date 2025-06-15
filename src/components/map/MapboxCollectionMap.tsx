@@ -37,7 +37,7 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
   const isDark = resolvedTheme === "dark";
 
   const { markersRef, createOrUpdateMarker, removeMarker, setUserLocation: setUserMarkerLocation } = useMapboxMarkers();
-  const { popupsRef, createPopup, updatePopupContent, removeAllPopups, removePopup, showPopup } = useMapboxPopups();
+  const { popupsRef, createPopup, updatePopupContent, removeAllPopups, removePopup, showPopup, hidePopup } = useMapboxPopups();
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -99,7 +99,7 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
   useEffect(() => {
     if (!mapRef.current) return;
 
-    // Remove all open popups
+    // Remove all open popups first
     removeAllPopups();
 
     // If there's a selected point, show its popup
@@ -111,7 +111,7 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
       });
       
       setTimeout(() => {
-        if (mapRef.current) {
+        if (mapRef.current && selectedPoint) {
           showPopup(selectedPoint, mapRef.current);
         }
       }, 300);

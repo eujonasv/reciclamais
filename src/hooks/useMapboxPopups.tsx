@@ -50,7 +50,9 @@ export const useMapboxPopups = () => {
 
   const removePopup = useCallback((pointId: string) => {
     if (popupsRef.current[pointId]) {
-      popupsRef.current[pointId].remove();
+      if (popupsRef.current[pointId].isOpen()) {
+        popupsRef.current[pointId].remove();
+      }
       delete popupsRef.current[pointId];
     }
   }, []);
@@ -58,7 +60,18 @@ export const useMapboxPopups = () => {
   const showPopup = useCallback((point: CollectionPoint, map: mapboxgl.Map) => {
     const popup = popupsRef.current[point.id];
     if (popup && map) {
+      // Remove o popup se já estiver aberto antes de reabrir
+      if (popup.isOpen()) {
+        popup.remove();
+      }
       popup.setLngLat([point.longitude, point.latitude]).addTo(map);
+    }
+  }, []);
+
+  const hidePopup = useCallback((pointId: string) => {
+    const popup = popupsRef.current[pointId];
+    if (popup && popup.isOpen()) {
+      popup.remove();
     }
   }, []);
 
@@ -68,6 +81,7 @@ export const useMapboxPopups = () => {
     updatePopupContent,
     removeAllPopups,
     removePopup,
-    showPopup
+    showPopup,
+    hidePopup
   };
 };
