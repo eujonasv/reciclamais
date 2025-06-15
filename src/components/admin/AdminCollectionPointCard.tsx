@@ -11,24 +11,20 @@ interface AdminCollectionPointCardProps {
   onEdit: (point: CollectionPoint) => void;
   onDelete: (id: string) => void;
   dragHandleProps?: any;
-  draggableProps?: any;
   isDragging?: boolean;
 }
 
-const AdminCollectionPointCard = React.forwardRef<HTMLDivElement, AdminCollectionPointCardProps>(({
+const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
   point,
   onEdit,
   onDelete,
   dragHandleProps,
-  draggableProps,
   isDragging,
-}, ref) => {
+}) => {
   return (
     <div
-      ref={ref}
-      {...draggableProps}
       className={cn(
-        "bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 flex items-start gap-2 w-full transition-shadow duration-200",
+        "bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 flex items-start gap-2 w-full h-full transition-shadow duration-200",
         isDragging && "shadow-2xl"
       )}
     >
@@ -100,8 +96,6 @@ const AdminCollectionPointCard = React.forwardRef<HTMLDivElement, AdminCollectio
       </div>
     </div>
   );
-});
-
-AdminCollectionPointCard.displayName = "AdminCollectionPointCard";
+};
 
 export default AdminCollectionPointCard;

@@ -214,12 +214,12 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
         <Droppable droppableId="collection-points-list">
           {(provided) => (
             <div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+              className="flex flex-wrap -mx-2"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
               {points.length === 0 ? (
-                <div className="col-span-full py-8 text-center">
+                <div className="w-full py-8 text-center">
                   <p className="text-gray-500 dark:text-gray-400 mb-4">
                     Nenhum ponto de coleta cadastrado
                   </p>
@@ -232,15 +232,19 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
                 points.map((point, index) => (
                   <Draggable key={point.id} draggableId={point.id} index={index}>
                     {(provided, snapshot) => (
-                      <AdminCollectionPointCard
+                      <div
                         ref={provided.innerRef}
-                        point={point}
-                        onEdit={handleEditPoint}
-                        onDelete={handleDeletePoint}
-                        draggableProps={provided.draggableProps}
-                        dragHandleProps={provided.dragHandleProps}
-                        isDragging={snapshot.isDragging}
-                      />
+                        {...provided.draggableProps}
+                        className="w-full md:w-1/2 lg:w-1/3 p-2"
+                      >
+                        <AdminCollectionPointCard
+                          point={point}
+                          onEdit={handleEditPoint}
+                          onDelete={handleDeletePoint}
+                          dragHandleProps={provided.dragHandleProps}
+                          isDragging={snapshot.isDragging}
+                        />
+                      </div>
                     )}
                   </Draggable>
                 ))
