@@ -46,7 +46,7 @@ const FaqSection = () => {
   return (
     <section id="faq" className="section-padding bg-gray-50 dark:bg-gray-800">
       <div className="container mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <div className="flex justify-center mb-4">
             <RecycleLogo size="md" />
           </div>
@@ -54,22 +54,23 @@ const FaqSection = () => {
             Perguntas <span className="text-recicla-primary dark:text-recicla-secondary">Frequentes</span>
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
-            Tire suas dúvidas sobre a RECICLA+ e aprenda mais sobre como funciona nosso sistema de reciclagem.
+            Tire suas dúvidas sobre a RECICLA+ e como funciona nosso sistema.
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <Accordion type="single" collapsible className="space-y-4">
             {faqItems.map((item, index) => (
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`}
-                className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900"
+                className="rounded-2xl bg-white/60 dark:bg-gray-800/80 shadow-xl backdrop-blur-xl border border-recicla-primary/10 dark:border-recicla-secondary/20 transition-all duration-300 animate-fade-in hover:shadow-2xl hover:shadow-recicla-primary/20 dark:hover:shadow-recicla-secondary/20 hover:-translate-y-1 hover:ring-2 hover:ring-recicla-primary/20 dark:hover:ring-recicla-secondary/20"
+                style={{ animationDelay: `${index * 80}ms` }}
               >
-                <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 text-left font-medium text-gray-900 dark:text-white">
+                <AccordionTrigger className="px-6 py-4 text-left font-semibold text-lg text-gray-900 dark:text-white hover:no-underline">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="px-6 py-4 text-gray-700 dark:text-gray-300">
+                <AccordionContent className="px-6 pb-5 text-gray-700 dark:text-gray-300">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -78,11 +79,11 @@ const FaqSection = () => {
 
           <div className="mt-12 text-center">
             <p className="text-gray-600 dark:text-gray-400">
-              Ainda tem dúvidas? Entre em contato conosco.
+              Ainda tem dúvidas? Fale conosco.
             </p>
             <a 
               href="mailto:reciclamais25@gmail.com" 
-              className="inline-block mt-4 text-recicla-primary dark:text-recicla-secondary hover:underline font-medium"
+              className="inline-block mt-2 text-recicla-primary dark:text-recicla-secondary hover:underline font-semibold"
             >
               reciclamais25@gmail.com
             </a>

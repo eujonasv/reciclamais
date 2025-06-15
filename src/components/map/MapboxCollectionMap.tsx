@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useImperativeHandle, forwardRef, useState } from 'react';
 import mapboxgl, { Map } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -38,6 +37,22 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
 
   const { markersRef, createOrUpdateMarker, removeMarker, setUserLocation: setUserMarkerLocation } = useMapboxMarkers();
   const { popupsRef, createPopup, updatePopupContent, removeAllPopups, removePopup, showPopup, hidePopup } = useMapboxPopups();
+
+  // Handle marker clicks with proper toggle behavior
+  const handleMarkerClick = (point: CollectionPoint) => {
+    console.log('Marker clicked:', point.id, 'Currently selected:', selectedPoint?.id);
+    
+    // If clicking the same point that's already selected, deselect it
+    if (selectedPoint?.id === point.id) {
+      console.log('Deselecting point');
+      onMarkerClick(point); // This should set selectedPoint to null
+      return;
+    }
+    
+    // Otherwise, select the new point
+    console.log('Selecting new point');
+    onMarkerClick(point);
+  };
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -83,7 +98,7 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
     collectionPoints.forEach(point => {
       const isSelected = selectedPoint?.id === point.id;
       
-      createOrUpdateMarker(point, isSelected, onMarkerClick, map);
+      createOrUpdateMarker(point, isSelected, handleMarkerClick, map);
       
       // Create popup if it doesn't exist
       if (!popupsRef.current[point.id]) {
@@ -94,16 +109,19 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
       updatePopupContent(point, userLocation, compactPopup);
     });
     
-  }, [collectionPoints, userLocation, compactPopup, onMarkerClick, isDark, selectedPoint, createOrUpdateMarker, removeMarker, removePopup, createPopup, updatePopupContent]);
+  }, [collectionPoints, userLocation, compactPopup, selectedPoint, createOrUpdateMarker, removeMarker, removePopup, createPopup, updatePopupContent]);
   
   useEffect(() => {
     if (!mapRef.current) return;
+
+    console.log('Selected point changed:', selectedPoint?.id);
 
     // Remove all open popups first
     removeAllPopups();
 
     // If there's a selected point, show its popup
     if (selectedPoint) {
+      console.log('Showing popup for selected point:', selectedPoint.id);
       mapRef.current.flyTo({
         center: [selectedPoint.longitude, selectedPoint.latitude],
         zoom: mapRef.current.getZoom() < 15 ? 15 : mapRef.current.getZoom(),
