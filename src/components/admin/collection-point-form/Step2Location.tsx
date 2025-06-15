@@ -9,14 +9,25 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { Badge } from "@/components/ui/badge";
 
 // Helper function to format address from Nominatim
-const formatNominatimAddress = (result: any): string => {
+const formatNominatimAddress = (result: any, searchQuery: string = ""): string => {
   const { address, display_name } = result;
   if (!address) return display_name; // Fallback to full display name
 
   // Prioritize more specific location types
   const mainName = address.road || address.pedestrian || address.attraction || address.amenity || '';
-  const houseNumber = address.house_number || '';
-  const suburb = address.suburb || ''; // Bairro
+  
+  // 1. Prioritize API's house number
+  let houseNumber = address.house_number || '';
+
+  // 2. If no house number from API, try to extract from the user's original search query
+  if (!houseNumber) {
+    const numbersInQuery = searchQuery.match(/\b\d+\b/);
+    if (numbersInQuery) {
+      houseNumber = numbersInQuery[0];
+    }
+  }
+
+  const suburb = address.suburb || address.neighbourhood || ''; // Bairro or vizinhança
   const city = address.city || address.town || address.village || '';
   const state = address.state || '';
 
@@ -67,7 +78,7 @@ const Step2Location = () => {
   };
 
   const selectAddress = (result: any) => {
-    const formattedAddress = formatNominatimAddress(result);
+    const formattedAddress = formatNominatimAddress(result, searchAddress);
     const { lat, lon } = result;
     
     setValue("address", formattedAddress, { shouldValidate: true });
@@ -132,7 +143,7 @@ const Step2Location = () => {
                    <div className="flex items-start space-x-3">
                     <MapPin className="h-5 w-5 text-muted-foreground mt-1 shrink-0" />
                     <div className="flex-grow">
-                      <p className="text-sm font-medium">{formatNominatimAddress(result)}</p>
+                      <p className="text-sm font-medium">{formatNominatimAddress(result, searchAddress)}</p>
                       <p className="text-xs text-muted-foreground capitalize">{result.type}</p>
                       <div className="flex space-x-2 mt-2">
                         <Badge variant="secondary">
