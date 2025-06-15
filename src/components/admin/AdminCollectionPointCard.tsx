@@ -4,7 +4,6 @@ import { MapPin, Edit2, Trash2, GripVertical } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CollectionPoint, materialColors } from '@/types/collection-point';
-import { cn } from "@/lib/utils";
 
 interface AdminCollectionPointCardProps {
   point: CollectionPoint;
@@ -22,19 +21,12 @@ const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
   isDragging,
 }) => {
   return (
-    <div
-      className={cn(
-        "bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-4 h-full flex flex-col transition-all duration-300 cursor-default",
-        isDragging 
-          ? "shadow-2xl bg-gray-50 dark:bg-gray-750 border-blue-300 dark:border-blue-600" 
-          : "shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600"
-      )}
-    >
+    <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-4 h-full flex flex-col cursor-default">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center min-w-0 flex-grow">
           <div 
             {...dragHandleProps} 
-            className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 mr-3 flex-shrink-0 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 mr-3 flex-shrink-0 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <GripVertical size={18} />
           </div>
@@ -96,7 +88,7 @@ const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
           href={`https://www.google.com/maps/search/?api=1&query=${point.latitude},${point.longitude}`} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1.5 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors font-medium"
+          className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1.5 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 font-medium"
         >
           📍 Maps
         </a>
@@ -104,7 +96,7 @@ const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
           href={`https://waze.com/ul?ll=${point.latitude},${point.longitude}&navigate=yes`}
           target="_blank" 
           rel="noopener noreferrer" 
-          className="text-xs bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200 px-3 py-1.5 rounded-full hover:bg-teal-200 dark:hover:bg-teal-800 transition-colors font-medium"
+          className="text-xs bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200 px-3 py-1.5 rounded-full hover:bg-teal-200 dark:hover:bg-teal-800 font-medium"
         >
           🚗 Waze
         </a>

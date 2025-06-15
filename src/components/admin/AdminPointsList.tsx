@@ -20,7 +20,7 @@ const AdminPointsList: React.FC<AdminPointsListProps> = ({
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="collection-points-swap">
-        {(provided) => (
+        {(provided, snapshot) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
@@ -28,11 +28,14 @@ const AdminPointsList: React.FC<AdminPointsListProps> = ({
           >
             {points.map((point, index) => (
               <Draggable key={point.id} draggableId={point.id} index={index}>
-                {(provided) => (
+                {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
-                    style={provided.draggableProps.style}
+                    style={{
+                      ...provided.draggableProps.style,
+                      transform: snapshot.isDragging ? provided.draggableProps.style?.transform : 'none'
+                    }}
                   >
                     <AdminCollectionPointCard
                       point={point}
