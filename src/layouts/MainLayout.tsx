@@ -220,13 +220,15 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         {children}
       </main>
 
-      <footer className="bg-gray-100 dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 py-12">
+      <footer className="bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             {/* Coluna 1: Sobre */}
             <div className="sm:col-span-2 lg:col-span-1">
-              <Link to="/" onClick={() => scrollToSection("inicio")} className="flex items-center mb-4">
-                <RecycleLogoWithText size="lg" />
+              <Link to="/" onClick={() => scrollToSection("inicio")} className="inline-block mb-4">
+                <div className="transform scale-110 origin-left">
+                  <RecycleLogoWithText size="lg" />
+                </div>
               </Link>
               <p className="text-gray-600 dark:text-gray-400 text-sm">
                 Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável.
@@ -285,6 +287,17 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                   <a href="mailto:reciclamais25@gmail.com" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">reciclamais25@gmail.com</a>
                 </li>
               </ul>
+              <div className="flex space-x-4 mt-4">
+                <a 
+                  href="https://www.instagram.com/reciclamais.br/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
+                  aria-label="Instagram"
+                >
+                  <Instagram size={20} />
+                </a>
+              </div>
             </div>
           </div>
 
@@ -292,17 +305,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
             <p className="text-sm text-gray-500 dark:text-gray-400 text-center sm:text-left mb-4 sm:mb-0">
               © {new Date().getFullYear()} RECICLA+. Todos os direitos reservados.
             </p>
-            <div className="flex space-x-4">
-              <a 
-                href="https://www.instagram.com/reciclamais.br/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram size={20} />
-              </a>
-            </div>
           </div>
         </div>
       </footer>
