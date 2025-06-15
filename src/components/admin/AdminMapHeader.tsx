@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, Shuffle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { CollectionPoint } from '@/types/collection-point';
@@ -15,6 +15,8 @@ interface AdminMapHeaderProps {
   availableMaterials: string[];
   onSubmit: (values: any) => Promise<void>;
   onAddPoint: () => void;
+  isReordering: boolean;
+  onToggleReorder: () => void;
 }
 
 const AdminMapHeader: React.FC<AdminMapHeaderProps> = ({
@@ -26,37 +28,53 @@ const AdminMapHeader: React.FC<AdminMapHeaderProps> = ({
   availableMaterials,
   onSubmit,
   onAddPoint,
+  isReordering,
+  onToggleReorder,
 }) => {
   return (
-    <div className="flex justify-between items-center mb-6">
+    <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
       <h1 className="text-2xl font-bold">Gerenciar Pontos de Coleta</h1>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button onClick={onAddPoint} className={isMobile ? "px-2 py-1 h-auto" : ""}>
-            <Plus size={isMobile ? 14 : 16} className={isMobile ? "mr-1" : "mr-2"} />
-            {isMobile ? "Add Ponto" : "Adicionar Ponto de Coleta"}
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              {isEditing ? "Editar Ponto de Coleta" : "Adicionar Ponto de Coleta"}
-            </DialogTitle>
-            <DialogDescription>
-              {isEditing
-                ? "Atualize as informações do ponto de coleta"
-                : "Preencha os dados para adicionar um novo ponto de coleta"}
-            </DialogDescription>
-          </DialogHeader>
-          <CollectionPointForm
-            isEditing={isEditing}
-            editingPoint={editingPoint}
-            availableMaterials={availableMaterials}
-            onSubmit={onSubmit}
-            onCancel={() => setOpen(false)}
-          />
-        </DialogContent>
-      </Dialog>
+      <div className="flex items-center gap-2">
+        <Button
+          variant={isReordering ? "default" : "outline"}
+          onClick={onToggleReorder}
+          size={isMobile ? "sm" : "default"}
+        >
+          <Shuffle size={16} className="mr-2" />
+          {isReordering ? "Concluir" : "Reordenar"}
+        </Button>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button 
+              onClick={onAddPoint} 
+              className={isMobile ? "px-2 py-1 h-auto" : ""}
+              disabled={isReordering}
+            >
+              <Plus size={isMobile ? 14 : 16} className={isMobile ? "mr-1" : "mr-2"} />
+              {isMobile ? "Add Ponto" : "Adicionar Ponto de Coleta"}
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>
+                {isEditing ? "Editar Ponto de Coleta" : "Adicionar Ponto de Coleta"}
+              </DialogTitle>
+              <DialogDescription>
+                {isEditing
+                  ? "Atualize as informações do ponto de coleta"
+                  : "Preencha os dados para adicionar um novo ponto de coleta"}
+              </DialogDescription>
+            </DialogHeader>
+            <CollectionPointForm
+              isEditing={isEditing}
+              editingPoint={editingPoint}
+              availableMaterials={availableMaterials}
+              onSubmit={onSubmit}
+              onCancel={() => setOpen(false)}
+            />
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 };

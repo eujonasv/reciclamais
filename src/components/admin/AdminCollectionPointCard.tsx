@@ -11,6 +11,7 @@ interface AdminCollectionPointCardProps {
   onDelete: (id: string) => void;
   dragHandleProps?: any;
   isDragging?: boolean;
+  isReordering?: boolean;
 }
 
 const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
@@ -19,17 +20,27 @@ const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
   onDelete,
   dragHandleProps,
   isDragging,
+  isReordering,
 }) => {
+  const cardClasses = `
+    bg-white dark:bg-gray-800 rounded-xl border-2 p-4 h-full flex flex-col
+    ${isReordering ? 'cursor-grab border-blue-500 ring-2 ring-blue-500/50' : 'cursor-default border-gray-200 dark:border-gray-700'}
+    ${isDragging ? 'shadow-2xl scale-105' : 'shadow-md'}
+    transition-all duration-200 ease-in-out
+  `;
+
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-4 h-full flex flex-col cursor-default">
+    <div className={cardClasses}>
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center min-w-0 flex-grow">
-          <div 
-            {...dragHandleProps} 
-            className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 mr-3 flex-shrink-0 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
-          >
-            <GripVertical size={18} />
-          </div>
+          {isReordering && (
+            <div 
+              {...dragHandleProps} 
+              className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 mr-3 flex-shrink-0 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <GripVertical size={18} />
+            </div>
+          )}
           <MapPin className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2 flex-shrink-0" />
           <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate text-sm leading-tight">{point.name}</h3>
         </div>
@@ -39,6 +50,7 @@ const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
             size="icon"
             onClick={() => onEdit(point)}
             className="h-8 w-8 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+            disabled={isReordering}
           >
             <Edit2 size={14} className="text-blue-600 dark:text-blue-400" />
           </Button>
@@ -47,6 +59,7 @@ const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
             size="icon" 
             onClick={() => onDelete(point.id)}
             className="h-8 w-8 hover:bg-red-50 dark:hover:bg-red-900/20"
+            disabled={isReordering}
           >
             <Trash2 size={14} className="text-red-500 dark:text-red-400" />
           </Button>

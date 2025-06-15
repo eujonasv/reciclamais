@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { collectionPointsService } from '@/services/collection-points-service';
@@ -18,6 +17,8 @@ export const useCollectionPoints = () => {
     handleEditPoint,
     handleAddPoint,
     resetForm,
+    isReordering,
+    setIsReordering,
   } = useCollectionPointsState();
 
   // Load collection points from Supabase
@@ -93,6 +94,10 @@ export const useCollectionPoints = () => {
     }
   };
 
+  const handleToggleReorder = () => {
+    setIsReordering(prev => !prev);
+  };
+
   const { handleDragEnd } = useDragHandler(points, setPoints, loadPoints);
 
   return {
@@ -107,5 +112,7 @@ export const useCollectionPoints = () => {
     handleAddPoint,
     handleSubmit,
     handleDragEnd,
+    isReordering,
+    handleToggleReorder,
   };
 };
