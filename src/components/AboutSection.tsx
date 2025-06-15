@@ -10,82 +10,83 @@ const AboutSection = () => {
       id: 1,
       icon: <Leaf className="h-8 w-8 text-recicla-primary dark:text-recicla-secondary" />,
       title: "Sustentabilidade",
-      description: "Promovemos práticas sustentáveis para reduzir o impacto ambiental e preservar recursos naturais."
+      description: "Cada ação conta. Fomentamos um ciclo sustentável que respeita e preserva o nosso meio ambiente."
     },
     {
       id: 2,
       icon: <Users className="h-8 w-8 text-recicla-primary dark:text-recicla-secondary" />,
-      title: "Conexão",
-      description: "Facilitamos o encontro entre quem deseja reciclar e quem coleta materiais recicláveis."
+      title: "Comunidade",
+      description: "Unimos pessoas, empresas e coletores em uma rede poderosa que fortalece a economia circular."
     },
     {
       id: 3,
       icon: <Recycle className="h-8 w-8 text-recicla-primary dark:text-recicla-secondary" />,
       title: "Inovação",
-      description: "Utilizamos tecnologia para tornar a reciclagem mais acessível e eficiente para todos."
+      description: "Tecnologia a serviço do planeta. Nossa plataforma inovadora simplifica e otimiza todo o processo de reciclagem."
     },
     {
       id: 4,
       icon: <TrendingUp className="h-8 w-8 text-recicla-primary dark:text-recicla-secondary" />,
-      title: "Impacto",
-      description: "Geramos renda para coletores e parceiros enquanto criamos um impacto ambiental positivo."
+      title: "Impacto Positivo",
+      description: "Geramos valor social e ambiental, transformando resíduos em oportunidades e cuidando do futuro de todos."
     },
   ];
 
   return (
-    <section id="sobre" className="section-padding bg-white dark:bg-gray-900">
+    <section id="sobre" className="section-padding bg-gray-50 dark:bg-black overflow-hidden">
       <div className="container mx-auto">
-        <div className="text-center mb-16">
-          <div className="flex justify-center mb-4">
-            <RecycleLogo size="md" />
+        <div className="text-center mb-20">
+          <div className="flex justify-center mb-6">
+            <RecycleLogo size="lg" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-            Sobre a <span className="text-recicla-primary dark:text-recicla-secondary">RECICLA+</span>
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white leading-tight">
+            Nossa Missão: <span className="text-transparent bg-clip-text hero-gradient">Transformar o Futuro</span>
           </h2>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
-            Somos uma startup que revoluciona a forma como as pessoas e empresas lidam com recicláveis, 
-            conectando-as a pontos de coleta e promovendo um ciclo virtuoso de sustentabilidade.
+          <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
+            Acreditamos no poder da comunidade para criar um futuro mais verde. A RECICLA+ nasceu para simplificar a reciclagem, transformando resíduos em recursos e conectando pessoas com o propósito de cuidar do nosso planeta.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature) => (
-            <Card key={feature.id} className="card-hover border-0 bg-white dark:bg-gray-800 shadow-md">
-              <CardContent className="p-8 flex flex-col items-center text-center">
-                <div className="mb-4 p-3 rounded-full bg-green-100 dark:bg-green-900/30">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {feature.description}
-                </p>
-              </CardContent>
-            </Card>
+          {features.map((feature, index) => (
+            <div key={feature.id} className="animate-fade-in" style={{ animationDelay: `${index * 150}ms` }}>
+              <Card className="h-full transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 bg-white/60 dark:bg-white/10 backdrop-blur-md border-gray-200/50 dark:border-white/10 rounded-2xl shadow-lg hover:shadow-2xl">
+                <CardContent className="p-8 flex flex-col items-center text-center">
+                  <div className="mb-6 p-4 rounded-full bg-recicla-primary/10">
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-base">
+                    {feature.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
 
         {/* What We Do Section */}
-        <div className="mt-24">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+        <div className="mt-32">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
               O que <span className="text-recicla-primary dark:text-recicla-secondary">fazemos</span>
             </h2>
-            <p className="text-lg max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
-              Nossa plataforma oferece soluções completas para tornar a reciclagem mais fácil e acessível para todos.
+            <p className="text-lg max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
+              Através da tecnologia, criamos uma ponte entre você e a reciclagem, tornando cada passo do processo transparente, eficiente e impactante.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="order-2 md:order-1">
-              <ul className="space-y-6">
-                <li className="flex items-start">
-                  <div className="flex-shrink-0 p-2 rounded-full bg-recicla-primary/10 dark:bg-recicla-primary/20 mr-4">
-                    <Recycle className="h-6 w-6 text-recicla-primary dark:text-recicla-secondary" />
+            <div className="order-2 md:order-1 animate-fade-in" style={{animationDelay: '300ms'}}>
+              <ul className="space-y-8">
+                <li className="flex items-start group">
+                  <div className="flex-shrink-0 p-3 rounded-full bg-recicla-primary/10 group-hover:bg-recicla-primary/20 transition-colors mr-5">
+                    <Recycle className="h-7 w-7 text-recicla-primary dark:text-recicla-secondary" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-white">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
                       Coleta Inteligente
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400">
@@ -95,12 +96,12 @@ const AboutSection = () => {
                   </div>
                 </li>
                 
-                <li className="flex items-start">
-                  <div className="flex-shrink-0 p-2 rounded-full bg-recicla-primary/10 dark:bg-recicla-primary/20 mr-4">
-                    <Users className="h-6 w-6 text-recicla-primary dark:text-recicla-secondary" />
+                <li className="flex items-start group">
+                  <div className="flex-shrink-0 p-3 rounded-full bg-recicla-primary/10 group-hover:bg-recicla-primary/20 transition-colors mr-5">
+                    <Users className="h-7 w-7 text-recicla-primary dark:text-recicla-secondary" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-white">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
                       Rede de Parceiros
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400">
@@ -109,13 +110,13 @@ const AboutSection = () => {
                   </div>
                 </li>
                 
-                <li className="flex items-start">
-                  <div className="flex-shrink-0 p-2 rounded-full bg-recicla-primary/10 dark:bg-recicla-primary/20 mr-4">
-                    <TrendingUp className="h-6 w-6 text-recicla-primary dark:text-recicla-secondary" />
+                <li className="flex items-start group">
+                  <div className="flex-shrink-0 p-3 rounded-full bg-recicla-primary/10 group-hover:bg-recicla-primary/20 transition-colors mr-5">
+                    <TrendingUp className="h-7 w-7 text-recicla-primary dark:text-recicla-secondary" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-white">
-                      Impacto Ambiental e Social
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
+                      Impacto Real
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400">
                       Geramos renda para coletores e promovemos a economia circular, reduzindo o impacto no meio ambiente.
@@ -126,13 +127,13 @@ const AboutSection = () => {
             </div>
             
             {/* Image */}
-            <div className="order-1 md:order-2">
+            <div className="order-1 md:order-2 animate-fade-in" style={{animationDelay: '150ms'}}>
               <div className="relative">
-                <div className="absolute -inset-1 rounded-xl bg-recicla-primary/20 filter blur-md"></div>
+                <div className="absolute -inset-2 sm:-inset-4 rounded-3xl hero-gradient opacity-20 filter blur-xl animate-float"></div>
                 <img 
-                  src="https://plus.unsplash.com/premium_vector-1682306481700-d924b6112bcf?q=80&w=2224&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-                  alt="Reciclagem" 
-                  className="rounded-xl shadow-xl max-w-full object-cover mx-auto relative z-10"
+                  src="https://images.unsplash.com/photo-1629910363688-34d618950dc9?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                  alt="Ilustração do conceito de reciclagem" 
+                  className="rounded-3xl shadow-2xl max-w-full object-cover mx-auto relative z-10"
                 />
               </div>
             </div>
