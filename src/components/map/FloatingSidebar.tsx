@@ -43,7 +43,7 @@ const FloatingSidebar: React.FC<FloatingSidebarProps> = ({
       transition-transform duration-300 ease-in-out z-[1001]
       ${
         isMobile
-          ? `fixed inset-0 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`
+          ? `fixed top-16 inset-x-0 bottom-0 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`
           : `relative w-[420px] border-l border-gray-200 dark:border-gray-700 h-full ${isOpen ? 'flex' : 'hidden'}`
       }
     `}
