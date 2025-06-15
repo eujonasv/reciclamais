@@ -79,7 +79,7 @@ const EducationPage = () => {
                   key={tabInfo.value}
                   ref={(el) => (tabsRef.current[tabInfo.value] = el)}
                   value={tabInfo.value}
-                  className="bg-transparent relative z-10 data-[state=active]:text-white dark:data-[state=active]:text-gray-900 text-sm md:text-base py-2.5 rounded-full flex items-center gap-2"
+                  className="relative z-10 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-white dark:data-[state=active]:text-gray-900 text-sm md:text-base py-2.5 rounded-full flex items-center gap-2"
                   style={{ transition: 'color 0.3s' }}
                 >
                   <tabInfo.icon size={18} />
