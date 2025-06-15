@@ -164,37 +164,37 @@ const MapPage = () => {
           />
           
           {/* Botões flutuantes no mapa */}
-          <div className="absolute top-4 right-4 z-40 flex flex-col gap-3 sm:flex-row">
+          <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-40 flex flex-col gap-2 sm:gap-3">
             {!isMobile && !isSidebarOpen && (
               <Button
                 onClick={() => setIsSidebarOpen(true)}
-                className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 rounded-full animate-fade-in"
+                className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 rounded-full animate-fade-in touch-manipulation"
                 size="icon"
                 aria-label="Ver lista de pontos"
               >
-                <List className="h-5 w-5" />
+                <List className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
             )}
 
             <Button
               onClick={getUserLocation}
               disabled={isLocating}
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 rounded-full"
-              size={isMobile ? "icon" : "default"}
+              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 rounded-full touch-manipulation min-h-[44px] text-sm"
+              size={isMobile ? "sm" : "default"}
               aria-label="Minha Localização"
             >
-              <Locate className={isMobile ? "h-5 w-5" : "h-5 w-5 mr-2"} />
+              <Locate className={isMobile ? "h-4 w-4" : "h-4 w-4 sm:h-5 sm:w-5 mr-2"} />
               {!isMobile && (isLocating ? "Localizando..." : "Minha Localização")}
             </Button>
 
             {isMobile && (
               <Button
                 onClick={() => setIsSidebarOpen(true)}
-                className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 rounded-full"
-                size="icon"
+                className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 rounded-full touch-manipulation min-h-[44px]"
+                size="sm"
                 aria-label="Ver lista de pontos"
               >
-                <List className="h-5 w-5" />
+                <List className="h-4 w-4" />
               </Button>
             )}
           </div>

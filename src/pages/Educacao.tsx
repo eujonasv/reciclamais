@@ -52,23 +52,23 @@ const EducationPage = () => {
   return (
     <MainLayout>
       <motion.div 
-        className="container mx-auto py-12 px-4"
+        className="container mx-auto py-8 sm:py-12 px-4"
         initial="hidden"
         animate="show"
         variants={pageTransition}
       >
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
             <span className="text-recicla-primary dark:text-recicla-secondary">Educação</span> Ambiental
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto text-lg">
+          <p className="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto text-base sm:text-lg px-2">
             Aprenda sobre reciclagem, sustentabilidade e como contribuir para um planeta mais verde com nossos recursos educacionais.
           </p>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="flex justify-center mb-8">
-            <TabsList ref={listRef} className="grid grid-cols-2 sm:grid-cols-4 w-full max-w-xl bg-gray-100 dark:bg-gray-800 rounded-full p-1.5 h-auto relative">
+          <div className="flex justify-center mb-6 sm:mb-8">
+            <TabsList ref={listRef} className="grid grid-cols-2 sm:grid-cols-4 w-full max-w-xl bg-gray-100 dark:bg-gray-800 rounded-full p-1 sm:p-1.5 h-auto relative">
               <motion.div
                 animate={indicatorStyle}
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
@@ -79,11 +79,11 @@ const EducationPage = () => {
                   key={tabInfo.value}
                   ref={(el) => (tabsRef.current[tabInfo.value] = el)}
                   value={tabInfo.value}
-                  className="relative z-10 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-white dark:data-[state=active]:text-gray-900 text-sm md:text-base py-2.5 rounded-full flex items-center gap-2"
+                  className="relative z-10 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-white dark:data-[state=active]:text-gray-900 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 rounded-full flex items-center gap-1 sm:gap-2 touch-manipulation"
                   style={{ transition: 'color 0.3s' }}
                 >
-                  <tabInfo.icon size={18} />
-                  <span>{tabInfo.label}</span>
+                  <tabInfo.icon size={16} className="sm:w-[18px] sm:h-[18px]" />
+                  <span className="hidden xs:inline">{tabInfo.label}</span>
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -101,7 +101,7 @@ const EducationPage = () => {
             <VideosSection />
           </TabsContent>
 
-          <TabsContent value="quiz" className="pt-6 animate-fade-in">
+          <TabsContent value="quiz" className="pt-4 sm:pt-6 animate-fade-in">
             <QuizReciclagem />
           </TabsContent>
         </Tabs>

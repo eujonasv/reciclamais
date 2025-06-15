@@ -36,10 +36,10 @@ const MobilePointsDrawer: React.FC<MobilePointsDrawerProps> = ({
 }) => {
   return (
     <Drawer open={isOpen} onOpenChange={onOpenChange}>
-      <DrawerContent className="h-[90svh] flex flex-col bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-t border-black/10 dark:border-white/10">
-        <DrawerHeader className="text-left flex-shrink-0">
-          <DrawerTitle>Pontos de Coleta</DrawerTitle>
-          <DrawerDescription>
+      <DrawerContent className="h-[85vh] sm:h-[90vh] flex flex-col bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-t border-black/10 dark:border-white/10">
+        <DrawerHeader className="text-left flex-shrink-0 pb-2 sm:pb-4">
+          <DrawerTitle className="text-lg sm:text-xl">Pontos de Coleta</DrawerTitle>
+          <DrawerDescription className="text-sm sm:text-base">
             {filteredPoints.length > 0
               ? `Encontramos ${filteredPoints.length} ponto${filteredPoints.length > 1 ? 's' : ''}.`
               : 'Nenhum ponto encontrado.'
@@ -47,7 +47,7 @@ const MobilePointsDrawer: React.FC<MobilePointsDrawerProps> = ({
           </DrawerDescription>
         </DrawerHeader>
         
-        <div className="px-4 flex-shrink-0">
+        <div className="px-4 flex-shrink-0 pb-2">
           <SearchAndFilters
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -62,11 +62,11 @@ const MobilePointsDrawer: React.FC<MobilePointsDrawerProps> = ({
 
         <div className="flex-1 min-h-0">
           <ScrollArea className="h-full w-full">
-            <div className="p-4 space-y-3">
+            <div className="p-4 space-y-2 sm:space-y-3 pb-6">
               {filteredPoints.length === 0 ? (
-                <div className="text-center text-gray-500 py-12 px-4">
-                  <p className="font-semibold">Nenhum ponto encontrado.</p>
-                  <p className="text-sm mt-1">Tente alterar os filtros ou o termo de busca.</p>
+                <div className="text-center text-gray-500 py-8 sm:py-12 px-4">
+                  <p className="font-semibold text-sm sm:text-base">Nenhum ponto encontrado.</p>
+                  <p className="text-xs sm:text-sm mt-1">Tente alterar os filtros ou o termo de busca.</p>
                 </div>
               ) : (
                 filteredPoints.map((point) => (
@@ -84,7 +84,7 @@ const MobilePointsDrawer: React.FC<MobilePointsDrawerProps> = ({
 
         <DrawerFooter className="pt-2 flex-shrink-0 border-t border-black/10 dark:border-white/10">
           <DrawerClose asChild>
-            <Button variant="outline">Fechar</Button>
+            <Button variant="outline" className="touch-manipulation h-11 sm:h-10">Fechar</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
