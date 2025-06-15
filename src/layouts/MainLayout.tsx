@@ -265,10 +265,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
               <h3 className="text-sm font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Institucional</h3>
               <ul className="space-y-3">
                 <li>
-                  <Link to="#" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">Política de Privacidade</Link>
+                  <Link to="/politica-de-privacidade" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">Política de Privacidade</Link>
                 </li>
                 <li>
-                  <Link to="#" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">Termos de Serviço</Link>
+                  <Link to="/termos-de-servico" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">Termos de Serviço</Link>
                 </li>
                 <li>
                   <Link to="/admin" className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">

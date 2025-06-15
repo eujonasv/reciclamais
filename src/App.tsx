@@ -12,6 +12,8 @@ import AuthPage from "./pages/auth";
 import ValuesPage from "./pages/Values";
 import EducationPage from "./pages/Educacao";
 import MapPage from "./pages/MapPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicy";
+import TermsOfServicePage from "./pages/TermsOfService";
 import { AuthProvider } from "./hooks/use-auth";
 
 const queryClient = new QueryClient();
@@ -31,6 +33,8 @@ const App = () => (
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/educacao" element={<EducationPage />} />
               <Route path="/mapa" element={<MapPage />} />
+              <Route path="/politica-de-privacidade" element={<PrivacyPolicyPage />} />
+              <Route path="/termos-de-servico" element={<TermsOfServicePage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
