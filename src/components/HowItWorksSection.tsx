@@ -1,6 +1,8 @@
+
 import React, { useState } from 'react';
-import { Search, MapPin, CheckCircle, ChevronLeft, ChevronRight, ArrowDown } from 'lucide-react';
+import { Search, MapPin, CheckCircle, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import RecycleLogo from './RecycleLogo';
 
 const HowItWorksSection = () => {
@@ -9,24 +11,27 @@ const HowItWorksSection = () => {
   const steps = [
     {
       number: 1,
-      icon: <Search className="h-10 w-10 text-white" />,
+      icon: <Search className="h-12 w-12 text-white" />,
       title: "Encontre um ponto de coleta",
       description: "Utilize nosso mapa interativo para encontrar o ponto de coleta mais próximo de você. Filtre por tipo de material que deseja reciclar.",
-      image: "https://plus.unsplash.com/premium_vector-1719419318811-8c03fcdde6ef?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      color: "from-blue-500 to-cyan-500",
+      bgColor: "bg-gradient-to-br from-blue-500/10 to-cyan-500/10"
     },
     {
       number: 2,
-      icon: <MapPin className="h-10 w-10 text-white" />,
+      icon: <MapPin className="h-12 w-12 text-white" />,
       title: "Coleta e Reciclagem",
       description: "Descarte seus materiais recicláveis em um dos nossos pontos de coleta parceiros. Após isso, os materiais são recolhidos e enviados para um centro especializado em reciclagem.",
-      image: "https://plus.unsplash.com/premium_vector-1719419318789-738cb9d164d4?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      color: "from-green-500 to-emerald-500",
+      bgColor: "bg-gradient-to-br from-green-500/10 to-emerald-500/10"
     },
     {
       number: 3,
-      icon: <CheckCircle className="h-10 w-10 text-white" />,
+      icon: <CheckCircle className="h-12 w-12 text-white" />,
       title: "Ganhos",
       description: "Se você é um ponto de coleta, recebe uma porcentagem da venda dos materiais reciclados.",
-      image: "https://plus.unsplash.com/premium_vector-1719419318935-d8c67018c35c?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      color: "from-purple-500 to-violet-500",
+      bgColor: "bg-gradient-to-br from-purple-500/10 to-violet-500/10"
     }
   ];
 
@@ -43,96 +48,109 @@ const HowItWorksSection = () => {
   };
 
   return (
-    <section id="como-funciona" className="section-padding bg-gray-50 dark:bg-gray-800">
-      <div className="container mx-auto">
+    <section id="como-funciona" className="section-padding bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-800 dark:via-gray-900 dark:to-blue-900/20 relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute top-0 left-0 w-72 h-72 bg-gradient-to-br from-recicla-primary/5 to-transparent rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-blue-500/5 to-transparent rounded-full blur-3xl"></div>
+      
+      <div className="container mx-auto relative z-10">
         <div className="text-center mb-16">
-          <div className="flex justify-center mb-4">
-            <RecycleLogo size="md" />
+          <div className="flex justify-center mb-6">
+            <div className="p-4 bg-gradient-to-br from-recicla-primary/10 to-blue-500/10 rounded-2xl">
+              <RecycleLogo size="md" />
+            </div>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-            Como <span className="text-recicla-primary dark:text-recicla-secondary">Funciona</span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-8 text-gray-900 dark:text-white">
+            Como <span className="bg-gradient-to-r from-recicla-primary to-blue-600 bg-clip-text text-transparent">Funciona</span>
           </h2>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
+          <p className="text-xl max-w-4xl mx-auto text-gray-600 dark:text-gray-300 leading-relaxed">
             Reciclar nunca foi tão fácil. Siga estes três passos simples para começar sua jornada de reciclagem.
           </p>
         </div>
 
         {/* Steps for Desktop */}
-        <div className="hidden md:flex justify-center gap-8 relative">
+        <div className="hidden md:grid md:grid-cols-3 gap-8 mb-16">
           {steps.map((step, index) => (
-            <div key={index} className="flex flex-col items-center max-w-sm relative">
-              {/* Step Card */}
-              <div
-                className={`w-full rounded-xl shadow-md overflow-hidden bg-white dark:bg-gray-900 transition-all duration-300 hover:-translate-y-2 cursor-pointer ${
-                  currentStep === index ? 'ring-2 ring-recicla-primary dark:ring-recicla-secondary' : ''
-                }`}
+            <div key={index} className="relative group">
+              <Card 
+                className={`cursor-pointer transition-all duration-500 transform hover:-translate-y-4 ${
+                  currentStep === index 
+                    ? 'ring-2 ring-recicla-primary shadow-2xl scale-105' 
+                    : 'hover:shadow-xl'
+                } bg-white dark:bg-gray-800 border-0 overflow-hidden`}
                 onClick={() => goToStep(index)}
               >
-                {/* Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={step.image}
-                    alt={step.title}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
-                    <div className="p-4 w-full">
-                      <h3 className="text-xl font-bold text-white">{step.title}</h3>
-                    </div>
+                {/* Step number badge */}
+                <div className="absolute top-4 right-4 z-10">
+                  <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${step.color} flex items-center justify-center text-white font-bold text-sm`}>
+                    {step.number}
                   </div>
                 </div>
 
-                {/* Content */}
-                <div className="p-6">
-                  <p className="text-gray-600 dark:text-gray-400">{step.description}</p>
-                </div>
-              </div>
+                <CardContent className="p-8">
+                  {/* Icon */}
+                  <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                    {step.icon}
+                  </div>
 
-              {/* Arrow */}
+                  {/* Content */}
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white group-hover:text-recicla-primary dark:group-hover:text-recicla-secondary transition-colors">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {step.description}
+                  </p>
+                </CardContent>
+
+                {/* Hover effect overlay */}
+                <div className={`absolute inset-0 ${step.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`}></div>
+              </Card>
+
+              {/* Arrow between steps */}
               {index < steps.length - 1 && (
-                <div className="absolute right-[-1.5rem] top-1/2 transform -translate-y-1/2">
-                  <ArrowDown className="-rotate-90 text-recicla-primary dark:text-recicla-secondary h-6 w-6" />
+                <div className="absolute top-1/2 -right-4 transform -translate-y-1/2 z-20">
+                  <div className="w-8 h-8 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center">
+                    <ChevronRight className="h-5 w-5 text-recicla-primary dark:text-recicla-secondary" />
+                  </div>
                 </div>
               )}
             </div>
           ))}
         </div>
 
-        {/* Steps for Mobile */}
-        <div className="md:hidden">
-          <div className="relative rounded-xl shadow-md overflow-hidden bg-white dark:bg-gray-900">
-            {/* Step Number */}
-            <div className="absolute top-4 left-4 z-10 text-white text-xl font-bold">
-              {steps[currentStep].number}
-            </div>
-
-            {/* Image */}
-            <div className="relative h-64 overflow-hidden">
-              <img
-                src={steps[currentStep].image}
-                alt={steps[currentStep].title}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                <div className="p-6 w-full">
-                  <h3 className="text-2xl font-bold text-white">{steps[currentStep].title}</h3>
-                </div>
+        {/* Steps for Mobile - Carousel */}
+        <div className="md:hidden mb-16">
+          <Card className="bg-white dark:bg-gray-800 border-0 shadow-xl overflow-hidden">
+            {/* Step number indicator */}
+            <div className="absolute top-4 right-4 z-10">
+              <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${steps[currentStep].color} flex items-center justify-center text-white font-bold`}>
+                {steps[currentStep].number}
               </div>
             </div>
 
-            {/* Content */}
-            <div className="p-6">
-              <p className="text-gray-600 dark:text-gray-400">{steps[currentStep].description}</p>
-            </div>
+            <CardContent className="p-8">
+              {/* Icon */}
+              <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${steps[currentStep].color} flex items-center justify-center mb-6 mx-auto`}>
+                {steps[currentStep].icon}
+              </div>
 
-            {/* Navigation buttons */}
-            <div className="flex justify-between items-center p-4 border-t border-gray-100 dark:border-gray-700">
+              {/* Content */}
+              <div className="text-center">
+                <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+                  {steps[currentStep].title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  {steps[currentStep].description}
+                </p>
+              </div>
+            </CardContent>
+
+            {/* Navigation */}
+            <div className="flex justify-between items-center p-6 border-t border-gray-100 dark:border-gray-700">
               <Button
                 onClick={prevStep}
                 variant="ghost"
-                className="flex items-center text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent"
+                className="flex items-center text-recicla-primary dark:text-recicla-secondary"
               >
                 <ChevronLeft className="mr-1" size={16} /> Anterior
               </Button>
@@ -142,12 +160,11 @@ const HowItWorksSection = () => {
                   <button
                     key={index}
                     onClick={() => goToStep(index)}
-                    className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                    className={`h-3 w-3 rounded-full transition-all duration-300 ${
                       currentStep === index
-                        ? 'bg-recicla-primary dark:bg-recicla-secondary'
+                        ? 'bg-recicla-primary dark:bg-recicla-secondary scale-125'
                         : 'bg-gray-300 dark:bg-gray-600'
                     }`}
-                    aria-label={`Go to step ${index + 1}`}
                   />
                 ))}
               </div>
@@ -155,25 +172,34 @@ const HowItWorksSection = () => {
               <Button
                 onClick={nextStep}
                 variant="ghost"
-                className="flex items-center text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent"
+                className="flex items-center text-recicla-primary dark:text-recicla-secondary"
               >
                 Próximo <ChevronRight className="ml-1" size={16} />
               </Button>
             </div>
-          </div>
+          </Card>
         </div>
 
         {/* Call to action */}
-        <div className="mt-16 text-center">
-          <Button
-            onClick={() => {
-              const mapSection = document.getElementById('mapa');
-              if (mapSection) mapSection.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="bg-recicla-primary hover:bg-recicla-accent text-white py-2 px-6 rounded-lg"
-          >
-            Encontrar Pontos de Coleta
-          </Button>
+        <div className="text-center">
+          <div className="bg-gradient-to-r from-recicla-primary/10 to-blue-500/10 rounded-3xl p-8 md:p-12">
+            <h3 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+              Pronto para começar?
+            </h3>
+            <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+              Encontre o ponto de coleta mais próximo e comece a fazer a diferença hoje mesmo!
+            </p>
+            <Button
+              onClick={() => {
+                const mapSection = document.getElementById('mapa');
+                if (mapSection) mapSection.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="bg-gradient-to-r from-recicla-primary to-blue-600 hover:from-recicla-accent hover:to-blue-700 text-white font-semibold px-8 py-4 rounded-xl group shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+              Encontrar Pontos de Coleta
+            </Button>
+          </div>
         </div>
       </div>
     </section>
