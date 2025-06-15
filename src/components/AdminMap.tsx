@@ -7,9 +7,10 @@ import AdminPointsList from './admin/AdminPointsList';
 
 interface AdminMapProps {
   isMobile?: boolean;
+  collectionPointsData: ReturnType<typeof useCollectionPoints>;
 }
 
-const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
+const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false, collectionPointsData }) => {
   const {
     points,
     isEditing,
@@ -25,10 +26,10 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
     toggleReordering,
     handleMovePoint,
     handleMoveToPosition,
-  } = useCollectionPoints();
+  } = collectionPointsData;
 
   return (
-    <div className="p-4 max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto">
       <AdminMapHeader
         isMobile={isMobile}
         open={open}
