@@ -61,26 +61,20 @@ const EducationPage = () => {
             </TabsList>
           </div>
 
-          <TabsContent value="dicas">
+          <TabsContent value="dicas" className="animate-fade-in">
             <TipsSection />
           </TabsContent>
 
-          <TabsContent value="guia">
+          <TabsContent value="guia" className="animate-fade-in">
             <GuideSection />
           </TabsContent>
 
-          <TabsContent value="videos">
+          <TabsContent value="videos" className="animate-fade-in">
             <VideosSection />
           </TabsContent>
 
-          <TabsContent value="quiz" className="pt-6">
-             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-            >
-                <QuizReciclagem />
-            </motion.div>
+          <TabsContent value="quiz" className="pt-6 animate-fade-in">
+            <QuizReciclagem />
           </TabsContent>
         </Tabs>
       </motion.div>
