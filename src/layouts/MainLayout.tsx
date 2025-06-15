@@ -220,13 +220,13 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         {children}
       </main>
 
-      <footer className="bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-12">
+      <footer className="bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             {/* Coluna 1: Sobre */}
             <div className="sm:col-span-2 lg:col-span-1">
-              <Link to="/" onClick={() => scrollToSection("inicio")} className="inline-block mb-4">
-                <div className="transform scale-110 origin-left">
+              <Link to="/" onClick={() => scrollToSection("inicio")} className="inline-block mb-3">
+                <div className="origin-left">
                   <RecycleLogoWithText size="lg" />
                 </div>
               </Link>
@@ -237,8 +237,8 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
             {/* Coluna 2: Navegação */}
             <div>
-              <h3 className="text-sm font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Navegação</h3>
-              <ul className="space-y-3">
+              <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white uppercase tracking-wider">Navegação</h3>
+              <ul className="space-y-2">
                 {navLinks.map(({id, text, isPage, path}) => (
                   <li key={id}>
                     <button
@@ -262,8 +262,8 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
             {/* Coluna 3: Institucional */}
             <div>
-              <h3 className="text-sm font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Institucional</h3>
-              <ul className="space-y-3">
+              <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white uppercase tracking-wider">Institucional</h3>
+              <ul className="space-y-2">
                 <li>
                   <Link to="/politica-de-privacidade" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">Política de Privacidade</Link>
                 </li>
@@ -281,13 +281,13 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
             {/* Coluna 4: Contato */}
             <div>
-              <h3 className="text-sm font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Contato</h3>
-              <ul className="space-y-3">
+              <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white uppercase tracking-wider">Contato</h3>
+              <ul className="space-y-2">
                 <li>
                   <a href="mailto:reciclamais25@gmail.com" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">reciclamais25@gmail.com</a>
                 </li>
               </ul>
-              <div className="flex space-x-4 mt-4">
+              <div className="flex space-x-4 mt-3">
                 <a 
                   href="https://www.instagram.com/reciclamais.br/" 
                   target="_blank" 
@@ -301,7 +301,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
             </div>
           </div>
 
-          <div className="pt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center">
+          <div className="pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center">
             <p className="text-sm text-gray-500 dark:text-gray-400 text-center sm:text-left mb-4 sm:mb-0">
               © {new Date().getFullYear()} RECICLA+. Todos os direitos reservados.
             </p>
