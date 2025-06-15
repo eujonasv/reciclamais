@@ -42,7 +42,9 @@ const CompactCollectionPointCard: React.FC<CompactCollectionPointCardProps> = ({
           onClick={(e) => e.stopPropagation()}
           className="transition-transform hover:scale-110"
         >
-          <img src="/lovable-uploads/googlemapslogo.png" alt="Google Maps" className="h-6 w-6" />
+          <div className="bg-white rounded-full p-1 flex items-center justify-center shadow-sm">
+            <img src="/lovable-uploads/googlemapslogo.png" alt="Google Maps" className="h-5 w-5" />
+          </div>
         </a>
         <a
           href={getWazeUrl(point.address)}
@@ -52,7 +54,9 @@ const CompactCollectionPointCard: React.FC<CompactCollectionPointCardProps> = ({
           onClick={(e) => e.stopPropagation()}
           className="transition-transform hover:scale-110"
         >
-          <img src="/lovable-uploads/wazelogo.png" alt="Waze" className="h-6 w-6" />
+          <div className="bg-white rounded-full p-1 flex items-center justify-center shadow-sm">
+            <img src="/lovable-uploads/wazelogo.png" alt="Waze" className="h-5 w-5" />
+          </div>
         </a>
       </div>
     </div>
