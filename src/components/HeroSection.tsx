@@ -33,7 +33,7 @@ const HeroSection = () => {
               <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 text-gray-700 dark:text-gray-300 px-2 sm:px-0">
                 Conectamos pessoas e empresas a pontos de coleta de recicláveis para um futuro mais sustentável.
               </p>
-              <div className="flex flex-col gap-3 sm:gap-4 justify-center md:justify-start px-4 sm:px-0">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start px-4 sm:px-0">
                 <Button 
                   onClick={() => scrollToSection('como-funciona')}
                   size="lg"
