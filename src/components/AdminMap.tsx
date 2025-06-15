@@ -232,21 +232,15 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
                 points.map((point, index) => (
                   <Draggable key={point.id} draggableId={point.id} index={index}>
                     {(provided, snapshot) => (
-                      <div
+                      <AdminCollectionPointCard
                         ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        className={cn(
-                          "transition-shadow duration-200",
-                          snapshot.isDragging && "shadow-2xl"
-                        )}
-                      >
-                        <AdminCollectionPointCard
-                          point={point}
-                          onEdit={handleEditPoint}
-                          onDelete={handleDeletePoint}
-                          dragHandleProps={provided.dragHandleProps}
-                        />
-                      </div>
+                        point={point}
+                        onEdit={handleEditPoint}
+                        onDelete={handleDeletePoint}
+                        draggableProps={provided.draggableProps}
+                        dragHandleProps={provided.dragHandleProps}
+                        isDragging={snapshot.isDragging}
+                      />
                     )}
                   </Draggable>
                 ))
