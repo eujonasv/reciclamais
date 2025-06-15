@@ -11,6 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/android": "^7.3.0",
+    "@capacitor/cli": "^7.3.0",
     "@changey/react-leaflet-markercluster": "^4.0.0-rc1",
     "@fontsource-variable/montserrat": "^5.2.5",
     "@fontsource/roboto": "^5.2.5",
