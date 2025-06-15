@@ -30,15 +30,15 @@ export const quizQuestions: QuizQuestion[] = [
     explanation: "Pilhas e baterias são lixo eletrônico e contêm metais pesados. Elas devem ser descartadas em pontos de coleta específicos para não contaminar o solo e a água."
   },
   {
-    question: "Qual a cor universal do cesto de lixo para descarte de VIDRO?",
+    question: "Na coleta seletiva, qual é a cor correspondente ao descarte de vidro?",
     options: [
-      "Azul (Papel)",
-      "Vermelho (Plástico)",
-      "Verde (Vidro)",
-      "Amarelo (Metal)"
+      "Azul",
+      "Vermelho",
+      "Verde",
+      "Amarelo"
     ],
     correctAnswerIndex: 2,
-    explanation: "A cor verde é o padrão internacional para a coleta de vidro. As outras cores correspondem a: Azul para papel, Vermelho para plástico e Amarelo para metal."
+    explanation: "A cor verde é o padrão para a coleta de vidro. As cores para os outros materiais principais são: Azul (Papel), Vermelho (Plástico) e Amarelo (Metal)."
   },
   {
     question: "Isopor é reciclável?",
@@ -50,5 +50,16 @@ export const quizQuestions: QuizQuestion[] = [
     ],
     correctAnswerIndex: 1,
     explanation: "Tecnicamente, o isopor (poliestireno expandido) é um tipo de plástico e é reciclável. No entanto, por ser muito leve e volumoso, seu transporte e reciclagem são caros, e poucas cooperativas realizam o processo."
+  },
+  {
+    question: "O que NÃO deve ser colocado em uma composteira doméstica?",
+    options: [
+      "Cascas de frutas e vegetais",
+      "Restos de carne e laticínios",
+      "Borra de café e sachês de chá",
+      "Folhas secas e serragem"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Restos de produtos de origem animal, como carnes, laticínios e gorduras, não devem ir na composteira, pois podem atrair pragas e gerar mau cheiro. Os outros itens são ótimos para a compostagem."
   }
 ];
