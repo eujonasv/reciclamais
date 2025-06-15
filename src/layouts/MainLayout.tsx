@@ -42,7 +42,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     
     if (!isHome) return;
     
-    const sections = ["inicio", "sobre", "como-funciona", "mapa", "educacao", "faq"];
+    const sections = ["inicio", "sobre", "como-funciona", "mapa-cta", "educacao", "faq"];
     for (const section of sections) {
       const element = document.getElementById(section);
       if (element) {
