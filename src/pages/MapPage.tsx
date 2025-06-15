@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import FloatingSidebar from "@/components/map/FloatingSidebar";
@@ -7,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { CollectionPoint } from "@/types/collection-point";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { Navigation, List } from "lucide-react";
+import { Locate, List } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { LatLngTuple } from "@/lib/map-utils";
 import { findClosestPoint } from "@/lib/map-utils";
@@ -182,7 +183,7 @@ const MapPage = () => {
               size={isMobile ? "icon" : "default"}
               aria-label="Minha Localização"
             >
-              <Navigation className={isMobile ? "h-5 w-5" : "h-5 w-5 mr-2"} />
+              <Locate className={isMobile ? "h-5 w-5" : "h-5 w-5 mr-2"} />
               {!isMobile && (isLocating ? "Localizando..." : "Minha Localização")}
             </Button>
 

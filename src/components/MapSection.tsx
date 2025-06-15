@@ -15,7 +15,7 @@ import {
   PaginationPrevious 
 } from '@/components/ui/pagination';
 import { Button } from '@/components/ui/button';
-import { ArrowDown, ArrowUp, Navigation } from 'lucide-react';
+import { ArrowDown, ArrowUp, Locate } from 'lucide-react';
 import { useMapSection } from '@/hooks/useMapSection';
 
 const MapSection = () => {
@@ -140,7 +140,7 @@ const MapSection = () => {
                       className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700"
                       size="sm"
                     >
-                      <Navigation className="h-4 w-4 mr-2" />
+                      <Locate className="h-4 w-4 mr-2" />
                       {isLocating ? "Localizando..." : "Minha Localização"}
                     </Button>
                   </div>
