@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { MapIcon, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import RecycleLogo from './RecycleLogo';
 import SearchAndFilters from './map/SearchAndFilters';
 import CollectionPointCard from './map/CollectionPointCard';
-import EnhancedCollectionMap from './map/EnhancedCollectionMap';
+import EnhancedCollectionMap, { EnhancedCollectionMapRef } from './map/EnhancedCollectionMap';
 import { CollectionPoint } from '@/types/collection-point';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -33,7 +32,7 @@ const MapSection = () => {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [isLocating, setIsLocating] = useState(false);
   const { toast } = useToast();
-  const mapRef = useRef<any>(null);
+  const mapRef = useRef<EnhancedCollectionMapRef | null>(null);
 
   useEffect(() => {
     const fetchPoints = async () => {
@@ -199,11 +198,12 @@ const MapSection = () => {
   };
 
   useEffect(() => {
-    if (showMapMobile && mapRef.current && mapRef.current.leafletElement) {
+    if (showMapMobile) {
       setTimeout(() => {
-        try {
-          mapRef.current.leafletElement.invalidateSize();
-        } catch (e) {}
+        const map = mapRef.current?.getMap();
+        if (map) {
+          map.invalidateSize();
+        }
       }, 310);
     }
   }, [showMapMobile]);

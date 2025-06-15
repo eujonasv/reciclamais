@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState, useRef, forwardRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Circle, LayerGroup } from 'react-leaflet';
-import { Icon, LatLngTuple } from 'leaflet';
+import { Icon, LatLngTuple, Map as LeafletMap } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { CollectionPoint } from '@/types/collection-point';
 import { materialColors } from '@/types/collection-point';
@@ -78,7 +77,13 @@ interface EnhancedCollectionMapProps {
   compactPopup?: boolean;
 }
 
-const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
+export interface EnhancedCollectionMapRef {
+  setViewFromExternal: (coordinates: [number, number]) => void;
+  setUserLocation: (coordinates: LatLngTuple) => void;
+  getMap: () => LeafletMap | null;
+}
+
+const EnhancedCollectionMap = forwardRef<EnhancedCollectionMapRef, EnhancedCollectionMapProps>(({
   collectionPoints,
   selectedPoint,
   onMarkerClick,
@@ -89,6 +94,7 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
   const [userLocation, setUserLocation] = useState<LatLngTuple | null>(null);
   const [userLocationAccuracy, setUserLocationAccuracy] = useState<number>(0);
   const [closestPoint, setClosestPoint] = useState<CollectionPoint | null>(null);
+  const mapInstanceRef = useRef<LeafletMap | null>(null);
 
   // Detectar dark mode (usando next-themes)
   const { resolvedTheme } = useTheme();
@@ -168,7 +174,8 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
         const closest = findClosestPoint(coordinates, collectionPoints);
         setClosestPoint(closest);
       }
-    }
+    },
+    getMap: () => mapInstanceRef.current,
   }));
 
   return (
@@ -179,6 +186,7 @@ const EnhancedCollectionMap = forwardRef<any, EnhancedCollectionMapProps>(({
         scrollWheelZoom={true}
         className="z-0 w-full h-full"
         style={{ height: '100%', width: '100%' }}
+        ref={mapInstanceRef}
       >
         <TileLayer
           attribution={tileSet.attribution}
