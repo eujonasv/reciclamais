@@ -43,7 +43,7 @@ const CompactCollectionPointCard: React.FC<CompactCollectionPointCardProps> = ({
           className="transition-transform hover:scale-110"
         >
           <div className="bg-white rounded-full p-1.5 flex items-center justify-center shadow-sm">
-            <img src="/lovable-uploads/googlemapslogo.png" alt="Google Maps" className="h-4 w-4" />
+            <img src="/lovable-uploads/googlemapslogo.png" alt="Google Maps" className="w-8 h-6" />
           </div>
         </a>
         <a
