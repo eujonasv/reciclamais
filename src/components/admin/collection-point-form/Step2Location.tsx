@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
@@ -7,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Search, MapPin } from 'lucide-react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
+import LocationPickerMap from '@/components/map/LocationPickerMap';
+import { LatLngTuple } from 'leaflet';
 
 // Helper function to format address from Nominatim
 const formatNominatimAddress = (result: any, searchQuery: string = ""): string => {
@@ -55,11 +56,23 @@ const formatNominatimAddress = (result: any, searchQuery: string = ""): string =
 
 
 const Step2Location = () => {
-  const { control, setValue } = useFormContext();
+  const { control, setValue, watch } = useFormContext();
   const [showAddressSearch, setShowAddressSearch] = React.useState(false);
   const [searchAddress, setSearchAddress] = React.useState("");
   const [searchResults, setSearchResults] = React.useState<any[]>([]);
   const [isSearching, setIsSearching] = React.useState(false);
+  const [selectedLocation, setSelectedLocation] = React.useState<LatLngTuple | null>(null);
+
+  const latitude = watch('latitude');
+  const longitude = watch('longitude');
+
+  React.useEffect(() => {
+    if (typeof latitude === 'number' && typeof longitude === 'number' && (latitude !== 0 || longitude !== 0)) {
+        if (!selectedLocation || selectedLocation[0] !== latitude || selectedLocation[1] !== longitude) {
+            setSelectedLocation([latitude, longitude]);
+        }
+    }
+  }, [latitude, longitude, selectedLocation]);
 
   const searchForAddress = async () => {
     if (!searchAddress.trim()) return;
@@ -70,6 +83,10 @@ const Step2Location = () => {
       const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&q=${encodeURIComponent(searchAddress)}&countrycodes=br`);
       const data = await response.json();
       setSearchResults(data);
+      if (data.length > 0) {
+        // Automatically select the first result to show on map
+        // selectAddress(data[0]);
+      }
     } catch (error) {
       console.error("Error searching for address:", error);
     } finally {
@@ -80,19 +97,37 @@ const Step2Location = () => {
   const selectAddress = (result: any) => {
     const formattedAddress = formatNominatimAddress(result, searchAddress);
     const { lat, lon } = result;
+    const newLocation: LatLngTuple = [parseFloat(lat), parseFloat(lon)];
     
     setValue("address", formattedAddress, { shouldValidate: true });
-    setValue("latitude", parseFloat(lat), { shouldValidate: true });
-    setValue("longitude", parseFloat(lon), { shouldValidate: true });
+    setValue("latitude", newLocation[0], { shouldValidate: true });
+    setValue("longitude", newLocation[1], { shouldValidate: true });
     
-    setShowAddressSearch(false);
-    setSearchAddress("");
-    setSearchResults([]);
+    setSelectedLocation(newLocation);
   };
+  
+  const handleLocationChange = (lat: number, lng: number) => {
+    setValue("latitude", lat, { shouldValidate: true });
+    setValue("longitude", lng, { shouldValidate: true });
+  };
+
+  const handleConfirmLocation = () => {
+    setShowAddressSearch(false);
+  };
+
+  const handleSheetOpenChange = (open: boolean) => {
+    setShowAddressSearch(open);
+    if (!open) {
+      setSearchAddress("");
+      setSearchResults([]);
+      setSelectedLocation(null);
+    }
+  };
+
 
   return (
     <div className="space-y-4 animate-fade-in">
-      <Sheet open={showAddressSearch} onOpenChange={setShowAddressSearch}>
+      <Sheet open={showAddressSearch} onOpenChange={handleSheetOpenChange}>
         <FormField
           control={control}
           name="address"
@@ -104,7 +139,7 @@ const Step2Location = () => {
                   <Input placeholder="Clique na lupa para buscar..." {...field} />
                 </FormControl>
                 <SheetTrigger asChild>
-                  <Button variant="outline" type="button" className="shrink-0" onClick={() => setShowAddressSearch(true)}>
+                  <Button variant="outline" type="button" className="shrink-0">
                     <Search className="h-4 w-4" />
                   </Button>
                 </SheetTrigger>
@@ -113,14 +148,14 @@ const Step2Location = () => {
             </FormItem>
           )}
         />
-        <SheetContent side="right" className="w-full sm:max-w-lg">
+        <SheetContent side="right" className="w-full sm:max-w-2xl flex flex-col">
           <SheetHeader>
-            <SheetTitle>Buscar Endereço</SheetTitle>
+            <SheetTitle>Buscar e Ajustar Endereço</SheetTitle>
             <SheetDescription>
-              Digite um endereço para buscar as coordenadas. A busca é otimizada para o Brasil.
+              Busque por um endereço e arraste o pino no mapa para ajustar a localização exata.
             </SheetDescription>
           </SheetHeader>
-          <div className="py-6 space-y-4">
+          <div className="py-2 space-y-4 flex-grow overflow-y-auto pr-4 -mr-4">
             <div className="flex space-x-2">
               <Input 
                 placeholder="Digite um endereço ou local..." 
@@ -133,7 +168,20 @@ const Step2Location = () => {
               </Button>
             </div>
             
-            <div className="max-h-[70vh] overflow-y-auto space-y-2 pr-2">
+            {selectedLocation && (
+              <div className="space-y-3 pt-2">
+                <p className="text-sm text-muted-foreground text-center">
+                  <MapPin className="inline h-4 w-4 mr-1" />
+                  Arraste o pino no mapa para a posição exata.
+                </p>
+                <LocationPickerMap 
+                  location={selectedLocation}
+                  onLocationChange={handleLocationChange}
+                />
+              </div>
+            )}
+
+            <div className="space-y-2">
               {searchResults.map((result) => (
                 <div 
                   key={result.place_id}
@@ -145,20 +193,12 @@ const Step2Location = () => {
                     <div className="flex-grow">
                       <p className="text-sm font-medium">{formatNominatimAddress(result, searchAddress)}</p>
                       <p className="text-xs text-muted-foreground capitalize">{result.type}</p>
-                      <div className="flex space-x-2 mt-2">
-                        <Badge variant="secondary">
-                          Lat: {parseFloat(result.lat).toFixed(6)}
-                        </Badge>
-                        <Badge variant="secondary">
-                          Lon: {parseFloat(result.lon).toFixed(6)}
-                        </Badge>
-                      </div>
                     </div>
                   </div>
                 </div>
               ))}
               
-              {searchResults.length === 0 && !isSearching && searchAddress.length > 2 && (
+              {searchResults.length === 0 && !isSearching && searchAddress.length > 2 && !selectedLocation && (
                 <p className="text-center text-muted-foreground py-4">
                   Nenhum resultado encontrado. Tente um termo de busca diferente.
                 </p>
@@ -170,6 +210,11 @@ const Step2Location = () => {
                 </div>
               )}
             </div>
+          </div>
+          <div className="pt-4 mt-auto border-t">
+              <Button onClick={handleConfirmLocation} className="w-full">
+                Confirmar Localização
+              </Button>
           </div>
         </SheetContent>
       </Sheet>
