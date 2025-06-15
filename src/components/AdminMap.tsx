@@ -8,6 +8,7 @@ import { CollectionPoint, materialColors } from '@/types/collection-point';
 import AdminCollectionPointCard from './admin/AdminCollectionPointCard';
 import { CollectionPointForm } from './admin/CollectionPointForm';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import { cn } from '@/lib/utils';
 
 interface AdminMapProps {
   isMobile?: boolean;
@@ -99,7 +100,6 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
           .update(payload)
           .eq("id", editingPoint.id);
       } else {
-        // Para novos pontos, definir uma ordem de exibição alta para que apareçam no final
         const newOrder = points.length > 0 ? Math.max(...points.map(p => p.display_order ?? 0)) + 1 : 1;
         result = await supabase.from("collection_points").insert({...payload, display_order: newOrder});
       }
@@ -235,13 +235,16 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
                       <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
+                        className={cn(
+                          "transition-shadow duration-200",
+                          snapshot.isDragging && "shadow-2xl"
+                        )}
                       >
                         <AdminCollectionPointCard
                           point={point}
                           onEdit={handleEditPoint}
                           onDelete={handleDeletePoint}
                           dragHandleProps={provided.dragHandleProps}
-                          isDragging={snapshot.isDragging}
                         />
                       </div>
                     )}

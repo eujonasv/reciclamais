@@ -11,7 +11,6 @@ interface AdminCollectionPointCardProps {
   onEdit: (point: CollectionPoint) => void;
   onDelete: (id: string) => void;
   dragHandleProps?: any;
-  isDragging?: boolean;
 }
 
 const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
@@ -19,12 +18,10 @@ const AdminCollectionPointCard: React.FC<AdminCollectionPointCardProps> = ({
   onEdit,
   onDelete,
   dragHandleProps,
-  isDragging,
 }) => {
   return (
     <div className={cn(
-      "bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 flex items-start gap-2 w-full transition-all",
-      isDragging && "shadow-2xl scale-105"
+      "bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 flex items-start gap-2 w-full"
     )}>
       <div {...dragHandleProps} className="cursor-grab text-gray-500 hover:text-gray-700 pt-1">
         <GripVertical size={20} />
