@@ -251,39 +251,27 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
         </div>
       ) : (
         <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="collection-points-swap" direction="vertical">
-            {(provided, snapshot) => (
+          <Droppable droppableId="collection-points-swap">
+            {(provided) => (
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className={`
-                  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[200px]
-                  ${snapshot.isDraggingOver ? 'bg-gray-50 dark:bg-gray-800/50 rounded-lg p-2' : ''}
-                `}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
               >
                 {points.map((point, index) => (
                   <Draggable key={point.id} draggableId={point.id} index={index}>
-                    {(provided, snapshot) => (
+                    {(provided) => (
                       <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
-                        className={`
-                          transition-all duration-200 ease-in-out
-                          ${snapshot.isDragging ? 
-                            'transform scale-105 shadow-2xl z-50 opacity-90' : 
-                            'hover:shadow-lg'
-                          }
-                        `}
-                        style={{
-                          ...provided.draggableProps.style,
-                        }}
+                        style={provided.draggableProps.style}
                       >
                         <AdminCollectionPointCard
                           point={point}
                           onEdit={handleEditPoint}
                           onDelete={handleDeletePoint}
                           dragHandleProps={provided.dragHandleProps}
-                          isDragging={snapshot.isDragging}
+                          isDragging={false}
                         />
                       </div>
                     )}
