@@ -231,7 +231,7 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
         </div>
       ) : (
         <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="collection-points-grid" direction="vertical">
+          <Droppable droppableId="collection-points-grid" direction="horizontal">
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
@@ -240,10 +240,6 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
                   grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[200px]
                   ${snapshot.isDraggingOver ? 'bg-gray-50 dark:bg-gray-800/50 rounded-lg p-2' : ''}
                 `}
-                style={{
-                  gridAutoFlow: 'row',
-                  gridAutoRows: 'min-content',
-                }}
               >
                 {points.map((point, index) => (
                   <Draggable key={point.id} draggableId={point.id} index={index}>
@@ -254,16 +250,14 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
                         className={`
                           transition-all duration-200 ease-in-out
                           ${snapshot.isDragging ? 
-                            'transform rotate-1 scale-105 shadow-2xl z-50' : 
+                            'transform rotate-3 scale-105 shadow-2xl z-50 opacity-90' : 
                             'hover:shadow-lg'
                           }
                         `}
                         style={{
                           ...provided.draggableProps.style,
                           ...(snapshot.isDragging && {
-                            transform: `${provided.draggableProps.style?.transform} rotate(1deg) scale(1.05)`,
-                            gridColumn: 'span 1',
-                            gridRow: 'span 1',
+                            transform: `${provided.draggableProps.style?.transform} rotate(3deg) scale(1.05)`,
                           }),
                         }}
                       >
