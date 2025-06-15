@@ -163,18 +163,7 @@ const HowItWorksSection = () => {
           </div>
         </div>
 
-        {/* Call to action */}
-        <div className="mt-16 text-center">
-          <Button
-            onClick={() => {
-              const mapSection = document.getElementById('mapa');
-              if (mapSection) mapSection.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="bg-recicla-primary hover:bg-recicla-accent text-white py-2 px-6 rounded-lg"
-          >
-            Encontrar Pontos de Coleta
-          </Button>
-        </div>
+        {/* Call to action was here */}
       </div>
     </section>
   );
