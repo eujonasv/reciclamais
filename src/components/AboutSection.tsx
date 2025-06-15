@@ -33,7 +33,7 @@ const AboutSection = () => {
   ];
 
   return (
-    <section id="sobre" className="section-padding bg-gray-50 dark:bg-black overflow-hidden">
+    <section id="sobre" className="section-padding bg-gray-50 dark:bg-gray-800 overflow-hidden">
       <div className="container mx-auto">
         <div className="text-center mb-20">
           <div className="flex justify-center mb-6">
@@ -79,7 +79,7 @@ const AboutSection = () => {
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="order-2 md:order-1 animate-fade-in" style={{animationDelay: '300ms'}}>
+            <div className="order-2 md:order-1 animate-fade-in-left">
               <ul className="space-y-8">
                 <li className="flex items-start group">
                   <div className="flex-shrink-0 p-3 rounded-full bg-recicla-primary/10 group-hover:bg-recicla-primary/20 transition-colors mr-5">
@@ -127,7 +127,7 @@ const AboutSection = () => {
             </div>
             
             {/* Image */}
-            <div className="order-1 md:order-2 animate-fade-in" style={{animationDelay: '150ms'}}>
+            <div className="order-1 md:order-2 animate-fade-in-right">
               <div className="relative">
                 <div className="absolute -inset-2 sm:-inset-4 rounded-3xl hero-gradient opacity-20 filter blur-xl animate-float"></div>
                 <img 
