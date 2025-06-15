@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
 import { materialColors } from '@/types/collection-point';
+import { materialsSchema } from '@/lib/security';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
 
@@ -12,8 +13,23 @@ interface Step3MaterialsProps {
 }
 
 const Step3Materials: React.FC<Step3MaterialsProps> = ({ availableMaterials }) => {
-  const { control, watch } = useFormContext();
+  const { control, watch, setError, clearErrors } = useFormContext();
   const selectedMaterials = watch('materials', []);
+
+  // Real-time materials validation
+  useEffect(() => {
+    if (selectedMaterials.length > 0) {
+      const result = materialsSchema.safeParse(selectedMaterials);
+      if (!result.success) {
+        const errorMessage = result.error.errors[0]?.message || 'Seleção de materiais inválida';
+        setError('materials', { message: errorMessage });
+      } else {
+        clearErrors('materials');
+      }
+    } else {
+      setError('materials', { message: 'Selecione pelo menos um material' });
+    }
+  }, [selectedMaterials, setError, clearErrors]);
 
   return (
     <div className="space-y-4 animate-fade-in">
@@ -46,9 +62,20 @@ const Step3Materials: React.FC<Step3MaterialsProps> = ({ availableMaterials }) =
                         className="sr-only"
                         checked={field.value?.includes(material)}
                         onCheckedChange={(checked) => {
-                          const updatedValue = checked
-                            ? [...field.value, material]
-                            : field.value?.filter((value: string) => value !== material);
+                          const currentMaterials = field.value || [];
+                          let updatedValue;
+                          
+                          if (checked) {
+                            // Check if we're exceeding the limit
+                            if (currentMaterials.length >= 10) {
+                              setError('materials', { message: 'Máximo de 10 materiais permitidos' });
+                              return;
+                            }
+                            updatedValue = [...currentMaterials, material];
+                          } else {
+                            updatedValue = currentMaterials.filter((value: string) => value !== material);
+                          }
+                          
                           field.onChange(updatedValue);
                         }}
                       />
@@ -58,10 +85,13 @@ const Step3Materials: React.FC<Step3MaterialsProps> = ({ availableMaterials }) =
                         <Check size={14} />
                       </div>
                     )}
-                    <span className="font-semibold text-center">{material}</span>
+                    <span className="font-semibold text-center text-sm">{material}</span>
                   </label>
                 );
               })}
+            </div>
+            <div className="text-xs text-muted-foreground mt-2">
+              {selectedMaterials.length}/10 materiais selecionados
             </div>
           </FormItem>
         )}
@@ -71,4 +101,3 @@ const Step3Materials: React.FC<Step3MaterialsProps> = ({ availableMaterials }) =
 };
 
 export default Step3Materials;
-
