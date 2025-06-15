@@ -42,8 +42,8 @@ const CompactCollectionPointCard: React.FC<CompactCollectionPointCardProps> = ({
           onClick={(e) => e.stopPropagation()}
           className="transition-transform hover:scale-110"
         >
-          <div className="bg-white rounded-full p-1.5 flex items-center justify-center shadow-sm">
-            <img src="/lovable-uploads/googlemapslogo.png" alt="Google Maps" className="h-4 w-4" />
+          <div className="bg-white rounded-full p-2 flex items-center justify-center shadow-sm">
+            <img src="/lovable-uploads/googlemapslogo.png" alt="Google Maps" className="h-5 w-5" />
           </div>
         </a>
         <a

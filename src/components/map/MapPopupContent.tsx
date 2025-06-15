@@ -48,8 +48,8 @@ const MapPopupContent = ({ point, userLocation }: MapPopupContentProps) => {
                     title="Obter rotas no Google Maps"
                     className="flex-1 flex items-center justify-center gap-1.5 text-center text-xs px-2 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors font-semibold"
                 >
-                    <Navigation size={12} />
-                    <span>Rotas</span>
+                    <img src="/lovable-uploads/googlemapslogo.png" alt="Google Maps" className="h-3 w-3" />
+                    <span>Google Maps</span>
                 </a>
                 <a
                     href={`https://waze.com/ul?ll=${point.latitude},${point.longitude}&navigate=yes`}
