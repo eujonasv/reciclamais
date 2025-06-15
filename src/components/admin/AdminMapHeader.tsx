@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, MoveVertical, Check } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { CollectionPoint } from '@/types/collection-point';
@@ -34,13 +34,31 @@ const AdminMapHeader: React.FC<AdminMapHeaderProps> = ({
   return (
     <div className="flex justify-between items-center mb-6">
       <h1 className="text-2xl font-bold">Gerenciar Pontos de Coleta</h1>
-      <div className="flex items-center gap-2">
-        <Button onClick={toggleReordering} variant="outline">
-          {isReordering ? "Concluir" : "Reordenar"}
+      <div className="flex items-center gap-4">
+        <Button
+          onClick={toggleReordering}
+          variant={isReordering ? "default" : "outline"}
+          className={isReordering ? "bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800" : ""}
+        >
+          {isReordering ? (
+            <>
+              <Check size={isMobile ? 14 : 16} className={isMobile ? "mr-1" : "mr-2"} />
+              Concluir
+            </>
+          ) : (
+            <>
+              <MoveVertical size={isMobile ? 14 : 16} className={isMobile ? "mr-1" : "mr-2"} />
+              Reordenar
+            </>
+          )}
         </Button>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button onClick={onAddPoint} disabled={isReordering} className={isMobile ? "px-2 py-1 h-auto" : ""}>
+            <Button
+              onClick={onAddPoint}
+              disabled={isReordering}
+              className={`transition-all duration-300 shadow-md hover:shadow-lg ${isMobile ? "px-2 py-1 h-auto" : ""}`}
+            >
               <Plus size={isMobile ? 14 : 16} className={isMobile ? "mr-1" : "mr-2"} />
               {isMobile ? "Add Ponto" : "Adicionar Ponto de Coleta"}
             </Button>
