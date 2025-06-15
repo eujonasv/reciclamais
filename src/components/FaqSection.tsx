@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Accordion,
@@ -6,23 +5,21 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { Mail, MessageCircle } from 'lucide-react';
 import RecycleLogo from './RecycleLogo';
 
 const FaqSection = () => {
   const faqItems = [
     {
       question: "O que é a RECICLA+?",
-      answer: "A RECICLA+ é uma startup inovadora que conecta pessoas e empresas a pontos de coleta de materiais recicláveis, facilitando o processo de reciclagem e promovendo a sustentabilidade de forma inteligente e eficiente."
+      answer: "A RECICLA+ é uma startup que conecta pessoas e empresas a pontos de coleta de materiais recicláveis, facilitando o processo de reciclagem e promovendo a sustentabilidade."
     },
     {
       question: "Como encontrar um ponto de coleta próximo?",
-      answer: "Você pode usar nosso mapa interativo na seção 'Mapa' para encontrar os pontos de coleta mais próximos de sua localização. É possível filtrar por tipo de material que deseja reciclar e visualizar informações detalhadas sobre cada ponto."
+      answer: "Você pode usar nosso mapa interativo na seção 'Mapa' para encontrar os pontos de coleta mais próximos de sua localização. É possível filtrar por tipo de material que deseja reciclar."
     },
     {
       question: "Quais materiais posso reciclar?",
-      answer: "Depende do ponto de coleta, mas geralmente aceitamos papel, plástico, metal, vidro, eletrônicos, óleo de cozinha usado, pilhas e baterias. Cada ponto de coleta especifica quais materiais aceita em sua descrição no mapa."
+      answer: "Depende do ponto de coleta, mas geralmente aceitamos papel, plástico, metal, vidro, eletrônicos, óleo de cozinha usado, pilhas e baterias. Cada ponto de coleta especifica quais materiais aceita."
     },
     {
       question: "Como minha empresa pode se tornar um ponto de coleta?",
@@ -47,75 +44,48 @@ const FaqSection = () => {
   ];
 
   return (
-    <section id="faq" className="section-padding bg-gradient-to-br from-gray-50 via-white to-green-50/30 dark:from-gray-800 dark:via-gray-900 dark:to-green-900/20 relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-recicla-primary/5 to-transparent rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-green-500/5 to-transparent rounded-full blur-3xl"></div>
-      
-      <div className="container mx-auto relative z-10">
+    <section id="faq" className="section-padding bg-gray-50 dark:bg-gray-800">
+      <div className="container mx-auto">
         <div className="text-center mb-16">
-          <div className="flex justify-center mb-6">
-            <div className="p-4 bg-gradient-to-br from-recicla-primary/10 to-green-500/10 rounded-2xl">
-              <RecycleLogo size="md" />
-            </div>
+          <div className="flex justify-center mb-4">
+            <RecycleLogo size="md" />
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-8 text-gray-900 dark:text-white">
-            Perguntas <span className="bg-gradient-to-r from-recicla-primary to-green-600 bg-clip-text text-transparent">Frequentes</span>
+          <h2 aria-level={2} className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
+            Perguntas <span className="text-recicla-primary dark:text-recicla-secondary">Frequentes</span>
           </h2>
-          <p className="text-xl max-w-4xl mx-auto text-gray-600 dark:text-gray-300 leading-relaxed">
-            Tire suas dúvidas sobre a RECICLA+ e aprenda mais sobre como funciona nosso sistema de reciclagem inteligente.
+          <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 dark:text-gray-300">
+            Tire suas dúvidas sobre a RECICLA+ e aprenda mais sobre como funciona nosso sistema de reciclagem.
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-6">
+        <div className="max-w-3xl mx-auto">
+          <Accordion type="single" collapsible className="space-y-4">
             {faqItems.map((item, index) => (
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`}
-                className="group border-0 rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300"
+                className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900"
               >
-                <AccordionTrigger className="px-8 py-6 hover:bg-gradient-to-r hover:from-recicla-primary/5 hover:to-green-500/5 text-left font-semibold text-lg text-gray-900 dark:text-white hover:text-recicla-primary dark:hover:text-recicla-secondary transition-all duration-300">
-                  <span className="flex items-center">
-                    <span className="w-8 h-8 rounded-full bg-gradient-to-r from-recicla-primary to-green-600 text-white flex items-center justify-center text-sm font-bold mr-4 group-hover:scale-110 transition-transform">
-                      {index + 1}
-                    </span>
-                    {item.question}
-                  </span>
+                <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 text-left font-medium text-gray-900 dark:text-white">
+                  {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="px-8 py-6 text-gray-700 dark:text-gray-300 leading-relaxed border-t border-gray-100 dark:border-gray-700">
-                  <div className="ml-12">
-                    {item.answer}
-                  </div>
+                <AccordionContent className="px-6 py-4 text-gray-700 dark:text-gray-300">
+                  {item.answer}
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
 
-          {/* Contact section */}
-          <div className="mt-16 bg-gradient-to-r from-recicla-primary/10 to-green-500/10 rounded-3xl p-8 md:p-12 text-center">
-            <div className="max-w-2xl mx-auto">
-              <div className="flex justify-center mb-6">
-                <div className="p-3 bg-gradient-to-r from-recicla-primary to-green-600 rounded-2xl">
-                  <MessageCircle className="h-8 w-8 text-white" />
-                </div>
-              </div>
-              <h3 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-                Ainda tem dúvidas?
-              </h3>
-              <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-                Nossa equipe está pronta para ajudar você! Entre em contato conosco e teremos prazer em esclarecer qualquer questão.
-              </p>
-              <Button 
-                asChild
-                className="bg-gradient-to-r from-recicla-primary to-green-600 hover:from-recicla-accent hover:to-green-700 text-white font-semibold px-8 py-4 rounded-xl group shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                <a href="mailto:reciclamais25@gmail.com" className="flex items-center">
-                  <Mail className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                  reciclamais25@gmail.com
-                </a>
-              </Button>
-            </div>
+          <div className="mt-12 text-center">
+            <p className="text-gray-600 dark:text-gray-400">
+              Ainda tem dúvidas? Entre em contato conosco.
+            </p>
+            <a 
+              href="mailto:reciclamais25@gmail.com" 
+              className="inline-block mt-4 text-recicla-primary dark:text-recicla-secondary hover:underline font-medium"
+            >
+              reciclamais25@gmail.com
+            </a>
           </div>
         </div>
       </div>
