@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import RecycleLogo from './RecycleLogo';
+import { motion } from 'framer-motion';
 
 const faqItems = [
   {
@@ -45,7 +46,14 @@ const faqItems = [
 
 const FaqSection = () => {
   return (
-    <section id="faq" className="section-padding bg-gradient-to-b from-green-100/50 via-white to-gray-50 dark:from-green-900/10 dark:via-gray-900 dark:to-gray-900">
+    <motion.section 
+      id="faq" 
+      className="section-padding bg-gradient-to-b from-green-100/50 via-white to-gray-50 dark:from-green-900/10 dark:via-gray-900 dark:to-gray-900"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <div className="container mx-auto">
         <div className="text-center mb-10">
           <div className="flex justify-center mb-4">
@@ -58,7 +66,13 @@ const FaqSection = () => {
             Tire suas dúvidas sobre a RECICLA+ e aprenda mais sobre como funciona nosso sistema de reciclagem.
           </p>
         </div>
-        <div className="max-w-3xl mx-auto rounded-xl bg-white/80 dark:bg-gray-900/70 shadow-lg p-6">
+        <motion.div 
+          className="max-w-3xl mx-auto rounded-xl bg-white/80 dark:bg-gray-900/70 shadow-lg p-6"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.5 }}
+        >
           <Accordion type="single" collapsible className="space-y-4">
             {faqItems.map((item, i) => (
               <AccordionItem key={i} value={`item-${i}`}
@@ -85,9 +99,9 @@ const FaqSection = () => {
               reciclamais25@gmail.com
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

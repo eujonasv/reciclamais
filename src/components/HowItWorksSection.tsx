@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Search, MapPin, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import RecycleLogo from './RecycleLogo';
+import { motion } from 'framer-motion';
 
 const steps = [
   {
@@ -29,7 +30,14 @@ const HowItWorksSection = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   return (
-    <section id="como-funciona" className="section-padding bg-gradient-to-b from-recicla-primary/10 via-green-50/90 to-white dark:from-gray-800 dark:via-green-950/20 dark:to-gray-900">
+    <motion.section 
+      id="como-funciona" 
+      className="section-padding bg-gradient-to-b from-recicla-primary/10 via-green-50/90 to-white dark:from-gray-800 dark:via-green-950/20 dark:to-gray-900"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-4">
@@ -46,7 +54,14 @@ const HowItWorksSection = () => {
         {/* Timeline (desktop) */}
         <div className="hidden md:grid grid-cols-3 gap-8 mb-12">
           {steps.map((step, i) => (
-            <div key={i} className={`relative bg-white/90 dark:bg-gray-900/70 border border-green-100 dark:border-green-900/60 shadow-lg rounded-xl p-7 flex flex-col items-center transition hover:scale-105`}>
+            <motion.div 
+              key={i} 
+              className={`relative bg-white/90 dark:bg-gray-900/70 border border-green-100 dark:border-green-900/60 shadow-lg rounded-xl p-7 flex flex-col items-center transition-all duration-300 hover:scale-105 hover:shadow-xl`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5, delay: i * 0.15 }}
+            >
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10 border-4 border-white dark:border-gray-900 rounded-full bg-recicla-primary dark:bg-recicla-secondary p-2">
                 {step.icon}
               </div>
@@ -56,7 +71,7 @@ const HowItWorksSection = () => {
               {i < steps.length - 1 && (
                 <div className="hidden md:block absolute right-[-24px] top-1/2 -translate-y-1/2 w-12 h-1 bg-green-300 dark:bg-green-900/40 rounded opacity-70"></div>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -101,7 +116,7 @@ const HowItWorksSection = () => {
           </Button>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

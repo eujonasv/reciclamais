@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import RecycleLogo from './RecycleLogo';
+import { motion } from 'framer-motion';
 
 const educationalResources = [
   {
@@ -26,7 +27,14 @@ const educationalResources = [
 
 const EducationalSection = () => {
   return (
-    <section id="educacao" className="section-padding bg-gradient-to-b from-white via-green-50/20 to-green-100/30 dark:from-gray-900 dark:via-green-900/10 dark:to-green-900/30">
+    <motion.section 
+      id="educacao" 
+      className="section-padding bg-gradient-to-b from-white via-green-50/20 to-green-100/30 dark:from-gray-900 dark:via-green-900/10 dark:to-green-900/30"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <div className="container mx-auto">
         <div className="text-center mb-10">
           <div className="flex justify-center mb-4">
@@ -42,25 +50,33 @@ const EducationalSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
           {educationalResources.map((resource, i) => (
-            <Card key={i} className="rounded-xl border-0 shadow-xl hover:scale-105 transition-all bg-white/95 dark:bg-gray-800/70 p-0">
-              <CardHeader className="flex flex-row items-center gap-4 p-6 bg-gradient-to-r from-green-50 via-white to-green-50 dark:from-green-900 dark:via-gray-800 dark:to-green-900 rounded-t-xl">
-                {resource.icon}
-                <CardTitle className="text-lg font-bold text-recicla-primary dark:text-recicla-secondary">{resource.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-3 pb-8">
-                <p className="text-gray-600 dark:text-gray-300 text-sm">{resource.description}</p>
-              </CardContent>
-              <CardFooter className="pb-4 pt-0">
-                <Button
-                  variant="link"
-                  size="sm"
-                  className="p-0 text-recicla-primary dark:text-recicla-secondary hover:underline"
-                  asChild
-                >
-                  <Link to="/educacao">Saiba mais</Link>
-                </Button>
-              </CardFooter>
-            </Card>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+            >
+              <Card className="h-full flex flex-col rounded-xl border-0 shadow-xl hover:scale-105 transition-all bg-white/95 dark:bg-gray-800/70 p-0 hover:shadow-2xl hover:shadow-recicla-primary/10">
+                <CardHeader className="flex flex-row items-center gap-4 p-6 bg-gradient-to-r from-green-50 via-white to-green-50 dark:from-green-900 dark:via-gray-800 dark:to-green-900 rounded-t-xl">
+                  {resource.icon}
+                  <CardTitle className="text-lg font-bold text-recicla-primary dark:text-recicla-secondary">{resource.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-3 pb-8 flex-grow">
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">{resource.description}</p>
+                </CardContent>
+                <CardFooter className="pb-4 pt-0 mt-auto">
+                  <Button
+                    variant="link"
+                    size="sm"
+                    className="p-0 text-recicla-primary dark:text-recicla-secondary hover:underline"
+                    asChild
+                  >
+                    <Link to="/educacao">Saiba mais</Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            </motion.div>
           ))}
         </div>
         <div className="text-center">
@@ -74,7 +90,7 @@ const EducationalSection = () => {
           </Button>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
