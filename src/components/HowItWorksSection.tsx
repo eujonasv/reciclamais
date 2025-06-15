@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, MapPin, CheckCircle, ChevronLeft, ChevronRight, ArrowDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -60,10 +61,10 @@ const HowItWorksSection = () => {
         {/* Steps for Desktop */}
         <div className="hidden md:flex justify-center gap-8 relative">
           {steps.map((step, index) => (
-            <div key={index} className="flex flex-col items-center max-w-sm relative">
+            <div key={index} className="flex flex-col items-center max-w-sm relative group">
               {/* Step Card */}
               <div
-                className={`w-full rounded-xl shadow-md overflow-hidden bg-white dark:bg-gray-900 transition-all duration-300 hover:-translate-y-2 cursor-pointer ${
+                className={`w-full rounded-xl shadow-lg overflow-hidden bg-white dark:bg-gray-900 transition-all duration-300 hover:-translate-y-2 cursor-pointer hover:shadow-2xl ${
                   currentStep === index ? 'ring-2 ring-recicla-primary dark:ring-recicla-secondary' : ''
                 }`}
                 onClick={() => goToStep(index)}
@@ -73,10 +74,10 @@ const HowItWorksSection = () => {
                   <img
                     src={step.image}
                     alt={step.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
                     <div className="p-4 w-full">
                       <h3 className="text-xl font-bold text-white">{step.title}</h3>
                     </div>
@@ -101,7 +102,7 @@ const HowItWorksSection = () => {
 
         {/* Steps for Mobile */}
         <div className="md:hidden">
-          <div className="relative rounded-xl shadow-md overflow-hidden bg-white dark:bg-gray-900">
+          <div className="relative rounded-xl shadow-lg overflow-hidden bg-white dark:bg-gray-900">
             {/* Step Number */}
             <div className="absolute top-4 left-4 z-10 text-white text-xl font-bold">
               {steps[currentStep].number}
@@ -132,7 +133,8 @@ const HowItWorksSection = () => {
               <Button
                 onClick={prevStep}
                 variant="ghost"
-                className="flex items-center text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent"
+                size="sm"
+                className="text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent"
               >
                 <ChevronLeft className="mr-1" size={16} /> Anterior
               </Button>
@@ -155,7 +157,8 @@ const HowItWorksSection = () => {
               <Button
                 onClick={nextStep}
                 variant="ghost"
-                className="flex items-center text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent"
+                size="sm"
+                className="text-recicla-primary dark:text-recicla-secondary hover:text-recicla-accent"
               >
                 Próximo <ChevronRight className="ml-1" size={16} />
               </Button>

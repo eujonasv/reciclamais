@@ -20,7 +20,7 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 z-10">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="max-w-lg mx-auto md:ml-0 text-center md:text-left">
-            <div className="animate-fade-in">
+            <div className="animate-fade-in-slow">
               <div className="flex justify-center md:justify-start mb-4">
                 <RecycleLogoWithText size="xxl" className="animate-float" />
               </div>
@@ -36,16 +36,18 @@ const HeroSection = () => {
                 <Button 
                   onClick={() => scrollToSection('como-funciona')}
                   size="lg"
-                  className="bg-recicla-primary hover:bg-recicla-accent text-white font-medium px-6 py-3 rounded-lg"
+                  className="bg-recicla-primary hover:bg-recicla-accent text-white font-medium px-6 py-3 rounded-lg relative overflow-hidden group"
                 >
+                  <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white/20 rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
                   Como Funciona
                 </Button>
                 <Button 
                   onClick={() => scrollToSection('mapa')}
                   variant="outline"
                   size="lg"
-                  className="border-recicla-primary text-recicla-primary hover:bg-recicla-primary/10 dark:border-recicla-secondary dark:text-recicla-secondary dark:hover:bg-recicla-secondary/10"
+                  className="border-recicla-primary text-recicla-primary hover:bg-recicla-primary/10 dark:border-recicla-secondary dark:text-recicla-secondary dark:hover:bg-recicla-secondary/10 relative overflow-hidden group"
                 >
+                   <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-recicla-primary/20 rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
                   Ver Pontos de Coleta
                 </Button>
               </div>
@@ -53,13 +55,13 @@ const HeroSection = () => {
           </div>
           
           {/* Hero image or illustration */}
-          <div className="hidden md:block relative animate-fade-in">
+          <div className="hidden md:block relative animate-fade-in-slow">
             <div className="relative">
               <div className="absolute -inset-1 rounded-full bg-recicla-primary/20 dark:bg-recicla-primary/30 filter blur-xl animate-pulse-green"></div>
               <img 
-                src="https://plus.unsplash.com/premium_vector-1719419318688-8fb5853b53f1?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-                alt="Sustentabilidade" 
-                className="rounded-xl shadow-xl max-w-full object-cover mx-auto relative z-10 animate-scale-in"
+                src="https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                alt="Inovação e Sustentabilidade" 
+                className="rounded-xl shadow-xl max-w-full object-cover mx-auto relative z-10 animate-scale-in-slow"
               />
             </div>
           </div>
