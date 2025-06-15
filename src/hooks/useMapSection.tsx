@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { CollectionPoint } from '@/types/collection-point';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
-import type { EnhancedCollectionMapRef } from '@/components/map/EnhancedCollectionMap';
+import type { MapboxCollectionMapRef } from '@/components/map/MapboxCollectionMap';
 
 const POINTS_PER_PAGE = 3;
 
@@ -18,7 +17,7 @@ export const useMapSection = () => {
     const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
     const [isLocating, setIsLocating] = useState(false);
     const { toast } = useToast();
-    const mapRef = useRef<EnhancedCollectionMapRef | null>(null);
+    const mapRef = useRef<MapboxCollectionMapRef | null>(null);
 
     useEffect(() => {
         const fetchPoints = async () => {
@@ -144,12 +143,12 @@ export const useMapSection = () => {
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                const { latitude, longitude } = position.coords;
+                const { latitude, longitude, accuracy } = position.coords;
                 const location: [number, number] = [latitude, longitude];
                 setUserLocation(location);
 
                 if (mapRef.current?.setUserLocation) {
-                    mapRef.current.setUserLocation(location);
+                    mapRef.current.setUserLocation(location, accuracy);
                 }
 
                 setIsLocating(false);
@@ -174,7 +173,7 @@ export const useMapSection = () => {
     useEffect(() => {
         if (showMapMobile) {
             setTimeout(() => {
-                mapRef.current?.getMap()?.invalidateSize();
+                mapRef.current?.getMap()?.resize();
             }, 310);
         }
     }, [showMapMobile, mapRef]);
@@ -202,4 +201,3 @@ export const useMapSection = () => {
         getPageNumbers,
     };
 };
-

@@ -1,8 +1,7 @@
 
 import React from 'react';
 import type { CollectionPoint } from '@/types/collection-point';
-import { LatLngTuple } from 'leaflet';
-import { calculateDistance } from '@/lib/map-utils';
+import { LatLngTuple, calculateDistance } from '@/lib/map-utils';
 
 interface MapPopupContentProps {
     point: CollectionPoint;
@@ -15,7 +14,7 @@ const MapPopupContent = ({ point, userLocation, compact }: MapPopupContentProps)
 
     if (compact) {
         return (
-            <div className="p-1 w-56">
+            <div className="p-1 w-56 bg-white dark:bg-gray-800 rounded-lg">
                 <h3 className="font-bold text-sm text-recicla-primary dark:text-recicla-secondary mb-1">{point.name}</h3>
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{point.address}</p>
                 {distanceInKm && (
@@ -39,7 +38,7 @@ const MapPopupContent = ({ point, userLocation, compact }: MapPopupContentProps)
     }
 
     return (
-        <div className="p-2.5 w-64">
+        <div className="p-2.5 w-64 bg-white dark:bg-gray-800 rounded-lg">
             <h3 className="font-bold text-base text-recicla-primary dark:text-recicla-secondary transition-colors mb-1.5">{point.name}</h3>
             {point.description && <p className="text-xs text-gray-600 dark:text-gray-300 mb-2 leading-snug">{point.description}</p>}
             <p className="text-xs mt-1 text-gray-500 dark:text-gray-400">{point.address}</p>
@@ -76,4 +75,3 @@ const MapPopupContent = ({ point, userLocation, compact }: MapPopupContentProps)
 };
 
 export default MapPopupContent;
-

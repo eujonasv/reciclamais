@@ -3,13 +3,14 @@ import React, { useState, useRef, useEffect } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import FloatingSidebar from "@/components/map/FloatingSidebar";
 import MobilePointsDrawer from "@/components/map/MobilePointsDrawer";
-import EnhancedCollectionMap from "@/components/map/EnhancedCollectionMap";
+import MapboxCollectionMap, { MapboxCollectionMapRef } from "@/components/map/MapboxCollectionMap";
 import { supabase } from "@/integrations/supabase/client";
 import { CollectionPoint } from "@/types/collection-point";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Navigation, List } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import type { LatLngTuple } from "@/lib/map-utils";
 
 const POINTS_PER_FETCH = 100;
 
@@ -21,7 +22,7 @@ const MapPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLocating, setIsLocating] = useState(false);
   const { toast } = useToast();
-  const mapRef = useRef<any>(null);
+  const mapRef = useRef<MapboxCollectionMapRef>(null);
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
 
@@ -112,9 +113,9 @@ const MapPage = () => {
     
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const { latitude, longitude } = position.coords;
+        const { latitude, longitude, accuracy } = position.coords;
         if (mapRef.current && typeof mapRef.current.setUserLocation === "function") {
-          mapRef.current.setUserLocation([latitude, longitude]);
+          mapRef.current.setUserLocation([latitude, longitude], accuracy);
         }
         setIsLocating(false);
         toast({
@@ -141,7 +142,7 @@ const MapPage = () => {
       <div className="flex h-[calc(100vh-4rem)] w-full bg-white dark:bg-gray-900 relative">
         {/* Mapa: ocupa toda a área */}
         <div className="flex-1 h-full relative">
-          <EnhancedCollectionMap
+          <MapboxCollectionMap
             collectionPoints={filteredPoints}
             selectedPoint={selectedPoint}
             onMarkerClick={handlePointSelect}

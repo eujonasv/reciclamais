@@ -1,9 +1,11 @@
 
-import type { LatLngTuple } from 'leaflet';
 import type { CollectionPoint } from '@/types/collection-point';
 
+// A latitude/longitude tuple: [lat, lng]
+export type LatLngTuple = [number, number];
+
 // Calculate distance between two points using Haversine formula
-export const calculateDistance = (point1: LatLngTuple, point2: [number, number]): number => {
+export const calculateDistance = (point1: LatLngTuple, point2: LatLngTuple): number => {
     const R = 6371e3; // Earth radius in meters
     const φ1 = (point1[0] * Math.PI) / 180;
     const φ2 = (point2[0] * Math.PI) / 180;
@@ -36,4 +38,3 @@ export const findClosestPoint = (userLocation: LatLngTuple, points: CollectionPo
 
     return closest;
 };
-

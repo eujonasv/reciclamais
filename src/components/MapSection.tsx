@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import RecycleLogo from './RecycleLogo';
 import SearchAndFilters from './map/SearchAndFilters';
 import CollectionPointCard from './map/CollectionPointCard';
-import EnhancedCollectionMap from './map/EnhancedCollectionMap';
+import MapboxCollectionMap from './map/MapboxCollectionMap';
 import { 
   Pagination, 
   PaginationContent, 
@@ -125,7 +125,7 @@ const MapSection = () => {
                     md:h-96 md:opacity-100 md:scale-100 md:pointer-events-auto md:visible md:mt-8 md:block
                   `}
                 >
-                  <EnhancedCollectionMap
+                  <MapboxCollectionMap
                     collectionPoints={filteredPoints}
                     selectedPoint={selectedPoint}
                     onMarkerClick={handlePointSelect}
