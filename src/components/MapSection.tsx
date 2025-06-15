@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+
+import React from 'react';
 import { MapIcon, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import RecycleLogo from './RecycleLogo';
 import SearchAndFilters from './map/SearchAndFilters';
 import CollectionPointCard from './map/CollectionPointCard';
-import EnhancedCollectionMap, { EnhancedCollectionMapRef } from './map/EnhancedCollectionMap';
-import { CollectionPoint } from '@/types/collection-point';
-import { supabase } from '@/integrations/supabase/client';
+import EnhancedCollectionMap from './map/EnhancedCollectionMap';
 import { 
   Pagination, 
   PaginationContent, 
@@ -16,197 +15,32 @@ import {
   PaginationPrevious 
 } from '@/components/ui/pagination';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
 import { ArrowDown, ArrowUp, Navigation } from 'lucide-react';
-
-const POINTS_PER_PAGE = 3;
+import { useMapSection } from '@/hooks/useMapSection';
 
 const MapSection = () => {
-  const [collectionPoints, setCollectionPoints] = useState<CollectionPoint[]>([]);
-  const [selectedPoint, setSelectedPoint] = useState<CollectionPoint | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [activeFilter, setActiveFilter] = useState<string[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
-  const [showMapMobile, setShowMapMobile] = useState(false);
-  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
-  const [isLocating, setIsLocating] = useState(false);
-  const { toast } = useToast();
-  const mapRef = useRef<EnhancedCollectionMapRef | null>(null);
-
-  useEffect(() => {
-    const fetchPoints = async () => {
-      setIsLoading(true);
-      try {
-        const { data, error } = await supabase.from("collection_points").select("*");
-        if (error) {
-          console.error("Error fetching collection points:", error);
-          toast({
-            title: "Erro ao carregar pontos de coleta",
-            description: error.message,
-            variant: "destructive",
-          });
-          return;
-        }
-
-        const transformedData: CollectionPoint[] = data.map((point) => ({
-          ...point,
-          materials: point.materials?.split(',').map((m: string) => m.trim()) || [],
-          id: point.id.toString()
-        }));
-
-        setCollectionPoints(transformedData);
-      } catch (error) {
-        console.error("Exception fetching collection points:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPoints();
-
-    const channel = supabase
-      .channel('public:collection_points')
-      .on('postgres_changes', { 
-        event: '*', 
-        schema: 'public', 
-        table: 'collection_points' 
-      }, () => {
-        fetchPoints();
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [toast]);
-
-  const filteredPoints = collectionPoints.filter(point => {
-    const matchesSearch = point.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      point.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      point.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesFilter = activeFilter.length === 0 || 
-      point.materials.some(material => activeFilter.includes(material));
-    
-    return matchesSearch && matchesFilter;
-  });
-
-  const totalPages = Math.ceil(filteredPoints.length / POINTS_PER_PAGE);
-  const startIndex = (currentPage - 1) * POINTS_PER_PAGE;
-  const paginatedPoints = filteredPoints.slice(startIndex, startIndex + POINTS_PER_PAGE);
-
-  const allMaterials = Array.from(
-    new Set(collectionPoints.flatMap(point => point.materials))
-  ).sort();
-
-  const toggleFilter = (material: string) => {
-    if (activeFilter.includes(material)) {
-      setActiveFilter(activeFilter.filter(m => m !== material));
-    } else {
-      setActiveFilter([...activeFilter, material]);
-    }
-    setCurrentPage(1);
-  };
-
-  const clearFilters = () => {
-    setActiveFilter([]);
-    setSearchTerm("");
-    setCurrentPage(1);
-  };
-
-  const handlePointSelect = (point: CollectionPoint) => {
-    setSelectedPoint(selectedPoint?.id === point.id ? null : point);
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({
-      top: document.getElementById('mapa')?.offsetTop,
-      behavior: 'smooth'
-    });
-  };
-
-  const getPageNumbers = () => {
-    let pages: (number | 'ellipsis')[] = [];
-    
-    if (totalPages <= 5) {
-      pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-    } else {
-      pages.push(1);
-      
-      if (currentPage > 3) {
-        pages.push('ellipsis');
-      }
-      
-      let start = Math.max(2, currentPage - 1);
-      let end = Math.min(currentPage + 1, totalPages - 1);
-      
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-      
-      if (currentPage < totalPages - 2) {
-        pages.push('ellipsis');
-      }
-      
-      pages.push(totalPages);
-    }
-    
-    return pages;
-  };
-
-  const getUserLocation = () => {
-    if (!navigator.geolocation) {
-      toast({
-        title: "Geolocalização não suportada",
-        description: "Seu navegador não suporta geolocalização",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    setIsLocating(true);
-    
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        const location: [number, number] = [latitude, longitude];
-        setUserLocation(location);
-        
-        if (mapRef.current && typeof mapRef.current.setUserLocation === "function") {
-          mapRef.current.setUserLocation(location);
-        }
-        
-        setIsLocating(false);
-        toast({
-          title: "Localização encontrada",
-          description: "Sua localização foi marcada no mapa",
-        });
-      },
-      (error) => {
-        console.error("Erro ao obter localização:", error);
-        setIsLocating(false);
-        toast({
-          title: "Erro ao obter localização",
-          description: `Não foi possível obter sua localização: ${error.message}`,
-          variant: "destructive",
-        });
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-    );
-  };
-
-  useEffect(() => {
-    if (showMapMobile) {
-      setTimeout(() => {
-        const map = mapRef.current?.getMap();
-        if (map) {
-          map.invalidateSize();
-        }
-      }, 310);
-    }
-  }, [showMapMobile]);
+  const {
+    mapRef,
+    isLoading,
+    filteredPoints,
+    paginatedPoints,
+    allMaterials,
+    selectedPoint,
+    handlePointSelect,
+    searchTerm,
+    setSearchTerm,
+    activeFilter,
+    toggleFilter,
+    clearFilters,
+    showMapMobile,
+    setShowMapMobile,
+    isLocating,
+    getUserLocation,
+    totalPages,
+    currentPage,
+    handlePageChange,
+    getPageNumbers,
+  } = useMapSection();
 
   return (
     <section id="mapa" className="section-padding bg-white dark:bg-gray-900">
@@ -342,7 +176,7 @@ const MapSection = () => {
                         ) : (
                           <PaginationLink 
                             isActive={page === currentPage}
-                            onClick={() => handlePageChange(page)}
+                            onClick={() => handlePageChange(page as number)}
                             className="cursor-pointer"
                           >
                             {page}
