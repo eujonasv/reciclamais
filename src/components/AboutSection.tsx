@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Leaf, Users, Recycle, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
@@ -30,6 +29,24 @@ const AboutSection = () => {
       title: "Impacto Positivo",
       description: "Geramos valor social e ambiental, transformando resíduos em oportunidades e cuidando do futuro de todos."
     },
+  ];
+
+  const whatWeDoItems = [
+    {
+      icon: Recycle,
+      title: "Coleta Inteligente",
+      description: "Conectamos pessoas e empresas a pontos de coleta próximos, otimizando o processo de descarte de recicláveis."
+    },
+    {
+      icon: Users,
+      title: "Rede de Parceiros",
+      description: "Trabalhamos com uma ampla rede de coletores, cooperativas e empresas recicladoras para garantir o destino correto dos materiais."
+    },
+    {
+      icon: TrendingUp,
+      title: "Impacto Real",
+      description: "Geramos renda para coletores e promovemos a economia circular, reduzindo o impacto no meio ambiente."
+    }
   ];
 
   return (
@@ -80,49 +97,24 @@ const AboutSection = () => {
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1 animate-fade-in-left">
-              <ul className="space-y-8">
-                <li className="flex items-start group">
-                  <div className="flex-shrink-0 p-3 rounded-full bg-recicla-primary/10 group-hover:bg-recicla-primary/20 transition-colors mr-5">
-                    <Recycle className="h-7 w-7 text-recicla-primary dark:text-recicla-secondary" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
-                      Coleta Inteligente
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Conectamos pessoas e empresas a pontos de coleta próximos, 
-                      otimizando o processo de descarte de recicláveis.
-                    </p>
-                  </div>
-                </li>
-                
-                <li className="flex items-start group">
-                  <div className="flex-shrink-0 p-3 rounded-full bg-recicla-primary/10 group-hover:bg-recicla-primary/20 transition-colors mr-5">
-                    <Users className="h-7 w-7 text-recicla-primary dark:text-recicla-secondary" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
-                      Rede de Parceiros
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Trabalhamos com uma ampla rede de coletores, cooperativas e empresas recicladoras para garantir o destino correto dos materiais.
-                    </p>
-                  </div>
-                </li>
-                
-                <li className="flex items-start group">
-                  <div className="flex-shrink-0 p-3 rounded-full bg-recicla-primary/10 group-hover:bg-recicla-primary/20 transition-colors mr-5">
-                    <TrendingUp className="h-7 w-7 text-recicla-primary dark:text-recicla-secondary" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
-                      Impacto Real
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Geramos renda para coletores e promovemos a economia circular, reduzindo o impacto no meio ambiente.
-                    </p>
-                  </div>
-                </li>
+              <ul className="space-y-6">
+                {whatWeDoItems.map((item, index) => (
+                  <li key={index}>
+                    <div className="group flex items-start p-6 rounded-2xl border-2 border-transparent transition-all duration-300 hover:border-recicla-primary/20 hover:bg-white dark:hover:bg-gray-900/30 hover:shadow-xl hover:-translate-y-1 transform">
+                      <div className="flex-shrink-0 p-4 rounded-full bg-recicla-primary/10 transition-colors mr-6 border-2 border-dashed border-recicla-primary/20 group-hover:border-recicla-primary/50 group-hover:bg-recicla-primary/20">
+                        <item.icon className="h-7 w-7 text-recicla-primary dark:text-recicla-secondary" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
+                          {item.title}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                ))}
               </ul>
             </div>
             
