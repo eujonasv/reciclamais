@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   Accordion,
@@ -6,6 +7,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import RecycleLogo from './RecycleLogo';
+import { HelpCircle } from "lucide-react";
+import { motion } from "framer-motion";
 
 const FaqSection = () => {
   const faqItems = [
@@ -43,8 +46,23 @@ const FaqSection = () => {
     }
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 },
+  };
+
   return (
-    <section id="faq" className="section-padding bg-gray-50 dark:bg-gray-800">
+    <section id="faq" className="section-padding bg-white dark:bg-gray-900">
       <div className="container mx-auto">
         <div className="text-center mb-16">
           <div className="flex justify-center mb-4">
@@ -59,32 +77,44 @@ const FaqSection = () => {
         </div>
 
         <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-4">
-            {faqItems.map((item, index) => (
-              <AccordionItem 
-                key={index} 
-                value={`item-${index}`}
-                className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900"
-              >
-                <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 text-left font-medium text-gray-900 dark:text-white">
-                  {item.question}
-                </AccordionTrigger>
-                <AccordionContent className="px-6 py-4 text-gray-700 dark:text-gray-300">
-                  {item.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <Accordion type="single" collapsible className="space-y-4">
+              {faqItems.map((item, index) => (
+                <motion.div key={index} variants={itemVariants}>
+                  <AccordionItem 
+                    value={`item-${index}`}
+                    className="border-none rounded-lg bg-gray-50 dark:bg-gray-800/50 shadow-sm transition-all hover:shadow-md"
+                  >
+                    <AccordionTrigger className="px-6 py-4 text-left font-semibold text-gray-800 dark:text-gray-100 hover:no-underline data-[state=open]:text-recicla-primary dark:data-[state=open]:text-recicla-secondary">
+                      <div className="flex items-center gap-4">
+                        <HelpCircle className="h-5 w-5 text-recicla-primary/80 dark:text-recicla-secondary/80" />
+                        <span className="flex-1 text-left">{item.question}</span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-6 pb-4 pt-0 text-gray-600 dark:text-gray-300">
+                      {item.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                </motion.div>
+              ))}
+            </Accordion>
+          </motion.div>
 
-          <div className="mt-12 text-center">
-            <p className="text-gray-600 dark:text-gray-400">
-              Ainda tem dúvidas? Entre em contato conosco.
+          <div className="mt-16 text-center bg-gray-50 dark:bg-gray-800/50 p-8 rounded-lg">
+            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Ainda tem dúvidas?</h3>
+            <p className="text-gray-600 dark:text-gray-400 mt-2 mb-4">
+              Nossa equipe de suporte está pronta para ajudar.
             </p>
             <a 
               href="mailto:reciclamais25@gmail.com" 
-              className="inline-block mt-4 text-recicla-primary dark:text-recicla-secondary hover:underline font-medium"
+              className="inline-block text-lg text-recicla-primary dark:text-recicla-secondary hover:underline font-medium"
             >
-              reciclamais25@gmail.com
+              Entre em contato conosco
             </a>
           </div>
         </div>
