@@ -118,8 +118,8 @@ const AuthPage = () => {
       </div>
       <div className="hidden bg-muted lg:block">
         <img
-          src="https://images.unsplash.com/photo-1633421755122-a7d0a4bab13c"
-          alt="Ilustração colorida sobre ecologia e sustentabilidade"
+          src="https://images.unsplash.com/photo-1518495973542-4542c06a5843"
+          alt="Imagem de uma floresta com a luz do sol brilhando por entre as árvores"
           className="h-screen w-full object-cover dark:brightness-[0.3]"
         />
       </div>
