@@ -231,7 +231,7 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
               ) : (
                 points.map((point, index) => (
                   <Draggable key={point.id} draggableId={point.id} index={index}>
-                    {(provided) => (
+                    {(provided, snapshot) => (
                       <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
@@ -241,6 +241,7 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
                           onEdit={handleEditPoint}
                           onDelete={handleDeletePoint}
                           dragHandleProps={provided.dragHandleProps}
+                          isDragging={snapshot.isDragging}
                         />
                       </div>
                     )}
