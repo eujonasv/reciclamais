@@ -220,35 +220,26 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         {children}
       </main>
 
-      <footer className="bg-gray-100 dark:bg-gray-800 py-12">
+      <footer className="bg-gray-100 dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <div className="flex items-center mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+            {/* Coluna 1: Sobre */}
+            <div className="sm:col-span-2 lg:col-span-1">
+              <Link to="/" onClick={() => scrollToSection("inicio")} className="flex items-center mb-4">
                 <RecycleLogoWithText size="lg" />
-              </div>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
+              </Link>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
                 Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável.
               </p>
-              <div className="flex space-x-4">
-                <a 
-                  href="https://www.instagram.com/reciclamais.br/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
-                  aria-label="Instagram"
-                >
-                  <Instagram size={20} />
-                </a>
-              </div>
             </div>
 
+            {/* Coluna 2: Navegação */}
             <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Links Rápidos</h3>
-              <ul className="space-y-2">
+              <h3 className="text-sm font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Navegação</h3>
+              <ul className="space-y-3">
                 {navLinks.map(({id, text, isPage, path}) => (
                   <li key={id}>
-                    <button 
+                    <button
                       onClick={() => {
                         if (isPage) {
                           navigateToPage(path!);
@@ -257,32 +248,61 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                         } else {
                           navigate(`/#${id}`);
                         }
-                      }} 
-                      className="text-gray-600 dark:text-gray-300 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
+                      }}
+                      className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm"
                     >
                       {text}
                     </button>
                   </li>
                 ))}
+              </ul>
+            </div>
+
+            {/* Coluna 3: Institucional */}
+            <div>
+              <h3 className="text-sm font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Institucional</h3>
+              <ul className="space-y-3">
                 <li>
-                  <Link to="/admin" className="flex items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors">
-                    <Lock size={16} />
+                  <Link to="#" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">Política de Privacidade</Link>
+                </li>
+                <li>
+                  <Link to="#" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">Termos de Serviço</Link>
+                </li>
+                <li>
+                  <Link to="/admin" className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">
+                    <Lock size={14} />
                     <span>Área Administrativa</span>
                   </Link>
                 </li>
               </ul>
             </div>
 
+            {/* Coluna 4: Contato */}
             <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Contato</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-2">reciclamais25@gmail.com</p>
+              <h3 className="text-sm font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Contato</h3>
+              <ul className="space-y-3">
+                <li>
+                  <a href="mailto:reciclamais25@gmail.com" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">reciclamais25@gmail.com</a>
+                </li>
+              </ul>
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <p className="text-center text-gray-500 dark:text-gray-400">
+          <div className="pt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center">
+            <p className="text-sm text-gray-500 dark:text-gray-400 text-center sm:text-left mb-4 sm:mb-0">
               © {new Date().getFullYear()} RECICLA+. Todos os direitos reservados.
             </p>
+            <div className="flex space-x-4">
+              <a 
+                href="https://www.instagram.com/reciclamais.br/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram size={20} />
+              </a>
+            </div>
           </div>
         </div>
       </footer>
