@@ -8,6 +8,7 @@ export const useCollectionPointsState = () => {
   const [editingPoint, setEditingPoint] = useState<CollectionPoint | null>(null);
   const [open, setOpen] = useState(false);
   const [availableMaterials] = useState<string[]>(Object.keys(materialColors));
+  const [isReordering, setIsReordering] = useState(false);
 
   const handleEditPoint = (point: CollectionPoint) => {
     setEditingPoint(point);
@@ -35,6 +36,8 @@ export const useCollectionPointsState = () => {
     open,
     setOpen,
     availableMaterials,
+    isReordering,
+    setIsReordering,
     handleEditPoint,
     handleAddPoint,
     resetForm,

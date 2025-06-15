@@ -9,6 +9,8 @@ interface AdminPointsListProps {
   onEdit: (point: CollectionPoint) => void;
   onDelete: (id: string) => void;
   onDragEnd: (result: DropResult) => void;
+  isReordering: boolean;
+  handleMovePoint: (id: string, direction: 'up' | 'down') => void;
 }
 
 const AdminPointsList: React.FC<AdminPointsListProps> = ({
@@ -16,6 +18,8 @@ const AdminPointsList: React.FC<AdminPointsListProps> = ({
   onEdit,
   onDelete,
   onDragEnd,
+  isReordering,
+  handleMovePoint,
 }) => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -27,19 +31,22 @@ const AdminPointsList: React.FC<AdminPointsListProps> = ({
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
           >
             {points.map((point, index) => (
-              <Draggable key={point.id} draggableId={point.id} index={index}>
-                {(provided) => (
+              <Draggable key={point.id} draggableId={point.id} index={index} isDragDisabled={!isReordering}>
+                {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
-                    // Nenhuma classe de animação ou efeito
                   >
                     <AdminCollectionPointCard
                       point={point}
                       onEdit={onEdit}
                       onDelete={onDelete}
                       dragHandleProps={provided.dragHandleProps}
-                      isDragging={false}
+                      isDragging={snapshot.isDragging}
+                      isReordering={isReordering}
+                      handleMovePoint={handleMovePoint}
+                      index={index}
+                      totalPoints={points.length}
                     />
                   </div>
                 )}

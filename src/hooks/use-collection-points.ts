@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { collectionPointsService } from '@/services/collection-points-service';
 import { useCollectionPointsState } from './use-collection-points-state';
 import { useDragHandler } from './use-drag-handler';
+import { CollectionPoint } from '@/types/collection-point';
 
 export const useCollectionPoints = () => {
   const { toast } = useToast();
@@ -18,6 +19,8 @@ export const useCollectionPoints = () => {
     handleEditPoint,
     handleAddPoint,
     resetForm,
+    isReordering,
+    setIsReordering,
   } = useCollectionPointsState();
 
   // Load collection points from Supabase
@@ -95,6 +98,50 @@ export const useCollectionPoints = () => {
 
   const { handleDragEnd } = useDragHandler(points, setPoints, loadPoints);
 
+  const toggleReordering = () => {
+    setIsReordering(!isReordering);
+  };
+
+  const handleMovePoint = async (id: string, direction: 'up' | 'down') => {
+    const currentIndex = points.findIndex(p => p.id === id);
+    if (currentIndex === -1) return;
+
+    const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (newIndex < 0 || newIndex >= points.length) return;
+
+    const newPoints = Array.from(points);
+    const [movedItem] = newPoints.splice(currentIndex, 1);
+    newPoints.splice(newIndex, 0, movedItem);
+
+    setPoints(newPoints); // Optimistic UI update
+
+    const updates = newPoints.map((p, idx) => ({
+      id: p.id,
+      name: p.name,
+      description: p.description,
+      address: p.address,
+      latitude: p.latitude,
+      longitude: p.longitude,
+      phone: p.phone,
+      website: p.website,
+      materials: p.materials.join(','),
+      display_order: idx + 1,
+    }));
+
+    try {
+      await collectionPointsService.updateAllPointsOrder(updates);
+      toast({ title: "Ordem dos cards atualizada!" });
+    } catch (error) {
+      console.error('Error updating order:', error);
+      toast({
+        title: "Erro ao atualizar ordem",
+        description: error instanceof Error ? error.message : "Erro desconhecido",
+        variant: "destructive",
+      });
+      loadPoints(); // Revert on failure
+    }
+  };
+
   return {
     points,
     isEditing,
@@ -102,10 +149,13 @@ export const useCollectionPoints = () => {
     open,
     setOpen,
     availableMaterials,
+    isReordering,
     handleDeletePoint,
     handleEditPoint,
     handleAddPoint,
     handleSubmit,
     handleDragEnd,
+    toggleReordering,
+    handleMovePoint,
   };
 };
