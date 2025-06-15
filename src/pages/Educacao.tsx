@@ -72,7 +72,7 @@ const EducationPage = () => {
               <motion.div
                 animate={indicatorStyle}
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                className="absolute bg-recicla-primary dark:bg-recicla-secondary rounded-full"
+                className="absolute bg-recicla-primary dark:bg-recicla-secondary rounded-full z-0"
               />
               {TABS_CONFIG.map((tabInfo) => (
                 <TabsTrigger
