@@ -1,9 +1,7 @@
-
 import { useEffect, useCallback } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { collectionPointsService } from '@/services/collection-points-service';
 import { useCollectionPointsState } from './use-collection-points-state';
-import { useDragHandler } from './use-drag-handler';
 import { CollectionPoint } from '@/types/collection-point';
 
 export const useCollectionPoints = () => {
@@ -96,25 +94,11 @@ export const useCollectionPoints = () => {
     }
   };
 
-  const { handleDragEnd } = useDragHandler(points, setPoints, loadPoints);
+  const toggleReordering = useCallback(() => {
+    setIsReordering(prev => !prev);
+  }, [setIsReordering]);
 
-  const toggleReordering = () => {
-    setIsReordering(!isReordering);
-  };
-
-  const handleMovePoint = async (id: string, direction: 'up' | 'down') => {
-    const currentIndex = points.findIndex(p => p.id === id);
-    if (currentIndex === -1) return;
-
-    const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
-    if (newIndex < 0 || newIndex >= points.length) return;
-
-    const newPoints = Array.from(points);
-    const [movedItem] = newPoints.splice(currentIndex, 1);
-    newPoints.splice(newIndex, 0, movedItem);
-
-    setPoints(newPoints); // Optimistic UI update
-
+  const updateOrderInBackend = useCallback(async (newPoints: CollectionPoint[]) => {
     const updates = newPoints.map((p, idx) => ({
       id: p.id,
       name: p.name,
@@ -124,7 +108,7 @@ export const useCollectionPoints = () => {
       longitude: p.longitude,
       phone: p.phone,
       website: p.website,
-      materials: p.materials.join(','),
+      materials: Array.isArray(p.materials) ? p.materials.join(',') : p.materials,
       display_order: idx + 1,
     }));
 
@@ -140,7 +124,38 @@ export const useCollectionPoints = () => {
       });
       loadPoints(); // Revert on failure
     }
-  };
+  }, [toast, loadPoints]);
+
+  const handleMovePoint = useCallback((id: string, direction: 'up' | 'down') => {
+    const currentIndex = points.findIndex(p => p.id === id);
+    if (currentIndex === -1) return;
+
+    const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (newIndex < 0 || newIndex >= points.length) return;
+
+    const newPoints = Array.from(points);
+    const [movedItem] = newPoints.splice(currentIndex, 1);
+    newPoints.splice(newIndex, 0, movedItem);
+
+    setPoints(newPoints);
+    updateOrderInBackend(newPoints);
+  }, [points, setPoints, updateOrderInBackend]);
+
+  const handleMoveToPosition = useCallback((id: string, newPosition: number) => {
+    const currentIndex = points.findIndex(p => p.id === id);
+    const newIndex = newPosition - 1;
+
+    if (currentIndex === -1 || newIndex < 0 || newIndex >= points.length || currentIndex === newIndex) {
+      return;
+    }
+
+    const newPoints = Array.from(points);
+    const [movedItem] = newPoints.splice(currentIndex, 1);
+    newPoints.splice(newIndex, 0, movedItem);
+
+    setPoints(newPoints);
+    updateOrderInBackend(newPoints);
+  }, [points, setPoints, updateOrderInBackend]);
 
   return {
     points,
@@ -154,8 +169,8 @@ export const useCollectionPoints = () => {
     handleEditPoint,
     handleAddPoint,
     handleSubmit,
-    handleDragEnd,
     toggleReordering,
     handleMovePoint,
+    handleMoveToPosition,
   };
 };

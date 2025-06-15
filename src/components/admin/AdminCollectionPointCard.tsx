@@ -1,18 +1,24 @@
-
 import React from 'react';
-import { MapPin, Edit2, Trash2, GripVertical, ArrowUp, ArrowDown } from 'lucide-react';
+import { MapPin, Edit2, Trash2, ArrowUp, ArrowDown, ChevronsUpDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CollectionPoint, materialColors } from '@/types/collection-point';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu"
 
 interface AdminCollectionPointCardProps {
   point: CollectionPoint;
   onEdit: (point: CollectionPoint) => void;
   onDelete: (id: string) => void;
-  dragHandleProps?: any;
-  isDragging?: boolean;
   isReordering?: boolean;
   handleMovePoint?: (id: string, direction: 'up' | 'down') => void;
+  handleMoveToPosition?: (id: string, position: number) => void;
   index?: number;
   totalPoints?: number;
 }
@@ -21,29 +27,51 @@ const AdminCollectionPointCardComponent: React.FC<AdminCollectionPointCardProps>
   point,
   onEdit,
   onDelete,
-  dragHandleProps,
-  isDragging,
   isReordering,
   handleMovePoint,
+  handleMoveToPosition,
   index,
   totalPoints,
 }) => {
+  const currentPosition = (index ?? 0) + 1;
+
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-xl border-2 p-4 h-full flex flex-col transition-all duration-200 ${isDragging ? 'border-blue-500 shadow-lg' : 'border-gray-200 dark:border-gray-700'} ${isReordering ? 'border-blue-300 dark:border-blue-800' : ''}`}>
+    <div className={`bg-white dark:bg-gray-800 rounded-xl border-2 p-4 h-full flex flex-col transition-all duration-200 border-gray-200 dark:border-gray-700 ${isReordering ? 'border-blue-300 dark:border-blue-800' : ''}`}>
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center min-w-0 flex-grow">
-          <div 
-            {...(isReordering ? dragHandleProps : {})} 
-            className={`p-1 rounded mr-3 flex-shrink-0 ${isReordering ? 'cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' : 'text-gray-300 dark:text-gray-600 cursor-default'}`}
-          >
-            <GripVertical size={18} />
-          </div>
-          <MapPin className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2 flex-shrink-0" />
+          {isReordering ? (
+            <div className="p-1 mr-3 flex-shrink-0 font-bold text-lg text-blue-600 dark:text-blue-400 w-8 text-center">
+              {currentPosition}
+            </div>
+          ) : (
+            <MapPin className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-3 flex-shrink-0" />
+          )}
           <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate text-sm leading-tight">{point.name}</h3>
         </div>
         <div className="flex items-center space-x-1 ml-2 flex-shrink-0">
-          {isReordering && handleMovePoint ? (
+          {isReordering && handleMovePoint && handleMoveToPosition && totalPoints ? (
             <>
+               <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <ChevronsUpDown size={14} className="text-gray-600 dark:text-gray-300" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="max-h-60 overflow-y-auto">
+                  <DropdownMenuLabel>Mover para Posição</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {Array.from({ length: totalPoints }, (_, i) => i + 1).map((pos) => (
+                    <DropdownMenuItem
+                      key={pos}
+                      disabled={pos === currentPosition}
+                      onSelect={() => handleMoveToPosition(point.id, pos)}
+                    >
+                      Posição {pos}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleMovePoint(point.id, 'up')} disabled={index === 0}>
                 <ArrowUp size={14} className="text-gray-600 dark:text-gray-300" />
               </Button>

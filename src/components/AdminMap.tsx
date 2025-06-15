@@ -21,10 +21,10 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
     handleEditPoint,
     handleAddPoint,
     handleSubmit,
-    handleDragEnd,
     isReordering,
     toggleReordering,
     handleMovePoint,
+    handleMoveToPosition,
   } = useCollectionPoints();
 
   return (
@@ -49,9 +49,9 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
           points={points}
           onEdit={handleEditPoint}
           onDelete={handleDeletePoint}
-          onDragEnd={handleDragEnd}
           isReordering={isReordering}
           handleMovePoint={handleMovePoint}
+          handleMoveToPosition={handleMoveToPosition}
         />
       )}
     </div>
