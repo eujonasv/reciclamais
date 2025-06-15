@@ -23,10 +23,10 @@ export const useDragHandler = (
     const [removed] = newPoints.splice(source.index, 1);
     newPoints.splice(destination.index, 0, removed);
 
-    // Update local state immediately for smooth UX
+    // Update local state immediately
     setPoints(newPoints);
 
-    // Prepare updates for all affected items (all items need new display_order)
+    // Update display_order for all points
     const updates = newPoints.map((point, index) => ({
       id: point.id,
       name: point.name,
@@ -43,12 +43,12 @@ export const useDragHandler = (
     try {
       await collectionPointsService.updateAllPointsOrder(updates);
       toast({
-        title: "Posição do card atualizada!",
+        title: "Ordem dos cards atualizada!",
       });
     } catch (error) {
-      console.error('Error updating positions:', error);
+      console.error('Error updating order:', error);
       toast({
-        title: "Erro ao atualizar posição",
+        title: "Erro ao atualizar ordem",
         description: error instanceof Error ? error.message : "Erro desconhecido",
         variant: "destructive",
       });
