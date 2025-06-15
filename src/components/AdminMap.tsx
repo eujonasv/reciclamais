@@ -29,32 +29,36 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false, collectionPointsD
   } = collectionPointsData;
 
   return (
-    <div className="max-w-7xl mx-auto">
-      <AdminMapHeader
-        isMobile={isMobile}
-        open={open}
-        setOpen={setOpen}
-        isEditing={isEditing}
-        editingPoint={editingPoint}
-        availableMaterials={availableMaterials}
-        onSubmit={handleSubmit}
-        onAddPoint={handleAddPoint}
-        isReordering={isReordering}
-        toggleReordering={toggleReordering}
-      />
-      
-      {points.length === 0 ? (
-        <AdminMapEmptyState onAddPoint={handleAddPoint} />
-      ) : (
-        <AdminPointsList
-          points={points}
-          onEdit={handleEditPoint}
-          onDelete={handleDeletePoint}
+    <div className="bg-card text-card-foreground rounded-lg border shadow-sm h-full flex flex-col">
+      <div className="p-4 md:p-6 flex-grow flex flex-col">
+        <AdminMapHeader
+          isMobile={isMobile}
+          open={open}
+          setOpen={setOpen}
+          isEditing={isEditing}
+          editingPoint={editingPoint}
+          availableMaterials={availableMaterials}
+          onSubmit={handleSubmit}
+          onAddPoint={handleAddPoint}
           isReordering={isReordering}
-          handleMovePoint={handleMovePoint}
-          handleMoveToPosition={handleMoveToPosition}
+          toggleReordering={toggleReordering}
         />
-      )}
+        
+        {points.length === 0 ? (
+          <AdminMapEmptyState onAddPoint={handleAddPoint} />
+        ) : (
+          <div className="flex-grow -mx-2">
+            <AdminPointsList
+              points={points}
+              onEdit={handleEditPoint}
+              onDelete={handleDeletePoint}
+              isReordering={isReordering}
+              handleMovePoint={handleMovePoint}
+              handleMoveToPosition={handleMoveToPosition}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
