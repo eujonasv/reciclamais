@@ -118,8 +118,8 @@ const AuthPage = () => {
       </div>
       <div className="hidden bg-muted lg:block">
         <img
-          src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=2070&auto=format&fit=crop"
-          alt="Imagem de um laptop em uma mesa"
+          src="https://images.unsplash.com/photo-1518495973542-4542c06a5843"
+          alt="Imagem de uma floresta com a luz do sol brilhando por entre as árvores"
           className="h-screen w-full object-cover dark:brightness-[0.3]"
         />
       </div>
