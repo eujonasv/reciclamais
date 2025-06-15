@@ -31,10 +31,17 @@ const MaterialStatsChart: React.FC<MaterialStatsChartProps> = ({ data }) => {
         <CardDescription>Quantidade de cada material nos pontos de coleta.</CardDescription>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={data} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+        <ResponsiveContainer width="100%" height={350}>
+          <BarChart data={data} margin={{ top: 5, right: 20, left: -10, bottom: 50 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-            <XAxis dataKey="name" tick={{ fontSize: 12, fill: 'hsl(var(--foreground))' }} interval={0} />
+            <XAxis
+              dataKey="name"
+              tick={{ fontSize: 12, fill: 'hsl(var(--foreground))' }}
+              interval={0}
+              angle={-45}
+              textAnchor="end"
+              height={60}
+            />
             <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: 'hsl(var(--foreground))' }} />
             <Tooltip
               cursor={{ fill: 'hsl(var(--accent))', opacity: 0.1 }}
