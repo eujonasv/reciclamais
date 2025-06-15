@@ -4,12 +4,11 @@ import MainLayout from "@/layouts/MainLayout";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
-import BenefitsSection from "@/components/BenefitsSection";
-import EducationalSection from "@/components/EducationalSection";
-import CallToActionSection from "@/components/CallToActionSection";
+import MapSection from "@/components/MapSection";
 import FaqSection from "@/components/FaqSection";
+import EducationalSection from "@/components/EducationalSection";
 
-// Font imports
+// Import fonts
 import "@fontsource-variable/montserrat";
 import "@fontsource/roboto";
 
@@ -18,10 +17,9 @@ const Index = () => {
     <MainLayout>
       <HeroSection />
       <AboutSection />
-      <BenefitsSection />
       <HowItWorksSection />
+      <MapSection />
       <EducationalSection />
-      <CallToActionSection />
       <FaqSection />
     </MainLayout>
   );
