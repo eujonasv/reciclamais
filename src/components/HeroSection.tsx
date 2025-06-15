@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -41,7 +42,7 @@ const HeroSection = () => {
                   Como Funciona
                 </Button>
                 <Button 
-                  onClick={() => scrollToSection('mapa')}
+                  onClick={() => scrollToSection('mapa-cta')}
                   variant="outline"
                   size="lg"
                   className="border-recicla-primary text-recicla-primary hover:bg-recicla-primary/10 dark:border-recicla-secondary dark:text-recicla-secondary dark:hover:bg-recicla-secondary/10"

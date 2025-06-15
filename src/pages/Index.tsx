@@ -4,7 +4,7 @@ import MainLayout from "@/layouts/MainLayout";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
-import MapSection from "@/components/MapSection";
+import CtaMapSection from "@/components/CtaMapSection";
 import FaqSection from "@/components/FaqSection";
 import EducationalSection from "@/components/EducationalSection";
 
@@ -18,7 +18,7 @@ const Index = () => {
       <HeroSection />
       <AboutSection />
       <HowItWorksSection />
-      <MapSection />
+      <CtaMapSection />
       <EducationalSection />
       <FaqSection />
     </MainLayout>
