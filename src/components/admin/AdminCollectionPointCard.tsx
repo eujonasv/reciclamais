@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MapPin, Edit2, Trash2, ArrowUp, ArrowDown, ChevronsUpDown } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -137,17 +138,23 @@ const AdminCollectionPointCardComponent: React.FC<AdminCollectionPointCardProps>
           href={`https://www.google.com/maps/search/?api=1&query=${point.latitude},${point.longitude}`} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1.5 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 font-medium"
+          className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1.5 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 font-medium flex items-center gap-1.5"
         >
-          📍 Maps
+          <div className="bg-white rounded-full p-0.5 flex items-center justify-center">
+            <img src="/lovable-uploads/googlemapslogo.png" alt="Google Maps" className="h-3 w-3" />
+          </div>
+          Google Maps
         </a>
         <a 
           href={`https://waze.com/ul?ll=${point.latitude},${point.longitude}&navigate=yes`}
           target="_blank" 
           rel="noopener noreferrer" 
-          className="text-xs bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200 px-3 py-1.5 rounded-full hover:bg-teal-200 dark:hover:bg-teal-800 font-medium"
+          className="text-xs bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200 px-3 py-1.5 rounded-full hover:bg-teal-200 dark:hover:bg-teal-800 font-medium flex items-center gap-1.5"
         >
-          🚗 Waze
+          <div className="bg-white rounded-full p-0.5 flex items-center justify-center">
+            <img src="/lovable-uploads/wazelogo.png" alt="Waze" className="h-3 w-3" />
+          </div>
+          Waze
         </a>
       </div>
     </div>

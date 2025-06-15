@@ -48,8 +48,10 @@ const MapPopupContent = ({ point, userLocation }: MapPopupContentProps) => {
                     title="Obter rotas no Google Maps"
                     className="flex-1 flex items-center justify-center gap-1.5 text-center text-xs px-2 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors font-semibold"
                 >
-                    <Navigation size={12} />
-                    <span>Rotas</span>
+                    <div className="bg-white rounded-full p-0.5 flex items-center justify-center">
+                        <img src="/lovable-uploads/googlemapslogo.png" alt="Google Maps" className="h-3 w-3" />
+                    </div>
+                    <span>Google Maps</span>
                 </a>
                 <a
                     href={`https://waze.com/ul?ll=${point.latitude},${point.longitude}&navigate=yes`}
@@ -58,7 +60,9 @@ const MapPopupContent = ({ point, userLocation }: MapPopupContentProps) => {
                     title="Obter rotas no Waze"
                     className="flex-1 flex items-center justify-center gap-1.5 text-center text-xs px-2 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors font-semibold"
                 >
-                    <img src="/lovable-uploads/wazelogo.png" alt="Waze" className="h-3 w-3" />
+                    <div className="bg-white rounded-full p-0.5 flex items-center justify-center">
+                        <img src="/lovable-uploads/wazelogo.png" alt="Waze" className="h-3 w-3" />
+                    </div>
                     <span>Waze</span>
                 </a>
             </div>
