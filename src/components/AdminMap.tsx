@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,6 @@ import { CollectionPoint, materialColors } from '@/types/collection-point';
 import AdminCollectionPointCard from './admin/AdminCollectionPointCard';
 import { CollectionPointForm } from './admin/CollectionPointForm';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
-import { cn } from '@/lib/utils';
 
 interface AdminMapProps {
   isMobile?: boolean;
@@ -214,12 +214,12 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
         <Droppable droppableId="collection-points-list">
           {(provided) => (
             <div
-              className="flex flex-wrap -mx-2"
+              className="space-y-4"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
               {points.length === 0 ? (
-                <div className="w-full py-8 text-center">
+                <div className="py-8 text-center">
                   <p className="text-gray-500 dark:text-gray-400 mb-4">
                     Nenhum ponto de coleta cadastrado
                   </p>
@@ -235,7 +235,10 @@ const AdminMap: React.FC<AdminMapProps> = ({ isMobile = false }) => {
                       <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
-                        className="w-full md:w-1/2 lg:w-1/3 p-2"
+                        className={`
+                          transition-all duration-200 
+                          ${snapshot.isDragging ? 'shadow-2xl scale-[1.02] rotate-1 z-50' : 'shadow-sm'}
+                        `}
                       >
                         <AdminCollectionPointCard
                           point={point}
