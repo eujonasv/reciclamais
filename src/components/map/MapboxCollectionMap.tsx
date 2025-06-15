@@ -177,7 +177,7 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
 
   if (!MAPBOX_TOKEN) {
     return <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-800 rounded-xl">
-        <p className="text-red-500 font-semibold text-center p-4">Token do Mapbox não fornecido. <br/> Por favor, crie um arquivo `.env` e adicione `VITE_MAPBOX_TOKEN="SUA_CHAVE_AQUI"`.</p>
+        <p className="text-red-500 font-semibold text-center p-4">Token do Mapbox não fornecido. <br/> Por favor, crie um arquivo `.env` e adicione `VITE_MAPBOX_TOKEN="SUA_CHAVE_AQUI"`.
     </div>
   }
 
@@ -198,12 +198,21 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
             border-top-color: #1f2937 !important;
         }
         .user-location-dot {
-          width: 20px;
-          height: 20px;
-          border: 3px solid #fff;
+          width: 22px;
+          height: 22px;
           border-radius: 50%;
           background-color: #1a73e8;
-          box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.3);
+          border: 3px solid white;
+          box-shadow: 0 0 8px rgba(0,0,0,0.3);
+          animation: pulse-blue 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-blue {
+          0%, 100% {
+            box-shadow: 0 0 8px rgba(0,0,0,0.3), 0 0 0 0px rgba(26, 115, 232, 0.5);
+          }
+          50% {
+            box-shadow: 0 0 8px rgba(0,0,0,0.3), 0 0 0 15px rgba(26, 115, 232, 0);
+          }
         }
         @keyframes pulse-marker {
           0%, 100% { transform: scale(1); }
