@@ -73,7 +73,7 @@ const ValuesPage = () => {
           <div className="text-center max-w-4xl mx-auto">
             <div className="flex justify-center mb-8 animate-fade-in">
               <div className="p-4 bg-white/20 dark:bg-white/10 backdrop-blur-md rounded-full shadow-2xl">
-                <RecycleLogo size="xl" />
+                <RecycleLogo size="lg" />
               </div>
             </div>
             
