@@ -39,7 +39,16 @@ export const useMapSection = () => {
                 const transformedData: CollectionPoint[] = data.map((point) => ({
                     ...point,
                     materials: point.materials?.split(',').map((m: string) => m.trim()) || [],
-                    id: point.id.toString()
+                    id: point.id.toString(),
+                    openingHours: point.description ? JSON.parse(point.description) : {
+                        monday: { enabled: false, openTime: '', closeTime: '' },
+                        tuesday: { enabled: false, openTime: '', closeTime: '' },
+                        wednesday: { enabled: false, openTime: '', closeTime: '' },
+                        thursday: { enabled: false, openTime: '', closeTime: '' },
+                        friday: { enabled: false, openTime: '', closeTime: '' },
+                        saturday: { enabled: false, openTime: '', closeTime: '' },
+                        sunday: { enabled: false, openTime: '', closeTime: '' },
+                    }
                 }));
 
                 setCollectionPoints(transformedData);
@@ -70,8 +79,7 @@ export const useMapSection = () => {
 
     const filteredPoints = useMemo(() => collectionPoints.filter(point => {
         const matchesSearch = point.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            point.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (point.description && point.description.toLowerCase().includes(searchTerm.toLowerCase()));
+            point.address.toLowerCase().includes(searchTerm.toLowerCase());
         
         const matchesFilter = activeFilter.length === 0 ||
             point.materials.some(material => activeFilter.includes(material));

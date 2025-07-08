@@ -50,6 +50,15 @@ const MapPage = () => {
           ...pt,
           id: pt.id.toString(),
           materials: pt.materials?.split(",").map((m: string) => m.trim()) || [],
+          openingHours: pt.description ? JSON.parse(pt.description) : {
+            monday: { enabled: false, openTime: '', closeTime: '' },
+            tuesday: { enabled: false, openTime: '', closeTime: '' },
+            wednesday: { enabled: false, openTime: '', closeTime: '' },
+            thursday: { enabled: false, openTime: '', closeTime: '' },
+            friday: { enabled: false, openTime: '', closeTime: '' },
+            saturday: { enabled: false, openTime: '', closeTime: '' },
+            sunday: { enabled: false, openTime: '', closeTime: '' },
+          }
         }));
         setCollectionPoints(points);
       } finally {
@@ -68,8 +77,7 @@ const MapPage = () => {
   const filteredPoints = collectionPoints.filter((point) => {
     const matchesSearch =
       point.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      point.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      point.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      point.address.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesFilter =
       activeFilter.length === 0 ||

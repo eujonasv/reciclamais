@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
 import { materialColors } from '@/types/collection-point';
 import type { CollectionPoint } from '@/types/collection-point';
+import { formatOpeningHours } from '@/utils/opening-hours';
 import GoogleMapsLogo from '/lovable-uploads/googlemapslogo.png';
 import WazeLogo from '/lovable-uploads/wazelogo.png';
 
@@ -31,7 +32,7 @@ const CollectionPointCard = ({
         <h3 className="text-lg font-bold text-recicla-primary dark:text-recicla-secondary">
           {point.name}
         </h3>
-        <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{point.description}</p>
+        <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{formatOpeningHours(point.openingHours)}</p>
       </div>
 
       <div className="space-y-2 text-sm">

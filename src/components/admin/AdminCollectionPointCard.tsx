@@ -4,6 +4,7 @@ import { MapPin, Edit2, Trash2, ArrowUp, ArrowDown, ChevronsUpDown } from 'lucid
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CollectionPoint, materialColors } from '@/types/collection-point';
+import { formatOpeningHours } from '@/utils/opening-hours';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -105,7 +106,7 @@ const AdminCollectionPointCardComponent: React.FC<AdminCollectionPointCardProps>
       
       <div className="flex-grow space-y-3">
         <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed">
-          {point.description}
+          {formatOpeningHours(point.openingHours)}
         </p>
         
         <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
