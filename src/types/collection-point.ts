@@ -2,7 +2,15 @@
 export interface CollectionPoint {
   id: string;
   name: string;
-  description: string;
+  openingHours: {
+    monday: { enabled: boolean; openTime: string; closeTime: string; };
+    tuesday: { enabled: boolean; openTime: string; closeTime: string; };
+    wednesday: { enabled: boolean; openTime: string; closeTime: string; };
+    thursday: { enabled: boolean; openTime: string; closeTime: string; };
+    friday: { enabled: boolean; openTime: string; closeTime: string; };
+    saturday: { enabled: boolean; openTime: string; closeTime: string; };
+    sunday: { enabled: boolean; openTime: string; closeTime: string; };
+  };
   latitude: number;
   longitude: number;
   address: string;

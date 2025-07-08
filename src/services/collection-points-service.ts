@@ -15,7 +15,16 @@ export const collectionPointsService = {
     
     return data.map((point) => ({
       ...point,
-      materials: point.materials?.split(',').map((m: string) => m.trim()) || []
+      materials: point.materials?.split(',').map((m: string) => m.trim()) || [],
+      openingHours: point.description ? JSON.parse(point.description) : {
+        monday: { enabled: false, openTime: '', closeTime: '' },
+        tuesday: { enabled: false, openTime: '', closeTime: '' },
+        wednesday: { enabled: false, openTime: '', closeTime: '' },
+        thursday: { enabled: false, openTime: '', closeTime: '' },
+        friday: { enabled: false, openTime: '', closeTime: '' },
+        saturday: { enabled: false, openTime: '', closeTime: '' },
+        sunday: { enabled: false, openTime: '', closeTime: '' },
+      }
     })) as CollectionPoint[];
   },
 

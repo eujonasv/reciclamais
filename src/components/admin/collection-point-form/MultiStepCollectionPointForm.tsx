@@ -16,7 +16,43 @@ import { DrawerClose } from '@/components/ui/drawer';
 
 const formSchema = z.object({
   name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres"),
-  description: z.string().min(5, "A descrição deve ter pelo menos 5 caracteres"),
+  openingHours: z.object({
+    monday: z.object({
+      enabled: z.boolean(),
+      openTime: z.string().optional(),
+      closeTime: z.string().optional(),
+    }),
+    tuesday: z.object({
+      enabled: z.boolean(),
+      openTime: z.string().optional(),
+      closeTime: z.string().optional(),
+    }),
+    wednesday: z.object({
+      enabled: z.boolean(),
+      openTime: z.string().optional(),
+      closeTime: z.string().optional(),
+    }),
+    thursday: z.object({
+      enabled: z.boolean(),
+      openTime: z.string().optional(),
+      closeTime: z.string().optional(),
+    }),
+    friday: z.object({
+      enabled: z.boolean(),
+      openTime: z.string().optional(),
+      closeTime: z.string().optional(),
+    }),
+    saturday: z.object({
+      enabled: z.boolean(),
+      openTime: z.string().optional(),
+      closeTime: z.string().optional(),
+    }),
+    sunday: z.object({
+      enabled: z.boolean(),
+      openTime: z.string().optional(),
+      closeTime: z.string().optional(),
+    }),
+  }),
   address: z.string().min(5, "O endereço deve ter pelo menos 5 caracteres"),
   latitude: z.coerce.number(),
   longitude: z.coerce.number(),
@@ -51,7 +87,15 @@ export const MultiStepCollectionPointForm: React.FC<MultiStepCollectionPointForm
     mode: "onChange",
     defaultValues: {
       name: editingPoint?.name || "",
-      description: editingPoint?.description || "",
+      openingHours: {
+        monday: { enabled: false, openTime: '', closeTime: '' },
+        tuesday: { enabled: false, openTime: '', closeTime: '' },
+        wednesday: { enabled: false, openTime: '', closeTime: '' },
+        thursday: { enabled: false, openTime: '', closeTime: '' },
+        friday: { enabled: false, openTime: '', closeTime: '' },
+        saturday: { enabled: false, openTime: '', closeTime: '' },
+        sunday: { enabled: false, openTime: '', closeTime: '' },
+      },
       address: editingPoint?.address || "",
       latitude: editingPoint?.latitude || 0,
       longitude: editingPoint?.longitude || 0,
@@ -66,7 +110,7 @@ export const MultiStepCollectionPointForm: React.FC<MultiStepCollectionPointForm
   const handleNext = async () => {
     let fieldsToValidate: (keyof z.infer<typeof formSchema>)[] = [];
     if (currentStep === 1) {
-      fieldsToValidate = ['name', 'description'];
+      fieldsToValidate = ['name', 'openingHours'];
     } else if (currentStep === 2) {
       fieldsToValidate = ['address', 'latitude', 'longitude'];
     }

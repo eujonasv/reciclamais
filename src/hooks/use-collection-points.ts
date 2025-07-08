@@ -61,7 +61,7 @@ export const useCollectionPoints = () => {
     try {
       const payload = {
         name: values.name,
-        description: values.description,
+        description: JSON.stringify(values.openingHours),
         address: values.address,
         latitude: values.latitude,
         longitude: values.longitude,
@@ -102,7 +102,7 @@ export const useCollectionPoints = () => {
     const updates = newPoints.map((p, idx) => ({
       id: p.id,
       name: p.name,
-      description: p.description,
+      description: JSON.stringify(p.openingHours),
       address: p.address,
       latitude: p.latitude,
       longitude: p.longitude,
