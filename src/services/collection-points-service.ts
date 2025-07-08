@@ -1,6 +1,29 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { CollectionPoint } from '@/types/collection-point';
+
+const parseOpeningHours = (description: string | null) => {
+  const defaultHours = {
+    monday: { enabled: false, openTime: '', closeTime: '' },
+    tuesday: { enabled: false, openTime: '', closeTime: '' },
+    wednesday: { enabled: false, openTime: '', closeTime: '' },
+    thursday: { enabled: false, openTime: '', closeTime: '' },
+    friday: { enabled: false, openTime: '', closeTime: '' },
+    saturday: { enabled: false, openTime: '', closeTime: '' },
+    sunday: { enabled: false, openTime: '', closeTime: '' },
+  };
+  
+  if (!description) return defaultHours;
+  
+  try {
+    const parsed = JSON.parse(description);
+    if (typeof parsed === 'object' && parsed.monday !== undefined) {
+      return parsed;
+    }
+    return defaultHours;
+  } catch (error) {
+    return defaultHours;
+  }
+};
 
 export const collectionPointsService = {
   async loadPoints(): Promise<CollectionPoint[]> {
@@ -16,15 +39,7 @@ export const collectionPointsService = {
     return data.map((point) => ({
       ...point,
       materials: point.materials?.split(',').map((m: string) => m.trim()) || [],
-      openingHours: point.description ? JSON.parse(point.description) : {
-        monday: { enabled: false, openTime: '', closeTime: '' },
-        tuesday: { enabled: false, openTime: '', closeTime: '' },
-        wednesday: { enabled: false, openTime: '', closeTime: '' },
-        thursday: { enabled: false, openTime: '', closeTime: '' },
-        friday: { enabled: false, openTime: '', closeTime: '' },
-        saturday: { enabled: false, openTime: '', closeTime: '' },
-        sunday: { enabled: false, openTime: '', closeTime: '' },
-      }
+      openingHours: parseOpeningHours(point.description)
     })) as CollectionPoint[];
   },
 

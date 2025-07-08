@@ -13,6 +13,30 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import type { LatLngTuple } from "@/lib/map-utils";
 import { findClosestPoint } from "@/lib/map-utils";
 
+const parseOpeningHours = (description: string | null) => {
+  const defaultHours = {
+    monday: { enabled: false, openTime: '', closeTime: '' },
+    tuesday: { enabled: false, openTime: '', closeTime: '' },
+    wednesday: { enabled: false, openTime: '', closeTime: '' },
+    thursday: { enabled: false, openTime: '', closeTime: '' },
+    friday: { enabled: false, openTime: '', closeTime: '' },
+    saturday: { enabled: false, openTime: '', closeTime: '' },
+    sunday: { enabled: false, openTime: '', closeTime: '' },
+  };
+  
+  if (!description) return defaultHours;
+  
+  try {
+    const parsed = JSON.parse(description);
+    if (typeof parsed === 'object' && parsed.monday !== undefined) {
+      return parsed;
+    }
+    return defaultHours;
+  } catch (error) {
+    return defaultHours;
+  }
+};
+
 const POINTS_PER_FETCH = 100;
 
 const MapPage = () => {
@@ -50,15 +74,7 @@ const MapPage = () => {
           ...pt,
           id: pt.id.toString(),
           materials: pt.materials?.split(",").map((m: string) => m.trim()) || [],
-          openingHours: pt.description ? JSON.parse(pt.description) : {
-            monday: { enabled: false, openTime: '', closeTime: '' },
-            tuesday: { enabled: false, openTime: '', closeTime: '' },
-            wednesday: { enabled: false, openTime: '', closeTime: '' },
-            thursday: { enabled: false, openTime: '', closeTime: '' },
-            friday: { enabled: false, openTime: '', closeTime: '' },
-            saturday: { enabled: false, openTime: '', closeTime: '' },
-            sunday: { enabled: false, openTime: '', closeTime: '' },
-          }
+          openingHours: parseOpeningHours(pt.description)
         }));
         setCollectionPoints(points);
       } finally {
