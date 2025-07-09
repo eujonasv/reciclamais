@@ -87,7 +87,7 @@ export const MultiStepCollectionPointForm: React.FC<MultiStepCollectionPointForm
     mode: "onChange",
     defaultValues: {
       name: editingPoint?.name || "",
-      openingHours: {
+      openingHours: editingPoint?.openingHours || {
         monday: { enabled: false, openTime: '', closeTime: '' },
         tuesday: { enabled: false, openTime: '', closeTime: '' },
         wednesday: { enabled: false, openTime: '', closeTime: '' },
