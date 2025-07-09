@@ -78,7 +78,8 @@ export const useCollectionPoints = () => {
       }
 
       resetForm();
-      loadPoints();
+      // Força o recarregamento dos dados para garantir que os dados atualizados sejam exibidos
+      await loadPoints();
       toast({ 
         title: isEditing 
           ? "Ponto de coleta atualizado com sucesso" 
