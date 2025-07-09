@@ -1,7 +1,8 @@
 
 import React from "react";
 import { CollectionPoint, materialColors } from "@/types/collection-point";
-import { Phone, MapPin } from "lucide-react";
+import { Phone, MapPin, Clock } from "lucide-react";
+import { formatOpeningHours } from '@/utils/opening-hours';
 
 interface CompactCollectionPointCardProps {
   point: CollectionPoint;
@@ -57,6 +58,11 @@ const CompactCollectionPointCard: React.FC<CompactCollectionPointCardProps> = ({
     <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-3">
       <MapPin size={12} className="flex-shrink-0 sm:w-3.5 sm:h-3.5" />
       <span className="leading-tight">{point.address}</span>
+    </div>
+
+    <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-3">
+      <Clock size={12} className="flex-shrink-0 sm:w-3.5 sm:h-3.5" />
+      <span className="leading-tight">{formatOpeningHours(point.openingHours)}</span>
     </div>
 
     <div className="flex flex-wrap gap-1 sm:gap-1.5 mb-3">
