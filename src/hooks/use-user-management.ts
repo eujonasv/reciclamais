@@ -53,24 +53,10 @@ export const useUserManagement = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Usuário não autenticado');
 
-      // Criar usuário no sistema de autenticação primeiro
-      const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
-        email,
-        password: Math.random().toString(36).slice(-12), // senha temporária
-        email_confirm: true,
-        user_metadata: {
-          full_name: fullName
-        }
-      });
-
-      if (authError) throw authError;
-      if (!authUser.user) throw new Error('Erro ao criar usuário');
-
-      // Criar perfil na tabela profiles
-      const { error: profileError } = await supabase
+      const { error } = await supabase
         .from('profiles')
         .insert({
-          user_id: authUser.user.id,
+          user_id: crypto.randomUUID(),
           email,
           full_name: fullName,
           role,
@@ -78,7 +64,7 @@ export const useUserManagement = () => {
           is_active: true
         });
 
-      if (profileError) throw profileError;
+      if (error) throw error;
 
       // Log audit
       await supabase
