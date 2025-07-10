@@ -1,8 +1,9 @@
 import React from 'react';
 import type { CollectionPoint } from '@/types/collection-point';
 import { LatLngTuple, calculateDistance } from '@/lib/map-utils';
-import { MapPin, Navigation } from 'lucide-react';
+import { MapPin, Navigation, Clock } from 'lucide-react';
 import { materialColors } from '@/types/collection-point';
+import { formatOpeningHours } from '@/utils/opening-hours';
 interface MapPopupContentProps {
   point: CollectionPoint;
   userLocation: LatLngTuple | null;
@@ -19,6 +20,10 @@ const MapPopupContent = ({
                 <div className="flex items-start gap-1.5 text-xs text-gray-500 dark:text-gray-400 mb-2">
                     <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" />
                     <span className="truncate">{point.address}</span>
+                </div>
+                <div className="flex items-start gap-1.5 text-xs text-gray-500 dark:text-gray-400 mb-2">
+                    <Clock className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                    <span className="truncate">{formatOpeningHours(point.openingHours)}</span>
                 </div>
                 {distanceInKm && <p className="text-xs text-gray-600 dark:text-gray-300 font-medium mb-2">
                         Aproximadamente {distanceInKm} km de distância

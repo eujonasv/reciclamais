@@ -25,15 +25,42 @@ const daysInPortuguese = {
 };
 
 export const formatOpeningHours = (openingHours: OpeningHours): string => {
-  const enabledDays = Object.entries(openingHours)
-    .filter(([_, schedule]) => schedule.enabled && schedule.openTime && schedule.closeTime)
-    .map(([day, schedule]) => 
-      `${daysInPortuguese[day as keyof typeof daysInPortuguese]}: ${schedule.openTime}-${schedule.closeTime}`
-    );
+  const daysOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+  
+  const enabledDays = daysOrder
+    .map(day => ({ day, schedule: openingHours[day as keyof OpeningHours] }))
+    .filter(({ schedule }) => schedule.enabled && schedule.openTime && schedule.closeTime);
   
   if (enabledDays.length === 0) {
     return 'Horário não informado';
   }
   
-  return enabledDays.join(', ');
+  // Agrupar dias consecutivos com horários iguais
+  const groups: Array<{ days: string[], time: string }> = [];
+  let currentGroup: { days: string[], time: string } | null = null;
+  
+  enabledDays.forEach(({ day, schedule }) => {
+    const timeString = `${schedule.openTime}-${schedule.closeTime}`;
+    const dayName = daysInPortuguese[day as keyof typeof daysInPortuguese];
+    
+    if (!currentGroup || currentGroup.time !== timeString) {
+      // Novo grupo
+      currentGroup = { days: [dayName], time: timeString };
+      groups.push(currentGroup);
+    } else {
+      // Adicionar ao grupo atual
+      currentGroup.days.push(dayName);
+    }
+  });
+  
+  // Formatar grupos para exibição
+  return groups.map(group => {
+    if (group.days.length === 1) {
+      return `${group.days[0]}: ${group.time}`;
+    } else if (group.days.length === 2) {
+      return `${group.days[0]} e ${group.days[1]}: ${group.time}`;
+    } else {
+      return `${group.days[0]} a ${group.days[group.days.length - 1]}: ${group.time}`;
+    }
+  }).join(', ');
 };
