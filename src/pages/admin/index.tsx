@@ -11,12 +11,55 @@ import { LogOut, MapPin, Layers, Package, ListTree, Users, Settings } from 'luci
 import { useCollectionPoints } from '@/hooks/use-collection-points';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import MaterialStatsChart from '@/components/admin/MaterialStatsChart';
+import { supabase } from '@/integrations/supabase/client';
+import { useState, useEffect } from 'react';
 
 const AdminPage = () => {
   const isMobile = useIsMobile();
   const { logout } = useAuth();
   const collectionPointsData = useCollectionPoints();
   const { points } = collectionPointsData;
+  const [greeting, setGreeting] = useState<string>('');
+  const [userName, setUserName] = useState<string>('');
+
+  const getGreeting = () => {
+    const now = new Date();
+    // Converter para UTC-3 (Brasília)
+    const brasiliaTime = new Date(now.getTime() - (3 * 60 * 60 * 1000));
+    const hour = brasiliaTime.getHours();
+    
+    if (hour >= 5 && hour < 12) {
+      return 'Bom dia';
+    } else if (hour >= 12 && hour < 18) {
+      return 'Boa tarde';
+    } else {
+      return 'Boa noite';
+    }
+  };
+
+  const fetchUserName = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name, email')
+        .eq('user_id', user.id)
+        .single();
+
+      const name = profile?.full_name || profile?.email?.split('@')[0] || 'Administrador';
+      setUserName(name);
+    } catch (error) {
+      console.error('Error fetching user name:', error);
+      setUserName('Administrador');
+    }
+  };
+
+  useEffect(() => {
+    setGreeting(getGreeting());
+    fetchUserName();
+  }, []);
 
   const validPoints = points || [];
 
@@ -48,7 +91,7 @@ const AdminPage = () => {
           <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-8 pb-4 border-b">
             <div>
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Painel do Administrador</h1>
-              <p className="text-muted-foreground mt-1">Bem-vindo! Aqui estão as métricas e ferramentas.</p>
+              <p className="text-muted-foreground mt-1">{greeting}, {userName}! Aqui estão as métricas e ferramentas.</p>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" asChild className="gap-2">

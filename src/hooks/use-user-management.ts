@@ -5,24 +5,24 @@ import { useToast } from '@/components/ui/use-toast';
 
 export const useUserManagement = () => {
   const [users, setUsers] = useState<UserProfile[]>([]);
-  const [currentUserRole, setCurrentUserRole] = useState<UserRole | null>(null);
+  const [currentUserEmail, setCurrentUserEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  const fetchCurrentUserRole = async () => {
+  const fetchCurrentUserEmail = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
 
       const { data: profile } = await supabase
         .from('profiles')
-        .select('role')
+        .select('email')
         .eq('user_id', user.id)
         .single();
 
-      return profile?.role || null;
+      return profile?.email || user.email || null;
     } catch (error) {
-      console.error('Error fetching current user role:', error);
+      console.error('Error fetching current user email:', error);
       return null;
     }
   };
@@ -212,42 +212,15 @@ export const useUserManagement = () => {
     }
   };
 
-  const canManageUser = (targetRole: UserRole): boolean => {
-    if (!currentUserRole) return false;
-    
-    const roleHierarchy: Record<UserRole, number> = {
-      editor: 1,
-      moderator: 2,
-      admin: 3,
-      master_admin: 4
-    };
-
-    return roleHierarchy[currentUserRole] > roleHierarchy[targetRole];
-  };
-
-  const canCreateRole = (targetRole: UserRole): boolean => {
-    if (!currentUserRole) return false;
-    
-    const roleHierarchy: Record<UserRole, number> = {
-      editor: 1,
-      moderator: 2,
-      admin: 3,
-      master_admin: 4
-    };
-
-    return roleHierarchy[currentUserRole] >= roleHierarchy[targetRole];
+  const canDeleteUser = (): boolean => {
+    return currentUserEmail === 'adm@reciclamais.com';
   };
 
   useEffect(() => {
     const initialize = async () => {
-      const role = await fetchCurrentUserRole();
-      setCurrentUserRole(role);
-      
-      if (role && ['master_admin', 'admin', 'moderator'].includes(role)) {
-        await fetchUsers();
-      } else {
-        setLoading(false);
-      }
+      const email = await fetchCurrentUserEmail();
+      setCurrentUserEmail(email);
+      await fetchUsers();
     };
 
     initialize();
@@ -255,14 +228,13 @@ export const useUserManagement = () => {
 
   return {
     users,
-    currentUserRole,
+    currentUserEmail,
     loading,
     createUser,
     updateUserRole,
     toggleUserStatus,
     deleteUser,
-    canManageUser,
-    canCreateRole,
+    canDeleteUser,
     refetch: () => fetchUsers()
   };
 };

@@ -18,14 +18,13 @@ import { ptBR } from 'date-fns/locale';
 const UserManagementDashboard = () => {
   const {
     users,
-    currentUserRole,
+    currentUserEmail,
     loading,
     createUser,
     updateUserRole,
     toggleUserStatus,
     deleteUser,
-    canManageUser,
-    canCreateRole
+    canDeleteUser
   } = useUserManagement();
 
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -74,25 +73,7 @@ const UserManagementDashboard = () => {
     );
   }
 
-  if (!currentUserRole || !['master_admin', 'admin', 'moderator'].includes(currentUserRole)) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Shield className="h-5 w-5" />
-            Acesso Negado
-          </CardTitle>
-          <CardDescription>
-            Você não tem permissão para acessar o gerenciamento de usuários.
-          </CardDescription>
-        </CardHeader>
-      </Card>
-    );
-  }
-
-  const availableRoles = Object.entries(USER_ROLE_LABELS).filter(([role]) => 
-    canCreateRole && canCreateRole(role as UserRole)
-  );
+  const availableRoles = Object.entries(USER_ROLE_LABELS);
 
   const activeUsers = users.filter(u => u.is_active);
 
@@ -200,13 +181,13 @@ const UserManagementDashboard = () => {
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sua Função</CardTitle>
+            <CardTitle className="text-sm font-medium">Seu Acesso</CardTitle>
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-lg font-medium">{USER_ROLE_LABELS[currentUserRole]}</div>
+            <div className="text-lg font-medium">Usuário Autenticado</div>
             <p className="text-xs text-muted-foreground">
-              {USER_ROLE_DESCRIPTIONS[currentUserRole]}
+              {canDeleteUser() ? 'Super Administrador' : 'Acesso completo ao sistema'}
             </p>
           </CardContent>
         </Card>
@@ -258,56 +239,54 @@ const UserManagementDashboard = () => {
                 </div>
                 
                 <div className="flex items-center gap-2">
-                  {canManageUser(user.role) && (
-                    <>
-                      <div className="flex items-center gap-2">
-                        <Label htmlFor={`active-${user.id}`} className="text-sm">
-                          {user.is_active ? 'Ativo' : 'Inativo'}
-                        </Label>
-                        <Switch
-                          id={`active-${user.id}`}
-                          checked={user.is_active}
-                          onCheckedChange={(checked) => toggleUserStatus(user.user_id, checked)}
-                        />
-                      </div>
-                      <Select
-                        value={user.role}
-                        onValueChange={(value) => updateUserRole(user.user_id, value as UserRole)}
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {availableRoles.map(([role, label]) => (
-                            <SelectItem key={role} value={role}>
-                              {label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="outline" size="sm">
-                            <UserX className="h-4 w-4" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Remover Usuário</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Tem certeza que deseja remover o usuário {user.full_name || user.email}? 
-                              Esta ação não pode ser desfeita.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => deleteUser(user.user_id)}>
-                              Remover
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </>
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor={`active-${user.id}`} className="text-sm">
+                      {user.is_active ? 'Ativo' : 'Inativo'}
+                    </Label>
+                    <Switch
+                      id={`active-${user.id}`}
+                      checked={user.is_active}
+                      onCheckedChange={(checked) => toggleUserStatus(user.user_id, checked)}
+                    />
+                  </div>
+                  <Select
+                    value={user.role}
+                    onValueChange={(value) => updateUserRole(user.user_id, value as UserRole)}
+                  >
+                    <SelectTrigger className="w-32">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableRoles.map(([role, label]) => (
+                        <SelectItem key={role} value={role}>
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {canDeleteUser() && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="outline" size="sm">
+                          <UserX className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Remover Usuário</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Tem certeza que deseja remover o usuário {user.full_name || user.email}? 
+                            Esta ação não pode ser desfeita.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => deleteUser(user.user_id)}>
+                            Remover
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   )}
                 </div>
               </div>
