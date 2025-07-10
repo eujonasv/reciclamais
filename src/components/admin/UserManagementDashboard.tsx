@@ -91,7 +91,7 @@ const UserManagementDashboard = () => {
   }
 
   const availableRoles = Object.entries(USER_ROLE_LABELS).filter(([role]) => 
-    canCreateRole(role as UserRole)
+    canCreateRole && canCreateRole(role as UserRole)
   );
 
   const activeUsers = users.filter(u => u.is_active);
