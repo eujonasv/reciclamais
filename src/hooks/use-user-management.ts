@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { UserProfile, UserInvitation, UserRole } from '@/types/user';
+import { UserProfile, UserRole } from '@/types/user';
 import { useToast } from '@/components/ui/use-toast';
 
 export const useUserManagement = () => {
   const [users, setUsers] = useState<UserProfile[]>([]);
-  const [invitations, setInvitations] = useState<UserInvitation[]>([]);
   const [currentUserRole, setCurrentUserRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
@@ -49,42 +48,20 @@ export const useUserManagement = () => {
     }
   };
 
-  const fetchInvitations = async () => {
+  const createUser = async (email: string, fullName: string, role: UserRole) => {
     try {
-      const { data, error } = await supabase
-        .from('user_invitations')
-        .select('*')
-        .is('accepted_at', null)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setInvitations(data || []);
-    } catch (error: any) {
-      toast({
-        title: "Erro ao carregar convites",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
-  };
-
-  const inviteUser = async (email: string, role: UserRole) => {
-    try {
-      const token = crypto.randomUUID();
-      const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getDate() + 7); // 7 days expiration
-
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Usuário não autenticado');
 
       const { error } = await supabase
-        .from('user_invitations')
+        .from('profiles')
         .insert({
+          user_id: crypto.randomUUID(),
           email,
+          full_name: fullName,
           role,
-          invited_by: user.id,
-          token,
-          expires_at: expiresAt.toISOString(),
+          created_by: user.id,
+          is_active: true
         });
 
       if (error) throw error;
@@ -94,20 +71,20 @@ export const useUserManagement = () => {
         .from('audit_logs')
         .insert({
           user_id: user.id,
-          action: 'invite_user',
-          details: { email, role }
+          action: 'create_user',
+          details: { email, role, full_name: fullName }
         });
 
       toast({
-        title: "Convite enviado",
-        description: `Convite enviado para ${email} com role ${role}`,
+        title: "Usuário criado",
+        description: `Usuário ${email} criado com role ${role}`,
       });
 
-      await fetchInvitations();
+      await fetchUsers();
       return true;
     } catch (error: any) {
       toast({
-        title: "Erro ao enviar convite",
+        title: "Erro ao criar usuário",
         description: error.message,
         variant: "destructive",
       });
@@ -195,25 +172,39 @@ export const useUserManagement = () => {
     }
   };
 
-  const deleteInvitation = async (invitationId: string) => {
+  const deleteUser = async (userId: string) => {
     try {
       const { error } = await supabase
-        .from('user_invitations')
+        .from('profiles')
         .delete()
-        .eq('id', invitationId);
+        .eq('user_id', userId);
 
       if (error) throw error;
 
+      // Log audit
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase
+          .from('audit_logs')
+          .insert({
+            user_id: user.id,
+            action: 'delete_user',
+            resource_type: 'user',
+            resource_id: userId,
+            details: {}
+          });
+      }
+
       toast({
-        title: "Convite removido",
-        description: "O convite foi removido com sucesso",
+        title: "Usuário removido",
+        description: "O usuário foi removido com sucesso",
       });
 
-      await fetchInvitations();
+      await fetchUsers();
       return true;
     } catch (error: any) {
       toast({
-        title: "Erro ao remover convite",
+        title: "Erro ao remover usuário",
         description: error.message,
         variant: "destructive",
       });
@@ -234,7 +225,7 @@ export const useUserManagement = () => {
     return roleHierarchy[currentUserRole] > roleHierarchy[targetRole];
   };
 
-  const canInviteRole = (targetRole: UserRole): boolean => {
+  const canCreateRole = (targetRole: UserRole): boolean => {
     if (!currentUserRole) return false;
     
     const roleHierarchy: Record<UserRole, number> = {
@@ -253,7 +244,7 @@ export const useUserManagement = () => {
       setCurrentUserRole(role);
       
       if (role && ['master_admin', 'admin', 'moderator'].includes(role)) {
-        await Promise.all([fetchUsers(), fetchInvitations()]);
+        await fetchUsers();
       } else {
         setLoading(false);
       }
@@ -264,15 +255,14 @@ export const useUserManagement = () => {
 
   return {
     users,
-    invitations,
     currentUserRole,
     loading,
-    inviteUser,
+    createUser,
     updateUserRole,
     toggleUserStatus,
-    deleteInvitation,
+    deleteUser,
     canManageUser,
-    canInviteRole,
-    refetch: () => Promise.all([fetchUsers(), fetchInvitations()])
+    canCreateRole,
+    refetch: () => fetchUsers()
   };
 };

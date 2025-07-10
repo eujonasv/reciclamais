@@ -18,34 +18,35 @@ import { ptBR } from 'date-fns/locale';
 const UserManagementDashboard = () => {
   const {
     users,
-    invitations,
     currentUserRole,
     loading,
-    inviteUser,
+    createUser,
     updateUserRole,
     toggleUserStatus,
-    deleteInvitation,
+    deleteUser,
     canManageUser,
-    canInviteRole
+    canCreateRole
   } = useUserManagement();
 
-  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
-  const [inviteEmail, setInviteEmail] = useState('');
-  const [inviteRole, setInviteRole] = useState<UserRole>('editor');
-  const [inviteLoading, setInviteLoading] = useState(false);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [createEmail, setCreateEmail] = useState('');
+  const [createFullName, setCreateFullName] = useState('');
+  const [createRole, setCreateRole] = useState<UserRole>('editor');
+  const [createLoading, setCreateLoading] = useState(false);
 
-  const handleInviteUser = async () => {
-    if (!inviteEmail.trim()) return;
+  const handleCreateUser = async () => {
+    if (!createEmail.trim() || !createFullName.trim()) return;
     
-    setInviteLoading(true);
-    const success = await inviteUser(inviteEmail, inviteRole);
+    setCreateLoading(true);
+    const success = await createUser(createEmail, createFullName, createRole);
     
     if (success) {
-      setInviteEmail('');
-      setInviteRole('editor');
-      setInviteDialogOpen(false);
+      setCreateEmail('');
+      setCreateFullName('');
+      setCreateRole('editor');
+      setCreateDialogOpen(false);
     }
-    setInviteLoading(false);
+    setCreateLoading(false);
   };
 
   const getRoleBadgeVariant = (role: UserRole) => {
@@ -90,11 +91,10 @@ const UserManagementDashboard = () => {
   }
 
   const availableRoles = Object.entries(USER_ROLE_LABELS).filter(([role]) => 
-    canInviteRole(role as UserRole)
+    canCreateRole(role as UserRole)
   );
 
   const activeUsers = users.filter(u => u.is_active);
-  const pendingInvitations = invitations.length;
 
   return (
     <div className="space-y-6">
@@ -103,18 +103,18 @@ const UserManagementDashboard = () => {
           <h2 className="text-2xl font-bold">Gerenciamento de Usuários</h2>
           <p className="text-muted-foreground">Gerencie usuários e suas permissões na plataforma</p>
         </div>
-        <Dialog open={inviteDialogOpen} onOpenChange={setInviteDialogOpen}>
+        <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button className="gap-2">
               <UserPlus className="h-4 w-4" />
-              Convidar Usuário
+              Criar Usuário
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Convidar Novo Usuário</DialogTitle>
+              <DialogTitle>Criar Novo Usuário</DialogTitle>
               <DialogDescription>
-                Envie um convite para um novo usuário com as permissões adequadas.
+                Crie um novo usuário com as permissões adequadas.
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -124,13 +124,22 @@ const UserManagementDashboard = () => {
                   id="email"
                   type="email"
                   placeholder="usuario@exemplo.com"
-                  value={inviteEmail}
-                  onChange={(e) => setInviteEmail(e.target.value)}
+                  value={createEmail}
+                  onChange={(e) => setCreateEmail(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="fullName">Nome Completo</Label>
+                <Input
+                  id="fullName"
+                  placeholder="Nome do usuário"
+                  value={createFullName}
+                  onChange={(e) => setCreateFullName(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="role">Função</Label>
-                <Select value={inviteRole} onValueChange={(value) => setInviteRole(value as UserRole)}>
+                <Select value={createRole} onValueChange={(value) => setCreateRole(value as UserRole)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione uma função" />
                   </SelectTrigger>
@@ -150,11 +159,11 @@ const UserManagementDashboard = () => {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setInviteDialogOpen(false)}>
+              <Button variant="outline" onClick={() => setCreateDialogOpen(false)}>
                 Cancelar
               </Button>
-              <Button onClick={handleInviteUser} disabled={inviteLoading || !inviteEmail.trim()}>
-                {inviteLoading ? 'Enviando...' : 'Enviar Convite'}
+              <Button onClick={handleCreateUser} disabled={createLoading || !createEmail.trim() || !createFullName.trim()}>
+                {createLoading ? 'Criando...' : 'Criar Usuário'}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -178,13 +187,13 @@ const UserManagementDashboard = () => {
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Convites Pendentes</CardTitle>
-            <Mail className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Total de Usuários</CardTitle>
+            <UserCheck className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{pendingInvitations}</div>
+            <div className="text-2xl font-bold">{users.length}</div>
             <p className="text-xs text-muted-foreground">
-              Aguardando aceitação
+              Registrados no sistema
             </p>
           </CardContent>
         </Card>
@@ -276,6 +285,28 @@ const UserManagementDashboard = () => {
                           ))}
                         </SelectContent>
                       </Select>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="outline" size="sm">
+                            <UserX className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Remover Usuário</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Tem certeza que deseja remover o usuário {user.full_name || user.email}? 
+                              Esta ação não pode ser desfeita.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => deleteUser(user.user_id)}>
+                              Remover
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </>
                   )}
                 </div>
@@ -284,68 +315,6 @@ const UserManagementDashboard = () => {
           </div>
         </CardContent>
       </Card>
-
-      {/* Pending Invitations */}
-      {invitations.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Mail className="h-5 w-5" />
-              Convites Pendentes
-            </CardTitle>
-            <CardDescription>
-              Convites enviados que ainda não foram aceitos
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {invitations.map((invitation) => (
-                <div key={invitation.id} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-3">
-                      <div>
-                        <p className="font-medium">{invitation.email}</p>
-                        <p className="text-sm text-muted-foreground">
-                          Função: {USER_ROLE_LABELS[invitation.role]}
-                        </p>
-                      </div>
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      Enviado {formatDistanceToNow(new Date(invitation.created_at), { 
-                        addSuffix: true, 
-                        locale: ptBR 
-                      })} • Expira em {format(new Date(invitation.expires_at), 'dd/MM/yyyy', { locale: ptBR })}
-                    </p>
-                  </div>
-                  
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="outline" size="sm">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Remover Convite</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Tem certeza que deseja remover o convite para {invitation.email}? 
-                          Esta ação não pode ser desfeita.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => deleteInvitation(invitation.id)}>
-                          Remover
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 };
