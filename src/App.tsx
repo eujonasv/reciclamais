@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminPage from "./pages/admin";
+import UsersAdminPage from "./pages/admin/users";
 import AuthPage from "./pages/auth";
 import ValuesPage from "./pages/Values";
 import EducationPage from "./pages/Educacao";
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/valores" element={<ValuesPage />} />
               <Route path="/admin" element={<AdminPage />} />
+              <Route path="/admin/users" element={<UsersAdminPage />} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/educacao" element={<EducationPage />} />
               <Route path="/mapa" element={<MapPage />} />

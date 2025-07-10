@@ -1,12 +1,13 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import MainLayout from "@/layouts/MainLayout";
 import AdminMap from '@/components/AdminMap';
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from '@/hooks/use-mobile';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { useAuth } from '@/hooks/use-auth';
-import { LogOut, MapPin, Layers, Package, ListTree } from 'lucide-react';
+import { LogOut, MapPin, Layers, Package, ListTree, Users, Settings } from 'lucide-react';
 import { useCollectionPoints } from '@/hooks/use-collection-points';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import MaterialStatsChart from '@/components/admin/MaterialStatsChart';
@@ -49,10 +50,18 @@ const AdminPage = () => {
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Painel do Administrador</h1>
               <p className="text-muted-foreground mt-1">Bem-vindo! Aqui estão as métricas e ferramentas.</p>
             </div>
-            <Button variant="outline" onClick={logout} className="self-start sm:self-center">
-              <LogOut size={16} className="mr-2" />
-              Sair
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" asChild className="gap-2">
+                <Link to="/admin/users">
+                  <Users size={16} />
+                  Usuários
+                </Link>
+              </Button>
+              <Button variant="outline" onClick={logout} className="gap-2">
+                <LogOut size={16} />
+                Sair
+              </Button>
+            </div>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
