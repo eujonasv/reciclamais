@@ -1,0 +1,172 @@
+{
+  "common": {
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "clear": "Limpiar",
+    "clearFilters": "Limpiar Filtros",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "confirm": "Confirmar",
+    "close": "Cerrar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "submit": "Enviar",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "register": "Registrarse",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "language": "Idioma"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "map": "Mapa",
+    "education": "Educación",
+    "values": "Valores",
+    "admin": "Admin",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio"
+  },
+  "hero": {
+    "title": "Encuentra Puntos de Recolección Sostenible",
+    "subtitle": "Te conectamos con los mejores lugares de reciclaje en tu área. Juntos, construimos un futuro más verde y sostenible.",
+    "ctaMap": "Ver en Mapa",
+    "ctaLearn": "Saber Más"
+  },
+  "about": {
+    "title": "Nuestra Misión: Transformar el Futuro",
+    "subtitle": "Conectamos personas conscientes con puntos de recolección sostenible, promoviendo prácticas que preservan nuestro planeta para las generaciones futuras.",
+    "whatWeDo": "Qué hacemos",
+    "whatWeDoSubtitle": "Facilitamos el acceso al reciclaje consciente a través de tecnología innovadora y alianzas estratégicas.",
+    "mission": {
+      "title": "Misión Ambiental",
+      "description": "Promovemos la sostenibilidad a través de la tecnología, conectando personas con prácticas ambientalmente responsables."
+    },
+    "community": {
+      "title": "Comunidad Activa",
+      "description": "Construimos una red colaborativa de ciudadanos comprometidos con la preservación ambiental."
+    },
+    "innovation": {
+      "title": "Innovación Verde",
+      "description": "Desarrollamos soluciones tecnológicas que hacen el reciclaje más accesible y eficiente."
+    },
+    "impact": {
+      "title": "Impacto Medible",
+      "description": "Medimos y reportamos el impacto positivo de las acciones de nuestra comunidad en el medio ambiente."
+    }
+  },
+  "search": {
+    "placeholder": "Buscar por nombre, dirección...",
+    "noResults": "No se encontraron resultados",
+    "resultsFound": "{{count}} resultado(s) encontrado(s)",
+    "suggestions": "Sugerencias",
+    "recentSearches": "Búsquedas Recientes",
+    "popularSearches": "Búsquedas Populares",
+    "searchHistory": "Historial de Búsqueda",
+    "clearHistory": "Limpiar Historial"
+  },
+  "materials": {
+    "plastic": "Plástico",
+    "paper": "Papel",
+    "glass": "Vidrio",
+    "metal": "Metal",
+    "electronics": "Electrónicos",
+    "organic": "Orgánico",
+    "textile": "Textil",
+    "battery": "Batería",
+    "oil": "Aceite"
+  },
+  "collectionPoints": {
+    "title": "Puntos de Recolección",
+    "address": "Dirección",
+    "phone": "Teléfono",
+    "website": "Sitio web",
+    "materials": "Materiales Aceptados",
+    "description": "Descripción",
+    "directions": "Cómo llegar",
+    "openInMaps": "Abrir en Maps",
+    "openInWaze": "Abrir en Waze",
+    "rating": "Calificación",
+    "reviews": "Reseñas",
+    "hours": "Horario de Atención",
+    "distance": "Distancia",
+    "open": "Abierto",
+    "closed": "Cerrado",
+    "openingSoon": "Abre pronto",
+    "closingSoon": "Cierra pronto"
+  },
+  "education": {
+    "title": "Conocimiento que Transforma",
+    "subtitle": "Aprende sobre prácticas sostenibles y cómo hacer la diferencia en el medio ambiente.",
+    "learnMore": "Saber Más",
+    "guides": "Guías",
+    "tips": "Consejos",
+    "videos": "Videos",
+    "faq": "Preguntas Frecuentes"
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "Encuentra respuestas a las principales dudas sobre reciclaje y sostenibilidad.",
+    "questions": {
+      "howToRecycle": {
+        "question": "¿Cómo puedo empezar a reciclar correctamente?",
+        "answer": "Comienza separando los materiales en casa: plásticos, papel, vidrio y metal. Luego, busca los puntos de recolección más cercanos en nuestra plataforma."
+      },
+      "materialsAccepted": {
+        "question": "¿Qué materiales se pueden reciclar?",
+        "answer": "La mayoría de plásticos, papeles, vidrios, metales y electrónicos se pueden reciclar. Cada punto de recolección acepta materiales específicos."
+      },
+      "findLocation": {
+        "question": "¿Cómo encuentro puntos de recolección cercanos?",
+        "answer": "Usa nuestro mapa interactivo para localizar puntos cerca de tu ubicación. Puedes filtrar por tipo de material."
+      },
+      "addLocation": {
+        "question": "¿Puedo agregar un nuevo punto de recolección?",
+        "answer": "¡Sí! Contáctanos a través del formulario de contacto para agregar nuevos puntos a nuestra base de datos."
+      }
+    }
+  },
+  "admin": {
+    "title": "Panel Administrativo",
+    "welcome": "Bienvenido",
+    "metrics": "Métricas",
+    "collectionPoints": "Puntos de Recolección",
+    "users": "Usuarios",
+    "analytics": "Analytics",
+    "reports": "Reportes",
+    "settings": "Configuración",
+    "totalPoints": "Total de Puntos",
+    "activeUsers": "Usuarios Activos",
+    "materialsCollected": "Materiales Recolectados",
+    "monthlyGrowth": "Crecimiento Mensual"
+  },
+  "accessibility": {
+    "skipToContent": "Saltar al contenido",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "searchButton": "Botón de búsqueda",
+    "filterButton": "Botón de filtro",
+    "languageSelector": "Selector de idioma",
+    "themeToggle": "Cambiar tema",
+    "mapNavigation": "Navegación del mapa",
+    "zoomIn": "Aumentar zoom",
+    "zoomOut": "Reducir zoom",
+    "currentLocation": "Ubicación actual"
+  },
+  "errors": {
+    "general": "Ocurrió un error inesperado",
+    "network": "Error de conexión",
+    "notFound": "Página no encontrada",
+    "unauthorized": "Acceso no autorizado",
+    "serverError": "Error del servidor",
+    "validation": "Datos inválidos",
+    "locationDenied": "Permiso de ubicación denegado",
+    "geolocationUnavailable": "Geolocalización no disponible"
+  }
+}

@@ -37,10 +37,11 @@ const SearchAndFilters = ({
           )}
           <Input
             type="text"
-            placeholder="Buscar por nome, endereço..."
+            placeholder={placeholder || "Buscar por nome, endereço..."}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={`w-full bg-white/50 dark:bg-gray-800/50 transition-all focus:bg-white dark:focus:bg-gray-800 ${showSearchIcon ? 'pl-10' : 'pl-4'} ${compact ? "h-10 text-sm" : ""}`}
+            aria-label="Campo de busca"
           />
         </div>
         {!compact && (

@@ -1,0 +1,172 @@
+{
+  "common": {
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "clearFilters": "Clear Filters",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "profile": "Profile",
+    "settings": "Settings",
+    "language": "Language"
+  },
+  "navigation": {
+    "home": "Home",
+    "map": "Map",
+    "education": "Education",
+    "values": "Values",
+    "admin": "Admin",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "hero": {
+    "title": "Find Sustainable Collection Points",
+    "subtitle": "We connect you to the best recycling locations in your area. Together, we build a greener and more sustainable future.",
+    "ctaMap": "View on Map",
+    "ctaLearn": "Learn More"
+  },
+  "about": {
+    "title": "Our Mission: Transform the Future",
+    "subtitle": "We connect conscious people to sustainable collection points, promoting practices that preserve our planet for future generations.",
+    "whatWeDo": "What we do",
+    "whatWeDoSubtitle": "We facilitate access to conscious recycling through innovative technology and strategic partnerships.",
+    "mission": {
+      "title": "Environmental Mission",
+      "description": "We promote sustainability through technology, connecting people to environmentally responsible practices."
+    },
+    "community": {
+      "title": "Active Community",
+      "description": "We build a collaborative network of citizens committed to environmental preservation."
+    },
+    "innovation": {
+      "title": "Green Innovation",
+      "description": "We develop technological solutions that make recycling more accessible and efficient."
+    },
+    "impact": {
+      "title": "Measurable Impact",
+      "description": "We measure and report the positive impact of our community's actions on the environment."
+    }
+  },
+  "search": {
+    "placeholder": "Search by name, address...",
+    "noResults": "No results found",
+    "resultsFound": "{{count}} result(s) found",
+    "suggestions": "Suggestions",
+    "recentSearches": "Recent Searches",
+    "popularSearches": "Popular Searches",
+    "searchHistory": "Search History",
+    "clearHistory": "Clear History"
+  },
+  "materials": {
+    "plastic": "Plastic",
+    "paper": "Paper",
+    "glass": "Glass",
+    "metal": "Metal",
+    "electronics": "Electronics",
+    "organic": "Organic",
+    "textile": "Textile",
+    "battery": "Battery",
+    "oil": "Oil"
+  },
+  "collectionPoints": {
+    "title": "Collection Points",
+    "address": "Address",
+    "phone": "Phone",
+    "website": "Website",
+    "materials": "Accepted Materials",
+    "description": "Description",
+    "directions": "Directions",
+    "openInMaps": "Open in Maps",
+    "openInWaze": "Open in Waze",
+    "rating": "Rating",
+    "reviews": "Reviews",
+    "hours": "Opening Hours",
+    "distance": "Distance",
+    "open": "Open",
+    "closed": "Closed",
+    "openingSoon": "Opening soon",
+    "closingSoon": "Closing soon"
+  },
+  "education": {
+    "title": "Knowledge that Transforms",
+    "subtitle": "Learn about sustainable practices and how to make a difference in the environment.",
+    "learnMore": "Learn More",
+    "guides": "Guides",
+    "tips": "Tips",
+    "videos": "Videos",
+    "faq": "Frequently Asked Questions"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers to the main questions about recycling and sustainability.",
+    "questions": {
+      "howToRecycle": {
+        "question": "How can I start recycling correctly?",
+        "answer": "Start by separating materials at home: plastics, paper, glass, and metal. Then, look for the nearest collection points on our platform."
+      },
+      "materialsAccepted": {
+        "question": "What materials can be recycled?",
+        "answer": "Most plastics, papers, glass, metals, and electronics can be recycled. Each collection point accepts specific materials."
+      },
+      "findLocation": {
+        "question": "How do I find nearby collection points?",
+        "answer": "Use our interactive map to locate points near your location. You can filter by material type."
+      },
+      "addLocation": {
+        "question": "Can I add a new collection point?",
+        "answer": "Yes! Contact us through the contact form to add new points to our database."
+      }
+    }
+  },
+  "admin": {
+    "title": "Administrative Panel",
+    "welcome": "Welcome",
+    "metrics": "Metrics",
+    "collectionPoints": "Collection Points",
+    "users": "Users",
+    "analytics": "Analytics",
+    "reports": "Reports",
+    "settings": "Settings",
+    "totalPoints": "Total Points",
+    "activeUsers": "Active Users",
+    "materialsCollected": "Materials Collected",
+    "monthlyGrowth": "Monthly Growth"
+  },
+  "accessibility": {
+    "skipToContent": "Skip to content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "searchButton": "Search button",
+    "filterButton": "Filter button",
+    "languageSelector": "Language selector",
+    "themeToggle": "Toggle theme",
+    "mapNavigation": "Map navigation",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "currentLocation": "Current location"
+  },
+  "errors": {
+    "general": "An unexpected error occurred",
+    "network": "Connection error",
+    "notFound": "Page not found",
+    "unauthorized": "Unauthorized access",
+    "serverError": "Server error",
+    "validation": "Invalid data",
+    "locationDenied": "Location permission denied",
+    "geolocationUnavailable": "Geolocation unavailable"
+  }
+}

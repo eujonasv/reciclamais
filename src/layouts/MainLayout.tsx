@@ -1,7 +1,10 @@
 import React, { ReactNode, useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import { Menu, X, Instagram, ChevronUp, Lock, Mail } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { LanguageSelector } from '@/components/ui/language-selector';
+import { SkipLink } from '@/components/accessibility/SkipLink';
 import RecycleLogoWithText from "@/components/RecycleLogoWithText";
 import { Button } from "@/components/ui/button";
 
@@ -10,6 +13,7 @@ interface MainLayoutProps {
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const isHome = location.pathname === "/";
@@ -68,7 +72,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   // Set active section based on current route
   useEffect(() => {
     if (location.pathname === "/") {
-      // On home page, activeSection will be managed by scroll
       const hash = window.location.hash;
       if (hash) {
         const sectionId = hash.replace("#", "");
@@ -112,7 +115,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
   const navLinks = useMemo(() => [{
     id: "inicio",
-    text: "Início"
+    text: t('navigation.home')
   }, {
     id: "sobre",
     text: "Sobre"
@@ -121,12 +124,12 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     text: "Como Funciona"
   }, {
     id: "mapa",
-    text: "Mapa",
+    text: t('navigation.map'),
     isPage: true,
     path: "/mapa"
   }, {
     id: "educacao", 
-    text: "Educação",
+    text: t('navigation.education'),
     isPage: true,
     path: "/educacao"
   }, {
@@ -134,194 +137,209 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     text: "FAQ"
   }, {
     id: "valores",
-    text: "Diretrizes Estratégicas",
+    text: t('navigation.values'),
     isPage: true,
     path: "/valores"
-  }], []);
+  }], [t]);
   
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
-      <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 shadow-sm dark:shadow-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Link to="/" onClick={() => scrollToSection("inicio")} className="flex items-center">
-                <RecycleLogoWithText size="lg" />
-              </Link>
-            </div>
-
-            <nav className="hidden md:flex items-center space-x-6">
-              {navLinks.map(({id, text, isPage, path}) => (
-                <button 
-                  key={id} 
-                  onClick={() => {
-                    if (isPage) {
-                      navigateToPage(path!);
-                    } else {
-                      if (isHome) {
-                        scrollToSection(id);
-                      } else {
-                        navigate(`/#${id}`);
-                      }
-                    }
-                  }} 
-                  className={`nav-link ${activeSection === id ? "active-nav-link" : ""}`}
+    <>
+      <SkipLink />
+      <div className="min-h-screen flex flex-col bg-background">
+        <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-between items-center h-16">
+              <div className="flex items-center">
+                <Link 
+                  to="/" 
+                  onClick={() => scrollToSection("inicio")} 
+                  className="flex items-center transition-transform hover:scale-105"
                 >
-                  {text}
-                </button>
-              ))}
-            </nav>
-
-            <div className="flex items-center">
-              <ThemeToggle />
-              <button 
-                className="ml-4 md:hidden rounded-md p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none" 
-                onClick={toggleMenu} 
-                aria-label="Menu"
-              >
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className={`md:hidden ${isMenuOpen ? "block" : "hidden"} bg-white dark:bg-gray-900 shadow-md`}>
-          <nav className="container mx-auto px-4 py-3">
-            <div className="flex flex-col space-y-3">
-              {navLinks.map(({id, text, isPage, path}) => (
-                <button 
-                  key={id} 
-                  onClick={() => {
-                    if (isPage) {
-                      navigateToPage(path!);
-                    } else {
-                      if (isHome) {
-                        scrollToSection(id);
-                      } else {
-                        navigate(`/#${id}`);
-                      }
-                    }
-                  }} 
-                  className={`py-2 px-3 rounded-md text-left ${
-                    activeSection === id 
-                      ? "bg-recicla-primary/10 text-recicla-primary dark:bg-recicla-primary/20 dark:text-recicla-secondary" 
-                      : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-                  }`}
-                >
-                  {text}
-                </button>
-              ))}
-            </div>
-          </nav>
-        </div>
-      </header>
-
-      <main className="flex-grow" onClick={closeMenu}>
-        {children}
-      </main>
-
-      <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-        <div className="container mx-auto px-4 py-12 md:py-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
-            {/* Coluna 1: Sobre */}
-            <div className="sm:col-span-2 lg:col-span-2">
-              <Link to="/" onClick={() => scrollToSection("inicio")} className="inline-block mb-4">
-                <div className="origin-left">
                   <RecycleLogoWithText size="lg" />
-                </div>
-              </Link>
-              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                Conectando pessoas e empresas a pontos de coleta para um mundo mais sustentável.
-              </p>
-            </div>
+                </Link>
+              </div>
 
-            {/* Coluna 2: Navegação */}
-            <div>
-              <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Navegação</h3>
-              <ul className="space-y-3">
+              <nav className="hidden md:flex items-center space-x-6" role="navigation">
                 {navLinks.map(({id, text, isPage, path}) => (
-                  <li key={id}>
-                    <button
-                      onClick={() => {
-                        if (isPage) {
-                          navigateToPage(path!);
-                        } else if (isHome) {
+                  <button 
+                    key={id} 
+                    onClick={() => {
+                      if (isPage) {
+                        navigateToPage(path!);
+                      } else {
+                        if (isHome) {
                           scrollToSection(id);
                         } else {
                           navigate(`/#${id}`);
                         }
-                      }}
-                      className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm"
-                    >
-                      {text}
-                    </button>
-                  </li>
+                      }
+                    }} 
+                    className={`nav-link ${activeSection === id ? "active-nav-link" : ""}`}
+                    aria-current={activeSection === id ? 'page' : undefined}
+                  >
+                    {text}
+                  </button>
                 ))}
-              </ul>
-            </div>
+              </nav>
 
-            {/* Coluna 3: Institucional */}
-            <div>
-              <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Institucional</h3>
-              <ul className="space-y-3">
-                <li>
-                  <Link to="/politica-de-privacidade" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">Política de Privacidade</Link>
-                </li>
-                <li>
-                  <Link to="/termos-de-servico" className="text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">Termos de Serviço</Link>
-                </li>
-                <li>
-                  <Link to="/admin" className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">
-                    <Lock size={14} />
-                    <span>Área Administrativa</span>
-                  </Link>
-                </li>
-              </ul>
-            </div>
+              <div className="hidden md:flex items-center space-x-2">
+                <LanguageSelector />
+                <ThemeToggle />
+              </div>
 
-            {/* Coluna 4: Contato */}
-            <div>
-              <h3 className="text-base font-semibold mb-4 text-gray-900 dark:text-white uppercase tracking-wider">Contato</h3>
-              <ul className="space-y-3">
-                <li>
-                  <a href="mailto:reciclamais25@gmail.com" className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-recicla-primary dark:hover:text-recicla-secondary transition-colors text-sm">
-                    <Mail size={16} />
-                    <span>reciclamais25@gmail.com</span>
-                  </a>
-                </li>
-              </ul>
-              <div className="flex space-x-3 mt-6">
-                <a 
-                  href="https://www.instagram.com/reciclamais.br/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-500 hover:text-recicla-primary dark:text-white dark:hover:text-recicla-secondary p-2 bg-gray-200 dark:bg-gray-700/50 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-full transition-all duration-300"
-                  aria-label="Instagram"
+              <div className="md:hidden flex items-center space-x-2">
+                <LanguageSelector />
+                <ThemeToggle />
+                <button 
+                  className="rounded-md p-2 hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring" 
+                  onClick={toggleMenu} 
+                  aria-label={isMenuOpen ? t('accessibility.closeMenu') : t('accessibility.openMenu')}
+                  aria-expanded={isMenuOpen}
+                  aria-controls="mobile-menu"
                 >
-                  <Instagram size={20} />
-                </a>
+                  {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
               </div>
             </div>
           </div>
 
-          <div className="pt-8 mt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center">
-            <p className="text-sm text-gray-500 dark:text-gray-400 text-center sm:text-left mb-4 sm:mb-0">
-              © {new Date().getFullYear()} RECICLA+. Todos os direitos reservados.
-            </p>
-          </div>
-        </div>
-      </footer>
+          {isMenuOpen && (
+            <div id="mobile-menu" className="md:hidden bg-background border-t">
+              <nav className="container mx-auto px-4 py-3" role="navigation">
+                <div className="flex flex-col space-y-3">
+                  {navLinks.map(({id, text, isPage, path}) => (
+                    <button 
+                      key={id} 
+                      onClick={() => {
+                        if (isPage) {
+                          navigateToPage(path!);
+                        } else {
+                          if (isHome) {
+                            scrollToSection(id);
+                          } else {
+                            navigate(`/#${id}`);
+                          }
+                        }
+                      }} 
+                      className={`py-2 px-3 rounded-md text-left transition-colors ${
+                        activeSection === id 
+                          ? "bg-accent text-accent-foreground" 
+                          : "hover:bg-accent hover:text-accent-foreground"
+                      }`}
+                      aria-current={activeSection === id ? 'page' : undefined}
+                    >
+                      {text}
+                    </button>
+                  ))}
+                </div>
+              </nav>
+            </div>
+          )}
+        </header>
 
-      <button 
-        onClick={scrollToTop} 
-        className={`fixed left-6 bottom-6 bg-recicla-primary hover:bg-recicla-accent dark:bg-recicla-secondary dark:hover:bg-recicla-primary text-white rounded-full p-2 shadow-lg transition-all duration-300 ${
-          showScrollToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
-        }`} 
-        aria-label="Voltar ao topo"
-      >
-        <ChevronUp size={24} />
-      </button>
-    </div>
+        <main id="main-content" className="flex-grow" onClick={closeMenu}>
+          {children}
+        </main>
+
+        <footer className="bg-muted/50 border-t">
+          <div className="container mx-auto px-4 py-12 md:py-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+              <div className="sm:col-span-2 lg:col-span-2">
+                <Link to="/" onClick={() => scrollToSection("inicio")} className="inline-block mb-4">
+                  <div className="origin-left">
+                    <RecycleLogoWithText size="lg" />
+                  </div>
+                </Link>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {t('about.subtitle')}
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-semibold mb-4 uppercase tracking-wider">{t('navigation.home')}</h3>
+                <ul className="space-y-3">
+                  {navLinks.map(({id, text, isPage, path}) => (
+                    <li key={id}>
+                      <button
+                        onClick={() => {
+                          if (isPage) {
+                            navigateToPage(path!);
+                          } else if (isHome) {
+                            scrollToSection(id);
+                          } else {
+                            navigate(`/#${id}`);
+                          }
+                        }}
+                        className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                      >
+                        {text}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-base font-semibold mb-4 uppercase tracking-wider">{t('common.settings')}</h3>
+                <ul className="space-y-3">
+                  <li>
+                    <Link to="/politica-de-privacidade" className="text-muted-foreground hover:text-primary transition-colors text-sm">{t('navigation.privacy')}</Link>
+                  </li>
+                  <li>
+                    <Link to="/termos-de-servico" className="text-muted-foreground hover:text-primary transition-colors text-sm">{t('navigation.terms')}</Link>
+                  </li>
+                  <li>
+                    <Link to="/admin" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
+                      <Lock size={14} />
+                      <span>{t('navigation.admin')}</span>
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-base font-semibold mb-4 uppercase tracking-wider">Contato</h3>
+                <ul className="space-y-3">
+                  <li>
+                    <a href="mailto:reciclamais25@gmail.com" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
+                      <Mail size={16} />
+                      <span>reciclamais25@gmail.com</span>
+                    </a>
+                  </li>
+                </ul>
+                <div className="flex space-x-3 mt-6">
+                  <a 
+                    href="https://www.instagram.com/reciclamais.br/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="p-2 bg-muted hover:bg-accent rounded-full transition-all duration-300"
+                    aria-label="Instagram"
+                  >
+                    <Instagram size={20} />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-8 mt-8 border-t flex flex-col sm:flex-row justify-between items-center">
+              <p className="text-sm text-muted-foreground text-center sm:text-left mb-4 sm:mb-0">
+                © {new Date().getFullYear()} RECICLA+. Todos os direitos reservados.
+              </p>
+            </div>
+          </div>
+        </footer>
+
+        <button 
+          onClick={scrollToTop} 
+          className={`fixed left-6 bottom-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full p-2 shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-ring ${
+            showScrollToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+          }`} 
+          aria-label={t('accessibility.skipToContent')}
+        >
+          <ChevronUp size={24} />
+        </button>
+      </div>
+    </>
   );
 };
 
