@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useIsMobile } from '@/hooks/use-mobile';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { useAuth } from '@/hooks/use-auth';
-import { LogOut, MapPin, Layers, Package, ListTree, Users, Settings } from 'lucide-react';
+import { LogOut, MapPin, Layers, Package, ListTree, Settings } from 'lucide-react';
 import { useCollectionPoints } from '@/hooks/use-collection-points';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import MaterialStatsChart from '@/components/admin/MaterialStatsChart';
@@ -94,12 +94,6 @@ const AdminPage = () => {
               <p className="text-muted-foreground mt-1">{greeting}, {userName}! Aqui estão as métricas e ferramentas.</p>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" asChild className="gap-2">
-                <Link to="/admin/users">
-                  <Users size={16} />
-                  Usuários
-                </Link>
-              </Button>
               <Button variant="outline" onClick={logout} className="gap-2">
                 <LogOut size={16} />
                 Sair
