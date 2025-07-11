@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
-import './i18n';
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminPage from "./pages/admin";
@@ -22,25 +21,24 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider attribute="class">
       <TooltipProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
-            <div className="min-h-screen bg-background font-sans antialiased">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/valores" element={<ValuesPage />} />
-                <Route path="/admin" element={<AdminPage />} />
-                <Route path="/auth" element={<AuthPage />} />
-                <Route path="/educacao" element={<EducationPage />} />
-                <Route path="/mapa" element={<MapPage />} />
-                <Route path="/politica-de-privacidade" element={<PrivacyPolicyPage />} />
-                <Route path="/termos-de-servico" element={<TermsOfServicePage />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </div>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/valores" element={<ValuesPage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              
+              <Route path="/auth" element={<AuthPage />} />
+              <Route path="/educacao" element={<EducationPage />} />
+              <Route path="/mapa" element={<MapPage />} />
+              <Route path="/politica-de-privacidade" element={<PrivacyPolicyPage />} />
+              <Route path="/termos-de-servico" element={<TermsOfServicePage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
