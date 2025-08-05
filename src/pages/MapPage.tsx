@@ -10,6 +10,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Locate, List } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import DemoWarningBanner from "@/components/map/DemoWarningBanner";
 import type { LatLngTuple } from "@/lib/map-utils";
 import { findClosestPoint } from "@/lib/map-utils";
 
@@ -176,8 +177,11 @@ const MapPage = () => {
 
   return (
     <MainLayout>
+      {/* Aviso de demonstração */}
+      <DemoWarningBanner />
+      
       {/* Layout flex que ocupa toda altura abaixo do header */}
-      <div className="h-[calc(100vh-4rem)] w-full bg-white dark:bg-gray-900 relative">
+      <div className="h-[calc(100vh-8rem)] w-full bg-white dark:bg-gray-900 relative">
         {/* Mapa: ocupa toda a área */}
         <div className="flex-1 h-full relative">
           <MapboxCollectionMap
