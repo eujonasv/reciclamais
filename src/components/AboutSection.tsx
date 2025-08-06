@@ -123,7 +123,7 @@ const AboutSection = () => {
               <div className="relative">
                 <div className="absolute -inset-2 sm:-inset-4 rounded-3xl hero-gradient opacity-20 filter blur-xl animate-float"></div>
                 <img 
-                  src="/lovable-uploads/Aerogerador.png" 
+                  src="/lovable-uploads/6cb0b831-7a73-49d4-b18e-078d7fce11ca.png" 
                   alt="Mulher reciclando uma garrafa de vidro" 
                   className="rounded-3xl shadow-2xl max-w-full object-cover mx-auto relative z-10"
                 />
