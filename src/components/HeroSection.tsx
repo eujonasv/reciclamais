@@ -58,7 +58,7 @@ const HeroSection = () => {
             <div className="relative">
               <div className="absolute -inset-1 rounded-full bg-recicla-primary/20 dark:bg-recicla-primary/30 filter blur-xl animate-pulse-green"></div>
               <img 
-                src="https://plus.unsplash.com/premium_vector-1719419318688-8fb5853b53f1?q=80&w=1934&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                src="/lovable-uploads/Aerogerador.png"
                 alt="Sustentabilidade" 
                 className="rounded-xl shadow-xl max-w-full object-cover mx-auto relative z-10 animate-scale-in"
               />
