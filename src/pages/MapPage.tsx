@@ -13,6 +13,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import DemoWarningBanner from "@/components/map/DemoWarningBanner";
 import type { LatLngTuple } from "@/lib/map-utils";
 import { findClosestPoint } from "@/lib/map-utils";
+import { useSmartSearch } from "@/hooks/use-smart-search";
+import SkipLink from "@/components/a11y/SkipLink";
 
 const parseOpeningHours = (description: string | null) => {
   const defaultHours = {
@@ -90,17 +92,10 @@ const MapPage = () => {
     new Set(collectionPoints.flatMap((p) => p.materials))
   ).sort();
 
-  // Filtragem local
-  const filteredPoints = collectionPoints.filter((point) => {
-    const matchesSearch =
-      point.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      point.address.toLowerCase().includes(searchTerm.toLowerCase());
-
-    const matchesFilter =
-      activeFilter.length === 0 ||
-      point.materials.some((mat) => activeFilter.includes(mat));
-
-    return matchesSearch && matchesFilter;
+  const { filteredPoints, getSuggestions } = useSmartSearch({
+    points: collectionPoints,
+    searchTerm,
+    activeFilter,
   });
 
   const toggleFilter = (mat: string) => {
@@ -177,13 +172,14 @@ const MapPage = () => {
 
   return (
     <MainLayout>
+      <SkipLink href="#map-section">Pular para o mapa</SkipLink>
       {/* Aviso de demonstração */}
       <DemoWarningBanner />
       
       {/* Layout flex que ocupa toda altura abaixo do header */}
       <div className="h-[calc(100vh-8rem)] w-full bg-white dark:bg-gray-900 relative">
         {/* Mapa: ocupa toda a área */}
-        <div className="flex-1 h-full relative">
+        <div id="map-section" className="flex-1 h-full relative">
           <MapboxCollectionMap
             collectionPoints={filteredPoints}
             selectedPoint={selectedPoint}
@@ -239,6 +235,7 @@ const MapPage = () => {
             allMaterials={allMaterials}
             toggleFilter={toggleFilter}
             clearFilters={clearFilters}
+            getSuggestions={getSuggestions}
             filteredPoints={filteredPoints}
             selectedPoint={selectedPoint}
             onPointSelect={handlePointSelect}
@@ -253,6 +250,7 @@ const MapPage = () => {
             allMaterials={allMaterials}
             toggleFilter={toggleFilter}
             clearFilters={clearFilters}
+            getSuggestions={getSuggestions}
             filteredPoints={filteredPoints}
             selectedPoint={selectedPoint}
             onPointSelect={handlePointSelect}
