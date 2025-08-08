@@ -16,6 +16,7 @@ interface FloatingSidebarProps {
   allMaterials: string[];
   toggleFilter: (mat: string) => void;
   clearFilters: () => void;
+  getSuggestions?: (q: string) => string[];
   filteredPoints: CollectionPoint[];
   selectedPoint: CollectionPoint | null;
   onPointSelect: (point: CollectionPoint) => void;
@@ -30,6 +31,7 @@ const FloatingSidebar: React.FC<FloatingSidebarProps> = ({
   allMaterials,
   toggleFilter,
   clearFilters,
+  getSuggestions,
   filteredPoints,
   selectedPoint,
   onPointSelect,
@@ -61,6 +63,7 @@ const FloatingSidebar: React.FC<FloatingSidebarProps> = ({
         allMaterials={allMaterials}
         toggleFilter={toggleFilter}
         clearFilters={clearFilters}
+        getSuggestions={getSuggestions}
         showSearchIcon
         compact
       />

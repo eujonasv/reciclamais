@@ -16,6 +16,7 @@ interface MobilePointsDrawerProps {
   allMaterials: string[];
   toggleFilter: (mat: string) => void;
   clearFilters: () => void;
+  getSuggestions?: (q: string) => string[];
   filteredPoints: CollectionPoint[];
   selectedPoint: CollectionPoint | null;
   onPointSelect: (point: CollectionPoint) => void;
@@ -30,6 +31,7 @@ const MobilePointsDrawer: React.FC<MobilePointsDrawerProps> = ({
   allMaterials,
   toggleFilter,
   clearFilters,
+  getSuggestions,
   filteredPoints,
   selectedPoint,
   onPointSelect,
@@ -55,6 +57,7 @@ const MobilePointsDrawer: React.FC<MobilePointsDrawerProps> = ({
             allMaterials={allMaterials}
             toggleFilter={toggleFilter}
             clearFilters={clearFilters}
+            getSuggestions={getSuggestions}
             showSearchIcon
             compact
           />

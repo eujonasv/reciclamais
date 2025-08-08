@@ -13,6 +13,7 @@ export interface SearchAndFiltersProps {
   clearFilters: () => void;
   showSearchIcon?: boolean;
   compact?: boolean;
+  getSuggestions?: (q: string) => string[];
 }
 
 const SearchAndFilters = ({
@@ -24,6 +25,7 @@ const SearchAndFilters = ({
   clearFilters,
   showSearchIcon,
   compact,
+  getSuggestions,
 }: SearchAndFiltersProps) => {
   return (
     <div className={`mb-2 ${compact ? '' : 'max-w-3xl mx-auto mb-8'}`}>

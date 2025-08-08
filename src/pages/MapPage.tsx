@@ -6,7 +6,7 @@ import MobilePointsDrawer from "@/components/map/MobilePointsDrawer";
 import MapboxCollectionMap, { MapboxCollectionMapRef } from "@/components/map/MapboxCollectionMap";
 import { supabase } from "@/integrations/supabase/client";
 import { CollectionPoint } from "@/types/collection-point";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Locate, List } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
