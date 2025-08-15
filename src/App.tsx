@@ -19,6 +19,7 @@ import TermsOfServicePage from "./pages/TermsOfService";
 import { AuthProvider } from "./hooks/use-auth";
 import { OfflineProvider } from "./hooks/use-offline";
 import { OfflineIndicator } from "./components/ui/offline-indicator";
+import { InstallPrompt } from "./components/ui/install-prompt";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <OfflineIndicator />
+        <InstallPrompt />
         <BrowserRouter>
           <AuthProvider>
             <Routes>

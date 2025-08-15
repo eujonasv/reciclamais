@@ -7,6 +7,10 @@
   "background_color": "#ffffff",
   "theme_color": "#22c55e",
   "orientation": "portrait-primary",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "categories": ["utilities", "productivity"],
+  "lang": "pt-BR",
   "icons": [
     {
       "src": "/lovable-uploads/logo-light.png",
@@ -21,8 +25,41 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["utilities", "productivity"],
-  "lang": "pt-BR",
-  "scope": "/",
-  "prefer_related_applications": false
+  "screenshots": [
+    {
+      "src": "/lovable-uploads/logo-light.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "features": ["Cross Platform", "Fast", "Simple"],
+  "iarc_rating_id": "",
+  "related_applications": [],
+  "shortcuts": [
+    {
+      "name": "Mapa de Pontos",
+      "short_name": "Mapa",
+      "description": "Acesse o mapa de pontos de coleta",
+      "url": "/mapa",
+      "icons": [
+        {
+          "src": "/lovable-uploads/logo-light.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Educação",
+      "short_name": "Educação",
+      "description": "Aprenda sobre reciclagem",
+      "url": "/educacao",
+      "icons": [
+        {
+          "src": "/lovable-uploads/logo-light.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
 }
