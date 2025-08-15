@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { CollectionPoint } from '@/types/collection-point';
 import { supabase } from '@/integrations/supabase/client';
-import { collectionPointsService } from '@/services/collection-points-service';
-import { useOffline } from '@/hooks/use-offline';
 import { useToast } from '@/components/ui/use-toast';
 import type { MapboxCollectionMapRef } from '@/components/map/MapboxCollectionMap';
 import { findClosestPoint } from '@/lib/map-utils';
@@ -21,29 +19,41 @@ export const useMapSection = () => {
     const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
     const [isLocating, setIsLocating] = useState(false);
     const { toast } = useToast();
-    const { isOnline } = useOffline();
     const mapRef = useRef<MapboxCollectionMapRef | null>(null);
 
     useEffect(() => {
         const fetchPoints = async () => {
             setIsLoading(true);
             try {
-                const points = await collectionPointsService.loadPoints();
-                setCollectionPoints(points);
-                
-                if (!isOnline) {
+                const { data, error } = await supabase.from("collection_points").select("*");
+                if (error) {
+                    console.error("Error fetching collection points:", error);
                     toast({
-                        title: "Modo Offline",
-                        description: "Carregando dados em cache. Algumas informações podem estar desatualizadas.",
+                        title: "Erro ao carregar pontos de coleta",
+                        description: error.message,
+                        variant: "destructive",
                     });
+                    return;
                 }
+
+                const transformedData: CollectionPoint[] = data.map((point) => ({
+                    ...point,
+                    materials: point.materials?.split(',').map((m: string) => m.trim()) || [],
+                    id: point.id.toString(),
+                    openingHours: point.description ? JSON.parse(point.description) : {
+                        monday: { enabled: false, openTime: '', closeTime: '' },
+                        tuesday: { enabled: false, openTime: '', closeTime: '' },
+                        wednesday: { enabled: false, openTime: '', closeTime: '' },
+                        thursday: { enabled: false, openTime: '', closeTime: '' },
+                        friday: { enabled: false, openTime: '', closeTime: '' },
+                        saturday: { enabled: false, openTime: '', closeTime: '' },
+                        sunday: { enabled: false, openTime: '', closeTime: '' },
+                    }
+                }));
+
+                setCollectionPoints(transformedData);
             } catch (error) {
-                console.error("Error fetching collection points:", error);
-                toast({
-                    title: "Erro ao carregar pontos de coleta",
-                    description: "Tentando carregar dados em cache...",
-                    variant: "destructive",
-                });
+                console.error("Exception fetching collection points:", error);
             } finally {
                 setIsLoading(false);
             }
@@ -51,32 +61,21 @@ export const useMapSection = () => {
 
         fetchPoints();
 
-        // Sync offline operations when back online
-        if (isOnline) {
-            collectionPointsService.syncOfflineOperations().catch(console.error);
-        }
-
-        // Only set up real-time subscription when online
-        let channel: any = null;
-        if (isOnline) {
-            channel = supabase
-                .channel('public:collection_points')
-                .on('postgres_changes', {
-                    event: '*',
-                    schema: 'public',
-                    table: 'collection_points'
-                }, () => {
-                    fetchPoints();
-                })
-                .subscribe();
-        }
+        const channel = supabase
+            .channel('public:collection_points')
+            .on('postgres_changes', {
+                event: '*',
+                schema: 'public',
+                table: 'collection_points'
+            }, () => {
+                fetchPoints();
+            })
+            .subscribe();
 
         return () => {
-            if (channel) {
-                supabase.removeChannel(channel);
-            }
+            supabase.removeChannel(channel);
         };
-    }, [toast, isOnline]);
+    }, [toast]);
 
     const filteredPoints = useMemo(() => collectionPoints.filter(point => {
         const matchesSearch = point.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

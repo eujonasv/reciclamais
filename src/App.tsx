@@ -1,5 +1,4 @@
 
-import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 // import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,37 +16,30 @@ import MapPage from "./pages/MapPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicy";
 import TermsOfServicePage from "./pages/TermsOfService";
 import { AuthProvider } from "./hooks/use-auth";
-import { OfflineProvider } from "./hooks/use-offline";
-import { OfflineIndicator } from "./components/ui/offline-indicator";
-import { InstallPrompt } from "./components/ui/install-prompt";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class">
-      <OfflineProvider>
-        <Toaster />
-        <Sonner />
-        <OfflineIndicator />
-        <InstallPrompt />
-        <BrowserRouter>
-          <AuthProvider>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/valores" element={<ValuesPage />} />
-              <Route path="/admin" element={<AdminPage />} />
-              
-              <Route path="/auth" element={<AuthPage />} />
-              <Route path="/educacao" element={<EducationPage />} />
-              <Route path="/mapa" element={<MapPage />} />
-              <Route path="/politica-de-privacidade" element={<PrivacyPolicyPage />} />
-              <Route path="/termos-de-servico" element={<TermsOfServicePage />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AuthProvider>
-        </BrowserRouter>
-      </OfflineProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/valores" element={<ValuesPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/educacao" element={<EducationPage />} />
+            <Route path="/mapa" element={<MapPage />} />
+            <Route path="/politica-de-privacidade" element={<PrivacyPolicyPage />} />
+            <Route path="/termos-de-servico" element={<TermsOfServicePage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
     </ThemeProvider>
   </QueryClientProvider>
 );
