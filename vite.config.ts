@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          mapbox: ['mapbox-gl', 'react-map-gl'],
+          mapbox: ['mapbox-gl'],
         },
       },
     },
