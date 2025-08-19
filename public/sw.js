@@ -6,17 +6,63 @@ import { StaleWhileRevalidate, CacheFirst, NetworkFirst } from 'workbox-strategi
 precacheAndRoute(self.__WB_MANIFEST);
 cleanupOutdatedCaches();
 
-// Cache API responses with network-first strategy for collection points
+// Cache Mapbox tiles and resources for offline map functionality
 registerRoute(
-  ({ url }) => url.pathname.includes('/rest/v1/collection_points'),
-  new NetworkFirst({
-    cacheName: 'api-collection-points',
-    networkTimeoutSeconds: 5,
+  ({ url }) => 
+    url.hostname === 'api.mapbox.com' ||
+    url.hostname.includes('tiles.mapbox.com') ||
+    url.hostname.includes('mapbox.com'),
+  new CacheFirst({
+    cacheName: 'mapbox-tiles',
     plugins: [{
+      cacheWillUpdate: async ({ response }) => {
+        return response.status === 200 ? response : null;
+      },
       cacheKeyWillBeUsed: async ({ request }) => {
-        return `${request.url}?timestamp=${Date.now()}`;
+        // Remove access token from cache key for better caching
+        const url = new URL(request.url);
+        url.searchParams.delete('access_token');
+        return url.toString();
       },
     }],
+  })
+);
+
+// Cache Supabase API responses with cache-first for better offline experience
+registerRoute(
+  ({ url }) => url.pathname.includes('/rest/v1/collection_points'),
+  new CacheFirst({
+    cacheName: 'api-collection-points',
+    networkTimeoutSeconds: 3,
+    plugins: [{
+      cacheWillUpdate: async ({ response }) => {
+        return response.status === 200 ? response : null;
+      },
+    }],
+  })
+);
+
+// Cache all Supabase API calls for offline functionality
+registerRoute(
+  ({ url }) => url.hostname.includes('supabase.co'),
+  new CacheFirst({
+    cacheName: 'supabase-api',
+    networkTimeoutSeconds: 3,
+    plugins: [{
+      cacheWillUpdate: async ({ response }) => {
+        return response.status === 200 ? response : null;
+      },
+    }],
+  })
+);
+
+// Cache Google Fonts and other font resources
+registerRoute(
+  ({ url }) => 
+    url.origin === 'https://fonts.googleapis.com' ||
+    url.origin === 'https://fonts.gstatic.com',
+  new StaleWhileRevalidate({
+    cacheName: 'google-fonts',
   })
 );
 

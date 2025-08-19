@@ -11,7 +11,7 @@ interface OfflineIndicatorProps {
 }
 
 export const OfflineIndicator = ({ className }: OfflineIndicatorProps) => {
-  const { isOnline, showUpdateAvailable, updateApp } = useOffline();
+  const { isOnline, showUpdateAvailable, updateApp, syncOfflineData, isPreparingOffline } = useOffline();
   const [showOfflineMessage, setShowOfflineMessage] = useState(false);
 
   useEffect(() => {

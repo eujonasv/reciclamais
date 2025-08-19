@@ -1,5 +1,8 @@
 import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { Workbox } from 'workbox-window';
+import { collectionPointsService } from '@/services/collection-points-service';
+import { offlineStorage } from '@/services/offline-storage';
+import { useToast } from '@/hooks/use-toast';
 
 interface OfflineContextType {
   isOnline: boolean;
@@ -7,6 +10,8 @@ interface OfflineContextType {
   showUpdateAvailable: boolean;
   updateApp: () => void;
   installApp: () => void;
+  syncOfflineData: () => Promise<void>;
+  isPreparingOffline: boolean;
 }
 
 const OfflineContext = createContext<OfflineContextType | undefined>(undefined);
@@ -27,7 +32,47 @@ export const OfflineProvider = ({ children }: OfflineProviderProps) => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [isInstalling, setIsInstalling] = useState(false);
   const [showUpdateAvailable, setShowUpdateAvailable] = useState(false);
+  const [isPreparingOffline, setIsPreparingOffline] = useState(false);
   const [wb, setWb] = useState<Workbox | null>(null);
+  const { toast } = useToast();
+
+  const syncOfflineData = async () => {
+    if (!isOnline) return;
+    
+    setIsPreparingOffline(true);
+    try {
+      await collectionPointsService.syncOfflineOperations();
+      toast({
+        title: "Sincronização completa",
+        description: "Todos os dados foram atualizados",
+      });
+    } catch (error) {
+      toast({
+        title: "Erro na sincronização",
+        description: "Alguns dados podem não ter sido atualizados",
+        variant: "destructive",
+      });
+    } finally {
+      setIsPreparingOffline(false);
+    }
+  };
+
+  // Auto-sync when coming back online
+  useEffect(() => {
+    const handleOnlineSync = async () => {
+      if (isOnline) {
+        try {
+          await syncOfflineData();
+        } catch (error) {
+          console.error('Auto-sync failed:', error);
+        }
+      }
+    };
+
+    if (isOnline) {
+      handleOnlineSync();
+    }
+  }, [isOnline]);
 
   useEffect(() => {
     // Initialize service worker
@@ -53,8 +98,21 @@ export const OfflineProvider = ({ children }: OfflineProviderProps) => {
     }
 
     // Listen to online/offline events
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
+    const handleOnline = () => {
+      setIsOnline(true);
+      toast({
+        title: "Conectado",
+        description: "Sincronizando dados...",
+      });
+    };
+    
+    const handleOffline = () => {
+      setIsOnline(false);
+      toast({
+        title: "Modo offline",
+        description: "Você pode continuar usando o app offline",
+      });
+    };
 
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
@@ -63,7 +121,7 @@ export const OfflineProvider = ({ children }: OfflineProviderProps) => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, []);
+  }, [toast]);
 
   const updateApp = () => {
     if (wb) {
@@ -86,7 +144,9 @@ export const OfflineProvider = ({ children }: OfflineProviderProps) => {
       isInstalling,
       showUpdateAvailable,
       updateApp,
-      installApp
+      installApp,
+      syncOfflineData,
+      isPreparingOffline
     }}>
       {children}
     </OfflineContext.Provider>

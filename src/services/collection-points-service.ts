@@ -29,35 +29,55 @@ const parseOpeningHours = (description: string | null) => {
 const isOnline = () => navigator.onLine;
 
 export const collectionPointsService = {
+  // Offline-first approach - try cache first, then network
   async loadPoints(): Promise<CollectionPoint[]> {
     try {
-      if (isOnline()) {
+      // Always try to get from cache first for instant loading
+      const cachedPoints = await offlineStorage.getCachedCollectionPoints();
+      
+      // If offline, return cached data immediately
+      if (!isOnline()) {
+        return cachedPoints;
+      }
+
+      // If online, try to fetch fresh data in background
+      try {
         const { data, error } = await supabase
           .from("collection_points")
           .select("*")
           .order('display_order', { ascending: true });
         
         if (error) {
-          throw error;
+          console.warn('Failed to load fresh data, using cache:', error);
+          return cachedPoints;
         }
         
-        const points = data.map((point) => ({
-          ...point,
-          materials: point.materials?.split(',').map((m: string) => m.trim()) || [],
-          openingHours: parseOpeningHours(point.description)
-        })) as CollectionPoint[];
-        
-        // Cache points for offline use
-        await offlineStorage.cacheCollectionPoints(points);
-        return points;
-      } else {
-        // Load from cache when offline
-        return await offlineStorage.getCachedCollectionPoints();
+        if (data) {
+          const points = data.map((point) => ({
+            ...point,
+            materials: point.materials?.split(',').map((m: string) => m.trim()) || [],
+            openingHours: parseOpeningHours(point.description)
+          })) as CollectionPoint[];
+          
+          // Cache points for offline use
+          await offlineStorage.cacheCollectionPoints(points);
+          return points;
+        }
+      } catch (networkError) {
+        console.log('Network error, using cached data:', networkError);
+        return cachedPoints;
       }
+      
+      return cachedPoints;
     } catch (error) {
-      // Fallback to cache if online request fails
-      console.warn('Failed to load points online, falling back to cache:', error);
-      return await offlineStorage.getCachedCollectionPoints();
+      console.error('Error in loadPoints:', error);
+      // Always try to return cached data as last resort
+      try {
+        return await offlineStorage.getCachedCollectionPoints();
+      } catch (cacheError) {
+        console.error('Cache also failed:', cacheError);
+        return [];
+      }
     }
   },
 

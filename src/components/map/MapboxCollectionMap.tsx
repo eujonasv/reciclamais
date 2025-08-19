@@ -47,13 +47,27 @@ const MapboxCollectionMap = forwardRef<MapboxCollectionMapRef, MapboxCollectionM
       style: isDark ? mapStyles.dark : mapStyles.light,
       center: [-49.39, -25.59],
       zoom: 12,
+      // Enable better offline support
+      maxTileCacheSize: 50,
+      localIdeographFontFamily: 'Roboto, Arial, sans-serif',
     });
     mapRef.current = map;
 
+    // Handle map load with error handling for offline
     map.on('load', () => {
       if (collectionPoints.length > 0) {
         map.setCenter([collectionPoints[0].longitude, collectionPoints[0].latitude]);
       }
+    });
+
+    // Handle style errors gracefully for offline mode
+    map.on('error', (e) => {
+      console.log('Map error (expected in offline mode):', e.error);
+    });
+
+    map.on('styleimagemissing', (e) => {
+      // Prevent errors for missing style images in offline mode
+      console.log('Missing style image (expected in offline mode):', e.id);
     });
 
     return () => {
